@@ -1,6 +1,7 @@
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/models/custom_process.dart';
 import 'package:ccxgui/utils/constants.dart';
+import 'package:ccxgui/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -88,9 +89,15 @@ class PreviewScreen extends StatelessWidget {
                       lineHeight: 24,
                       progressColor: Colors.green,
                     ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Text(
                       "Logs",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 24),
+                    ),
+                    SizedBox(
+                      height: 20,
                     ),
                     LogsView(),
                   ],
@@ -111,19 +118,39 @@ class LogsView extends StatefulWidget {
 
 class _LogsViewState extends State<LogsView> {
   List<String> subtitlesLog = [];
+  ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance!.addPostFrameCallback(
+      (_) {
+        _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+            duration: Duration(milliseconds: 2000), curve: Curves.easeOut);
+      },
+    );
     return BlocBuilder<ProcessBloc, ProcessState>(
       builder: (context, state) {
-        state.subtitles != null ? subtitlesLog.add(state.subtitles!) : null;
+        if (state.subtitles != null &&
+            !subtitlesLog.contains(state.subtitles)) {
+          subtitlesLog.add(state.subtitles!);
+        }
         return Container(
-          width: 500,
-          height: 500,
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              return Text(subtitlesLog[index]);
-            },
-            itemCount: subtitlesLog.length,
+          color: kBgLightColor,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.4,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Scrollbar(
+              child: ListView.builder(
+                controller: _scrollController,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(subtitlesLog[index]),
+                  );
+                },
+                itemCount: subtitlesLog.length,
+              ),
+            ),
           ),
         );
       },

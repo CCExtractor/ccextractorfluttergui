@@ -14,7 +14,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return NavRail(
-      desktopBreakpoint: 1000,
+      desktopBreakpoint: 1150,
       hideTitleBar: true,
       drawerHeaderBuilder: (context) {
         return Column(

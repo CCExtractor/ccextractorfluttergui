@@ -28,60 +28,7 @@ class Dashboard extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 18),
-                child: Row(
-                  children: [
-                    MaterialButton(
-                      hoverColor: Colors.green.shade900,
-                      onPressed: () => null,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.play_arrow,
-                              color: Colors.greenAccent,
-                              size: 30,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              "Start all",
-                              style: TextStyle(
-                                fontSize: 20,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    MaterialButton(
-                      hoverColor: Colors.red.shade900,
-                      onPressed: () => print("stop all"),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.stop,
-                              color: Colors.redAccent,
-                              size: 30,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              "Stop all",
-                              style: TextStyle(
-                                fontSize: 20,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                child: StartStopButton(),
               ),
             ],
           ),
@@ -120,6 +67,77 @@ class Dashboard extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class StartStopButton extends StatefulWidget {
+  @override
+  _StartStopButtonState createState() => _StartStopButtonState();
+}
+
+class _StartStopButtonState extends State<StartStopButton> {
+  bool hasStarted = false;
+  @override
+  Widget build(BuildContext context) {
+    return hasStarted
+        ? MaterialButton(
+            hoverColor: Colors.red.shade900,
+            onPressed: () {
+              setState(() {
+                hasStarted = !hasStarted;
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.stop,
+                    color: Colors.redAccent,
+                    size: 30,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "Stop all",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        : MaterialButton(
+            hoverColor: Colors.green.shade900,
+            onPressed: () {
+              setState(() {
+                hasStarted = !hasStarted;
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.play_arrow,
+                    color: Colors.greenAccent,
+                    size: 30,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "Start all",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
   }
 }
 
