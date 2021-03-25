@@ -28,6 +28,9 @@ dependencies:
   file_selector: ^0.8.2
   file_selector_linux: ^0.0.2
   flutter_svg: ^0.21.0-nullsafety.0
+  equatable: ^2.0.0
+  bloc: ^7.0.0
+  flutter_bloc: ^7.0.0
   navigation_rail:
     git:
       url: git://github.com/rodion-m/navigation_rail.git

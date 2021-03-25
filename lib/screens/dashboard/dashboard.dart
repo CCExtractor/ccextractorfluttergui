@@ -1,9 +1,12 @@
+import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
+import 'package:ccxgui/models/custom_process.dart';
 import 'package:ccxgui/screens/dashboard/components/add_files.dart';
 import 'package:ccxgui/screens/preview/preview_screen.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/screens/dashboard/components/previous_histroy.dart';
 import 'package:ccxgui/screens/dashboard/components/process_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Dashboard extends StatelessWidget {
   @override
@@ -29,7 +32,7 @@ class Dashboard extends StatelessWidget {
                   children: [
                     MaterialButton(
                       hoverColor: Colors.green.shade900,
-                      onPressed: () => print("start all"),
+                      onPressed: () => null,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
@@ -96,7 +99,9 @@ class Dashboard extends StatelessWidget {
                     color: kBgLightColor,
                     child: InkWell(
                       onTap: () {
-                        print("prevoew");
+                        context.read<ProcessBloc>().add(
+                              ProcessStarted(CustomProcess()),
+                            );
                         Navigator.push(
                           context,
                           _createRoute(),
