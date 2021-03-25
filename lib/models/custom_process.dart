@@ -10,7 +10,7 @@ class CustomProcess {
     print("started");
     _process = await Process.start(
       './assets/ccextractor',
-      ['./assets/small.mpg', '--gui_mode_reports'],
+      ['./assets/big.mpg', '--gui_mode_reports'],
     );
   }
 
