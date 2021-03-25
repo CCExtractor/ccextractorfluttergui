@@ -48,19 +48,26 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         (update) {
           if (summaryReg.hasMatch(update)) {
             for (RegExpMatch i in summaryReg.allMatches(update)) {
-              videoDetails.add(i[1]);  //TODO: kinda broken rn, need to find a better way to know if getting initialData is finished.
+              videoDetails.add(
+                i[1],
+              );
+
+              ///TODO: kinda broken rn, need to find a better way to know if getting initialData is finished.
             }
           }
-          _temp = Video(
-            videoDetails[26]!,
-            videoDetails[27]!.substring(9),
-            videoDetails[28]!.substring(9),
-            videoDetails[11]!.substring(10),
-            videoDetails[10]!.substring(15),
-          );
-          add(
-            VideoDetails(_temp!),
-          );
+
+          if (videoDetails.length > 26) {
+            _temp = Video(
+              videoDetails[26]!,
+              videoDetails[27]!.substring(9),
+              videoDetails[28]!.substring(9),
+              videoDetails[11]!.substring(10),
+              videoDetails[10]!.substring(15),
+            );
+            add(
+              VideoDetails(_temp!),
+            );
+          }
         },
       );
     }
@@ -75,9 +82,10 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     }
     if (event is VideoDetails) {
       yield state.copyWith(
-          progress: state.progress,
-          subtitles: state.subtitles,
-          video: event.video);
+        progress: state.progress,
+        subtitles: state.subtitles,
+        video: event.video,
+      );
     }
   }
 }

@@ -22,7 +22,12 @@ class AddFilesButton extends StatelessWidget {
       child: InkWell(
         onTap: () => _openImageFile(context),
         child: Container(
-          child: Center(child: Text("Add more files")),
+          child: Center(
+            child: Text(
+              "Add more files",
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
           decoration: BoxDecoration(
             color: kBgLightColor,
             borderRadius: BorderRadius.all(

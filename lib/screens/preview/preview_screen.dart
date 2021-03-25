@@ -1,7 +1,5 @@
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
-import 'package:ccxgui/models/custom_process.dart';
 import 'package:ccxgui/utils/constants.dart';
-import 'package:ccxgui/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -123,8 +121,9 @@ class _LogsViewState extends State<LogsView> {
   Widget build(BuildContext context) {
     WidgetsBinding.instance!.addPostFrameCallback(
       (_) {
-        _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-            duration: Duration(milliseconds: 2000), curve: Curves.easeOut);
+        _scrollController.jumpTo(
+          _scrollController.position.maxScrollExtent,
+        );
       },
     );
     return BlocBuilder<ProcessBloc, ProcessState>(

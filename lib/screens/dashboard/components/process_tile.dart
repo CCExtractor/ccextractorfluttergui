@@ -163,15 +163,17 @@ class _SettingsDialogState extends State<SettingsDialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           DropdownButton(
-            hint: Text('Select output format'),
-            value: _selectedOutputFormat,
+            isExpanded: true,
+            underline: Container(),
+            hint: Text('Select input format'),
+            value: _selectedInputFormat,
             onChanged: (newValue) {
               print(newValue);
               setState(() {
-                _selectedOutputFormat = newValue.toString();
+                _selectedInputFormat = newValue.toString();
               });
             },
-            items: _outputFormats.map((location) {
+            items: _inputFormats.map((location) {
               return DropdownMenuItem(
                 child: new Text(location),
                 value: location,
@@ -179,8 +181,9 @@ class _SettingsDialogState extends State<SettingsDialog> {
             }).toList(),
           ),
           DropdownButton(
-            hint:
-                Text('Please choose a location'), // Not necessary for Option 1
+            isExpanded: true,
+            underline: Container(),
+            hint: Text('Select a output format'), // Not necessary for Option 1
             value: _selectedOutputFormat,
             onChanged: (newValue) {
               setState(() {
@@ -194,40 +197,25 @@ class _SettingsDialogState extends State<SettingsDialog> {
               );
             }).toList(),
           ),
-          DropdownButton(
-            hint:
-                Text('Please choose a location'), // Not necessary for Option 1
-            value: _selectedOutputFormat,
-            onChanged: (newValue) {
-              setState(() {
-                _selectedOutputFormat = newValue.toString();
-              });
-            },
-            items: _outputFormats.map((location) {
-              return DropdownMenuItem(
-                child: Text(location),
-                value: location,
-              );
-            }).toList(),
-          ),
-          DropdownButton(
-            hint:
-                Text('Please choose a location'), // Not necessary for Option 1
-            value: _selectedOutputFormat,
-            onChanged: (newValue) {
-              setState(() {
-                _selectedOutputFormat = newValue.toString();
-              });
-            },
-            items: _outputFormats.map((location) {
-              return DropdownMenuItem(
-                child: Text(location),
-                value: location,
-              );
-            }).toList(),
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: "Enter output filename here",
+              labelText: "Output filename",
+              labelStyle: TextStyle(fontSize: 18),
+              hintStyle: TextStyle(height: 2),
+            ),
           ),
         ],
       ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16, right: 12),
+          child: MaterialButton(
+            child: Text("OK"),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+      ],
     );
   }
 }

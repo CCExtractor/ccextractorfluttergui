@@ -1,6 +1,7 @@
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/models/custom_process.dart';
 import 'package:ccxgui/screens/dashboard/components/add_files.dart';
+import 'package:ccxgui/screens/dashboard/components/udp_button.dart';
 import 'package:ccxgui/screens/preview/preview_screen.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/screens/dashboard/components/previous_histroy.dart';
@@ -14,6 +15,13 @@ class Dashboard extends StatelessWidget {
     return Material(
       child: ListView(
         children: [
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(child: AddFilesButton()),
+              Expanded(child: ListenOnUDPButton()),
+            ],
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -33,13 +41,10 @@ class Dashboard extends StatelessWidget {
             ],
           ),
           ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 7,
-            itemBuilder: (context, index) {
-              if (index == 6) {
-                return AddFilesButton();
-              } else {
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 7,
+              itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Container(
@@ -60,9 +65,7 @@ class Dashboard extends StatelessWidget {
                     ),
                   ),
                 );
-              }
-            },
-          ),
+              }),
           PreviousHistroy(),
         ],
       ),
