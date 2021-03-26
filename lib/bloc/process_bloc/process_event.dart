@@ -23,15 +23,6 @@ class ProcessProgressUpdate extends ProcessEvent {
   List<Object> get props => [progress];
 }
 
-class ProcessSubtitlesUpdate extends ProcessEvent {
-  const ProcessSubtitlesUpdate(this.subitiles);
-
-  final String subitiles;
-
-  @override
-  List<Object> get props => [subitiles];
-}
-
 class VideoDetails extends ProcessEvent {
   final Video video;
 
@@ -39,4 +30,11 @@ class VideoDetails extends ProcessEvent {
 
   @override
   List<Object> get props => [video];
+}
+
+class LogsUpdate extends ProcessEvent {
+  final List<String> logs;
+  LogsUpdate(this.logs);
+  @override
+  List<Object> get props => [logs];
 }

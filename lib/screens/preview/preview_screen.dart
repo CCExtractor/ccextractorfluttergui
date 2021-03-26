@@ -115,43 +115,49 @@ class LogsView extends StatefulWidget {
 }
 
 class _LogsViewState extends State<LogsView> {
-  List<String> subtitlesLog = [];
   ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback(
-      (_) {
-        _scrollController.jumpTo(
-          _scrollController.position.maxScrollExtent,
-        );
-      },
-    );
     return BlocBuilder<ProcessBloc, ProcessState>(
       builder: (context, state) {
-        if (state.subtitles != null &&
-            !subtitlesLog.contains(state.subtitles)) {
-          subtitlesLog.add(state.subtitles!);
-        }
-        return Container(
-          color: kBgLightColor,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.4,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Scrollbar(
-              child: ListView.builder(
-                controller: _scrollController,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(subtitlesLog[index]),
-                  );
-                },
-                itemCount: subtitlesLog.length,
+        if (state.logs != null) {
+          WidgetsBinding.instance!.addPostFrameCallback(
+            (_) {
+              _scrollController.jumpTo(
+                _scrollController.position.maxScrollExtent,
+              );
+            },
+          );
+          return Container(
+            color: kBgLightColor,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.4,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Scrollbar(
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        state.logs![index],
+                        style: TextStyle(
+                          color: state.logs![index]
+                                  .contains(RegExp(r"\d+:\d+-\d+:\d+"))
+                              ? Colors.amber
+                              : Colors.white,
+                        ),
+                      ),
+                    );
+                  },
+                  itemCount: state.logs!.length,
+                ),
               ),
             ),
-          ),
-        );
+          );
+        } else
+          return CircularProgressIndicator();
       },
     );
   }

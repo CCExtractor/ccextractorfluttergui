@@ -1,4 +1,5 @@
 import 'package:ccxgui/screens/dashboard/dashboard.dart';
+import 'package:ccxgui/screens/dashboard/nested_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:navigation_rail/navigation_rail.dart';
@@ -9,6 +10,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final navigatorKey = GlobalKey<NavigatorState>();
   int _currentIndex = 0;
   final String logo = 'assets/ccx.svg';
   @override
@@ -38,7 +40,7 @@ class _HomeState extends State<Home> {
       body: IndexedStack(
         index: _currentIndex,
         children: <Widget>[
-          Dashboard(),
+          NestedNavigator(navigatorKey: navigatorKey),
           Container(color: Colors.red[300]),
           Container(color: Colors.purple[300]),
           Container(color: Colors.grey[300]),
