@@ -1,4 +1,3 @@
-import 'package:ccxgui/screens/dashboard/dashboard.dart';
 import 'package:ccxgui/screens/dashboard/nested_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

@@ -1,10 +1,15 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 
 class ProcessTile extends StatefulWidget {
   final bool isComepleted;
-
-  const ProcessTile({Key? key, required this.isComepleted}) : super(key: key);
+  final String fileName;
+  final String filePath;
+  const ProcessTile(
+      {Key? key,
+      required this.isComepleted,
+      required this.fileName,
+      required this.filePath})
+      : super(key: key);
   @override
   _ProcessTileState createState() => _ProcessTileState();
 }
@@ -34,13 +39,22 @@ class _ProcessTileState extends State<ProcessTile> {
               Expanded(
                 child: ListView(
                   scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.only(top: 30),
+                  padding: EdgeInsets.only(top: 20, bottom: 20),
                   children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "EBQNhhMJhZ5ZrhQZIkthZ0h9T81k81D7cWerZ38gRmmM7IAN0By7A6fPqR0ltX2UNiTw85W3w5BlMZmLhaqnnijp886uNLcwGJOJ",
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.fileName,
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          widget.filePath,
+                          style: TextStyle(color: Colors.grey, fontSize: 12),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -52,10 +66,13 @@ class _ProcessTileState extends State<ProcessTile> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.play_arrow,
-                                size: 30,
-                                color: Colors.greenAccent,
+                              child: IconButton(
+                                onPressed: () => print(widget.filePath),
+                                icon: Icon(
+                                  Icons.play_arrow,
+                                  size: 30,
+                                  color: Colors.greenAccent,
+                                ),
                               ),
                             ),
                             Padding(
@@ -113,7 +130,7 @@ class _ProcessTileState extends State<ProcessTile> {
           //     ),
           //   ),
           // ),
-          height: 75,
+          height: 90,
         ),
       ),
     );

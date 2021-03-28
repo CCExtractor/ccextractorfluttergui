@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/screens/home.dart';
@@ -20,8 +21,15 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ProcessBloc>(
-      create: (context) => ProcessBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ProcessBloc>(
+          create: (context) => ProcessBloc(),
+        ),
+        BlocProvider<DashboardBloc>(
+          create: (context) => DashboardBloc(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

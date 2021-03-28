@@ -1,6 +1,11 @@
+import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
+import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
+import 'package:ccxgui/models/custom_process.dart';
+import 'package:ccxgui/screens/preview/preview_screen.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddFilesButton extends StatelessWidget {
   void _openImageFile(BuildContext context) async {
@@ -9,10 +14,9 @@ class AddFilesButton extends StatelessWidget {
       // Operation was canceled by the user.
       return;
     }
-    await showDialog(
-      context: context,
-      builder: (context) => SelectedFilesDisplay(files),
-    );
+    context.read<DashboardBloc>().add(
+          NewFileAdded(files),
+        );
   }
 
   @override
@@ -43,35 +47,59 @@ class AddFilesButton extends StatelessWidget {
   }
 }
 
-class SelectedFilesDisplay extends StatelessWidget {
-  /// The files containing the images
-  final List<XFile> files;
+// class SelectedFilesDisplay extends StatelessWidget {
+//   /// The files containing the images
+//   final List<XFile> files;
 
-  /// Default Constructor
-  SelectedFilesDisplay(this.files);
+//   /// Default Constructor
+//   SelectedFilesDisplay(this.files);
 
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('Selected file'),
-      content: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ...files.map(
-            (file) => Text(file.name),
-          )
-        ],
-      ),
-      actions: [
-        TextButton(
-          child: const Text('Close'),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
-    );
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return AlertDialog(
+//       title: Text('Selected file'),
+//       content: Column(
+//         mainAxisAlignment: MainAxisAlignment.start,
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         mainAxisSize: MainAxisSize.min,
+//         children: <Widget>[
+//           ...files.map(
+//             (file) => Text(file.path.replaceAll(" ", "\\ ")),
+//           )
+//         ],
+//       ),
+//       actions: [
+//         TextButton(
+//           child: const Text('Close'),
+//           onPressed: () {
+//             context.read<DashboardBloc>().add(
+//                   NewFileAdded(files),
+//                 );
+//             Navigator.pop(context);
+
+//             // Navigator.push(
+//             //   context,
+//             //   _createRoute(),
+//             // );
+//           },
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+Route _createRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        new PreviewScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(1, 0),
+          end: Offset.zero,
+        ).animate(animation),
+        child: child,
+      );
+    },
+  );
 }

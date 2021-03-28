@@ -1,10 +1,8 @@
-import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
-import 'package:ccxgui/models/custom_process.dart';
+import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/screens/dashboard/components/add_files.dart';
 import 'package:ccxgui/screens/dashboard/components/udp_button.dart';
 import 'package:ccxgui/screens/preview/preview_screen.dart';
 import 'package:ccxgui/utils/constants.dart';
-import 'package:ccxgui/screens/dashboard/components/previous_histroy.dart';
 import 'package:ccxgui/screens/dashboard/components/process_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,33 +38,68 @@ class Dashboard extends StatelessWidget {
               ),
             ],
           ),
-          ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: 7,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Container(
-                    color: kBgLightColor,
-                    child: InkWell(
-                      onTap: () {
-                        context.read<ProcessBloc>().add(
-                              ProcessStarted(CustomProcess()),
-                            );
-                        Navigator.push(
-                          context,
-                          _createRoute(),
-                        );
-                      },
-                      child: ProcessTile(
-                        isComepleted: false,
+          BlocConsumer<DashboardBloc, DashboardState>(
+            builder: (context, state) {
+              if (state is NewFileSelectedState) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: state.fileNames.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Container(
+                        color: kBgLightColor,
+                        child: InkWell(
+                          onTap: () {
+                            print("go to preview screen");
+                            // context.read<ProcessBloc>().add(
+                            //       ProcessStarted(CustomProcess()),
+                            //     );
+                            // Navigator.push(
+                            //   context,
+                            //   _createRoute(),
+                            // );
+                          },
+                          child: ProcessTile(
+                            fileName: state.fileNames[index],
+                            filePath: state.filePaths[index],
+                            isComepleted: false,
+                          ),
+                        ),
                       ),
+                    );
+                  },
+                );
+              }
+              return Container(
+                decoration: BoxDecoration(
+                  color: kBgLightColor,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      10,
                     ),
                   ),
-                );
-              }),
-          PreviousHistroy(),
+                ),
+                height: 80,
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                  child: Text(
+                    "No files selected",
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+              );
+            },
+            listener: (context, state) {
+              if (state is SelectedFileAlreadyPresentState) {
+                CustomSnackBarMessage.show(
+                    context, "${state.fileName} was already selected");
+              }
+            },
+          ),
         ],
       ),
     );
@@ -144,6 +177,7 @@ class _StartStopButtonState extends State<StartStopButton> {
   }
 }
 
+// ignore: unused_element
 Route _createRoute() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => PreviewScreen(),
@@ -157,4 +191,37 @@ Route _createRoute() {
       );
     },
   );
+}
+
+class CustomSnackBarMessage {
+  final String message;
+
+  const CustomSnackBarMessage({
+    required this.message,
+  });
+
+  static show(
+    BuildContext context,
+    String message,
+  ) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        action: SnackBarAction(
+          label: 'Close',
+          onPressed: () {},
+        ),
+        content: Text(message),
+        margin: EdgeInsets.only(
+          left: MediaQuery.of(context).size.width / 1.4,
+          bottom: 20,
+          right: 20,
+        ),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.amber.shade200,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
+    );
+  }
 }
