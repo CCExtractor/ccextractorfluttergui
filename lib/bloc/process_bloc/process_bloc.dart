@@ -37,15 +37,6 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
               add(ProcessProgressUpdate(i[1]!));
             }
           }
-          // if (timeReg.hasMatch(update)) {
-          //   for (RegExpMatch i in timeReg.allMatches(update)) {
-          //     String time = i[1]!.replaceAll('#', ' ');
-          //     time =
-          //         time.substring(0, 5) + "-" + time.substring(6, time.length);
-          //     logs.add(time);
-          //     add(LogsUpdate(logs));
-          //   }
-          // }
           if (logsReg.hasMatch(update)) {
             for (RegExpMatch i in logsReg.allMatches(update)) {
               if (i[1] != null) logs.add(i[1]!);

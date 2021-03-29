@@ -26,6 +26,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             yield SelectedFileAlreadyPresentState(file.name);
         }
         yield NewFileSelectedState(
+          // TODO: This might cause problems like file added to list again in the future.
           fileNames: namesList,
           filePaths: pathsList,
         );
@@ -41,6 +42,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           filePaths: pathsList,
         );
       }
+    } else if (event is StartCustomProcess) {
+      await Future.delayed(Duration(seconds: 2), () {
+        print(event.filePath);
+      });
+      yield CustomProcessFinished();
     }
   }
 }

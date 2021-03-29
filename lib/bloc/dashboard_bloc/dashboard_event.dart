@@ -15,3 +15,10 @@ class NewFileAdded extends DashboardEvent {
   @override
   List<Object> get props => [files];
 }
+
+class StartCustomProcess extends DashboardEvent {
+  final String filePath;
+  StartCustomProcess(this.filePath);
+  @override
+  List<Object> get props => [filePath];
+}

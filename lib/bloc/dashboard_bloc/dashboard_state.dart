@@ -4,7 +4,7 @@ abstract class DashboardState extends Equatable {
   const DashboardState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class DashboardInitial extends DashboardState {}
@@ -30,3 +30,5 @@ class SelectedFileAlreadyPresentState extends DashboardState {
   @override
   List<Object> get props => [fileName];
 }
+
+class CustomProcessFinished extends DashboardState {}

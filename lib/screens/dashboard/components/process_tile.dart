@@ -67,25 +67,6 @@ class _ProcessTileState extends State<ProcessTile> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: IconButton(
-                                onPressed: () => print(widget.filePath),
-                                icon: Icon(
-                                  Icons.play_arrow,
-                                  size: 30,
-                                  color: Colors.greenAccent,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.stop,
-                                size: 30,
-                                color: Colors.redAccent,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: IconButton(
                                 onPressed: () {
                                   showDialog<void>(
                                       context: context,
@@ -106,8 +87,8 @@ class _ProcessTileState extends State<ProcessTile> {
                     child: Container(
                       child: widget.isComepleted
                           ? Icon(
-                              Icons.check_outlined,
-                              size: 30,
+                              Icons.delete_outline,
+                              color: Colors.red,
                             )
                           : CircularProgressIndicator(
                               // : Colors.green,

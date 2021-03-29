@@ -12,7 +12,7 @@ void main() {
   Bloc.observer = SimpleBlocObserver();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle('CCExtractor');
-    setWindowMinSize(const Size(800, 500));
+    setWindowMinSize(const Size(800, 800));
     setWindowMaxSize(const Size(10000, 10000));
   }
   runApp(MyApp());
