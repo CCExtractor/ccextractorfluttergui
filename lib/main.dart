@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
+import 'package:ccxgui/bloc/processing_queue_bloc/processing_queue_bloc.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/screens/home.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<DashboardBloc>(
           create: (context) => DashboardBloc(),
+        ),
+        BlocProvider<ProcessingQueueBloc>(
+          create: (context) => ProcessingQueueBloc(),
         ),
       ],
       child: MaterialApp(

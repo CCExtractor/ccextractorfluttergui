@@ -1,15 +1,22 @@
+import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
+import 'package:ccxgui/bloc/processing_queue_bloc/processing_queue_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProcessTile extends StatefulWidget {
   final bool isComepleted;
   final String fileName;
   final String filePath;
-  const ProcessTile(
-      {Key? key,
-      required this.isComepleted,
-      required this.fileName,
-      required this.filePath})
-      : super(key: key);
+  final int fileIndex;
+  final bool hasStarted;
+  const ProcessTile({
+    Key? key,
+    required this.isComepleted,
+    required this.fileName,
+    required this.filePath,
+    required this.hasStarted,
+    required this.fileIndex,
+  }) : super(key: key);
   @override
   _ProcessTileState createState() => _ProcessTileState();
 }
@@ -61,43 +68,49 @@ class _ProcessTileState extends State<ProcessTile> {
               ),
               Row(
                 children: [
-                  isVisible && !widget.isComepleted
-                      ? Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: IconButton(
-                                onPressed: () {
-                                  showDialog<void>(
-                                      context: context,
-                                      builder: (context) => SettingsDialog());
-                                },
-                                icon: Icon(
-                                  Icons.settings,
-                                  size: 25,
-                                  color: Colors.blueAccent,
-                                ),
+                  // isVisible
+                  //     ? Row(
+                  //         children: [
+                  //           Padding(
+                  //             padding: const EdgeInsets.all(8.0),
+                  //             child: IconButton(
+                  //               onPressed: () {
+                  //                 showDialog<void>(
+                  //                     context: context,
+                  //                     builder: (context) => SettingsDialog());
+                  //               },
+                  //               icon: Icon(
+                  //                 Icons.settings,
+                  //                 size: 25,
+                  //                 color: Colors.blueAccent,
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       )
+                  //     : Container(),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
+                    child: !widget.hasStarted
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: IconButton(
+                              onPressed: () {
+                                context.read<DashboardBloc>().add(
+                                      FileRemoved(widget.fileIndex),
+                                    );
+                              },
+                              icon: Icon(
+                                Icons.delete_outline,
+                                color: Colors.red,
                               ),
                             ),
-                          ],
-                        )
-                      : Container(),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                    child: Container(
-                      child: widget.isComepleted
-                          ? Icon(
-                              Icons.delete_outline,
-                              color: Colors.red,
-                            )
-                          : CircularProgressIndicator(
-                              // : Colors.green,
-                              value: 0.4,
-                              backgroundColor: Colors.white,
-                            ),
-                      height: 18,
-                      width: 18,
-                    ),
+                          )
+                        : CircularProgressIndicator(
+                            // : Colors.green,
+                            value: 0.4,
+                            backgroundColor: Colors.white,
+                          ),
                   ),
                 ],
               ),
@@ -166,7 +179,6 @@ class _SettingsDialogState extends State<SettingsDialog> {
             hint: Text('Select input format'),
             value: _selectedInputFormat,
             onChanged: (newValue) {
-              print(newValue);
               setState(() {
                 _selectedInputFormat = newValue.toString();
               });

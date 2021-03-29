@@ -16,9 +16,10 @@ class NewFileAdded extends DashboardEvent {
   List<Object> get props => [files];
 }
 
-class StartCustomProcess extends DashboardEvent {
-  final String filePath;
-  StartCustomProcess(this.filePath);
+/// Remove file from selected files in UI only, to remove from processing, check processing_bloc
+class FileRemoved extends DashboardEvent {
+  final int removedFileIndex;
+  FileRemoved(this.removedFileIndex);
   @override
-  List<Object> get props => [filePath];
+  List<Object> get props => [removedFileIndex];
 }

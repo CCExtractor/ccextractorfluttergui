@@ -1,4 +1,5 @@
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
+import 'package:ccxgui/bloc/processing_queue_bloc/processing_queue_bloc.dart';
 import 'package:ccxgui/screens/dashboard/components/add_files.dart';
 import 'package:ccxgui/screens/dashboard/components/udp_button.dart';
 import 'package:ccxgui/utils/constants.dart';
@@ -11,8 +12,7 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
         children: [
           Row(
             mainAxisSize: MainAxisSize.max,
@@ -81,21 +81,17 @@ class _StartStopButtonState extends State<StartStopButton> {
   Widget build(BuildContext context) {
     return BlocListener<DashboardBloc, DashboardState>(
       listener: (context, state) {
-        if (state is CustomProcessFinished) {
-          if (tempFileNumer++ < widget.filePaths.length) {
-            context.read<DashboardBloc>().add(
-                  StartCustomProcess(widget.filePaths[tempFileNumer++]),
-                );
-          }// TODO: once list is passed to button I cant get the updated one, switch to bloc and get it from state.
+        if (state is NewFileSelectedState) {
+          context
+              .read<ProcessingQueueBloc>()
+              .add(AddFilesToPrcessingQueue(state.filePaths));
         }
       },
       child: MaterialButton(
         hoverColor: Colors.green.shade900,
         onPressed: widget.isEnabled
             ? () {
-                context.read<DashboardBloc>().add(
-                      StartCustomProcess(widget.filePaths[0]),
-                    );
+                print("start all process");
               }
             : null,
         child: Padding(
@@ -160,17 +156,12 @@ class CustomSnackBarMessage {
 class SelectedFilesContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.45,
-        child: BlocConsumer<DashboardBloc, DashboardState>(
-          buildWhen: (previous, current) {
-            return current != CustomProcessFinished();
-          },
-          builder: (context, state) {
-            print(state);
-            if (state is NewFileSelectedState) {
+    return Container(
+      height: MediaQuery.of(context).size.height / 2,
+      child: BlocConsumer<DashboardBloc, DashboardState>(
+        builder: (context, state) {
+          if (state is NewFileSelectedState) {
+            if (state.fileNames.length > 0)
               return Column(
                 children: [
                   Row(
@@ -203,16 +194,12 @@ class SelectedFilesContainer extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return Container(
                             color: kBgLightColor,
-                            child: InkWell(
-                              hoverColor: Colors.transparent,
-                              onTap: () {
-                                print("go to preview screen");
-                              },
-                              child: ProcessTile(
-                                fileName: state.fileNames[index],
-                                filePath: state.filePaths[index],
-                                isComepleted: false,
-                              ),
+                            child: ProcessTile(
+                              fileName: state.fileNames[index],
+                              filePath: state.filePaths[index],
+                              fileIndex: index,
+                              isComepleted: false,
+                              hasStarted: false,
                             ),
                           );
                         },
@@ -221,61 +208,17 @@ class SelectedFilesContainer extends StatelessWidget {
                   ),
                 ],
               );
-            }
-            return Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Text(
-                        "Selected files",
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 18),
-                      child: StartStopButton(
-                        filePaths: [],
-                        isEnabled: false,
-                      ),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: kBgLightColor,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(
-                          10,
-                        ),
-                      ),
-                    ),
-                    width: MediaQuery.of(context).size.width,
-                    child: Center(
-                      child: Text(
-                        "No files selected",
-                        style: TextStyle(
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            );
-          },
-          listener: (context, state) {
-            if (state is SelectedFileAlreadyPresentState) {
-              CustomSnackBarMessage.show(
-                  context, "${state.fileName} was already selected");
-            }
-          },
-        ),
+            else
+              NoFilesSelectedContainer();
+          }
+          return NoFilesSelectedContainer();
+        },
+        listener: (context, state) {
+          if (state is SelectedFileAlreadyPresentState) {
+            CustomSnackBarMessage.show(
+                context, "${state.fileName} was already selected");
+          }
+        },
       ),
     );
   }
@@ -320,7 +263,7 @@ class LogsContainer extends StatelessWidget {
           ),
         ),
         Container(
-          height: MediaQuery.of(context).size.height * 0.23,
+          height: MediaQuery.of(context).size.height / 4,
           color: kBgLightColor,
           child: ListView.builder(
             itemCount: 100,
@@ -330,6 +273,58 @@ class LogsContainer extends StatelessWidget {
                 title: Text(index.toString()),
               );
             },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class NoFilesSelectedContainer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                "Selected files",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 18),
+              child: StartStopButton(
+                filePaths: [],
+                isEnabled: false,
+              ),
+            ),
+          ],
+        ),
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: kBgLightColor,
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  10,
+                ),
+              ),
+            ),
+            width: MediaQuery.of(context).size.width,
+            child: Center(
+              child: Text(
+                "No files selected",
+                style: TextStyle(
+                  fontSize: 15,
+                ),
+              ),
+            ),
           ),
         ),
       ],

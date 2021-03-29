@@ -31,4 +31,3 @@ class SelectedFileAlreadyPresentState extends DashboardState {
   List<Object> get props => [fileName];
 }
 
-class CustomProcessFinished extends DashboardState {}

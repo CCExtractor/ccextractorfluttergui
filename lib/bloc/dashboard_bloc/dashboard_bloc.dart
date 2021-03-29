@@ -42,11 +42,15 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           filePaths: pathsList,
         );
       }
-    } else if (event is StartCustomProcess) {
-      await Future.delayed(Duration(seconds: 2), () {
-        print(event.filePath);
-      });
-      yield CustomProcessFinished();
+    }
+    if (event is FileRemoved) {
+      if (currentState is NewFileSelectedState) {
+        List<String> namesList = List.from(currentState.fileNames);
+        List<String> pathsList = List.from(currentState.filePaths);
+        namesList.removeAt(event.removedFileIndex);
+        pathsList.removeAt(event.removedFileIndex);
+        yield NewFileSelectedState(fileNames: namesList, filePaths: pathsList);
+      }
     }
   }
 }
