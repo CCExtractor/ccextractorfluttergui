@@ -1,4 +1,5 @@
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
+import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/bloc/processing_queue_bloc/processing_queue_bloc.dart';
 import 'package:ccxgui/screens/dashboard/components/add_files.dart';
 import 'package:ccxgui/screens/dashboard/components/udp_button.dart';
@@ -21,26 +22,6 @@ class Dashboard extends StatelessWidget {
               Expanded(child: ListenOnUDPButton()),
             ],
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     Padding(
-          //       padding: const EdgeInsets.all(20.0),
-          //       child: Text(
-          //         "Selected files",
-          //         style: TextStyle(
-          //           fontSize: 20,
-          //         ),
-          //       ),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.only(right: 18),
-          //       child: StartStopButton(
-          //         files: [],
-          //       ),
-          //     ),
-          //   ],
-          // ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: SelectedFilesContainer(),
@@ -65,57 +46,79 @@ class Dashboard extends StatelessWidget {
 }
 
 class StartStopButton extends StatefulWidget {
-  final List<String> filePaths;
   final bool isEnabled;
-  const StartStopButton(
-      {Key? key, required this.filePaths, required this.isEnabled})
-      : super(key: key);
+  const StartStopButton({Key? key, required this.isEnabled}) : super(key: key);
 
   @override
   _StartStopButtonState createState() => _StartStopButtonState();
 }
 
 class _StartStopButtonState extends State<StartStopButton> {
-  int tempFileNumer = 0;
+  List<String> processingQueue = [];
   @override
   Widget build(BuildContext context) {
-    return BlocListener<DashboardBloc, DashboardState>(
-      listener: (context, state) {
+    return BlocBuilder<DashboardBloc, DashboardState>(
+      builder: (context, state) {
         if (state is NewFileSelectedState) {
-          context
-              .read<ProcessingQueueBloc>()
-              .add(AddFilesToPrcessingQueue(state.filePaths));
+          processingQueue = state.filePaths;
+          return MaterialButton(
+            hoverColor: Colors.green.shade900,
+            onPressed: widget.isEnabled
+                ? () {
+                    context
+                        .read<ProcessBloc>()
+                        .add(AddFilesToPrcessingQueue(processingQueue));
+                  }
+                : null,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.play_arrow,
+                    color: Colors.greenAccent,
+                    size: 30,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "Start all",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
         }
-      },
-      child: MaterialButton(
-        hoverColor: Colors.green.shade900,
-        onPressed: widget.isEnabled
-            ? () {
-                print("start all process");
-              }
-            : null,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Icon(
-                Icons.play_arrow,
-                color: Colors.greenAccent,
-                size: 30,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text(
-                "Start all",
-                style: TextStyle(
-                  fontSize: 20,
+        return MaterialButton(
+          hoverColor: Colors.green.shade900,
+          onPressed: null,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.play_arrow,
+                  color: Colors.greenAccent,
+                  size: 30,
                 ),
-              ),
-            ],
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  "Start all",
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -179,7 +182,6 @@ class SelectedFilesContainer extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(right: 18),
                         child: StartStopButton(
-                          filePaths: state.filePaths,
                           isEnabled: state.fileNames.length > 0 ? true : false,
                         ),
                       ),
@@ -300,7 +302,6 @@ class NoFilesSelectedContainer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 18),
               child: StartStopButton(
-                filePaths: [],
                 isEnabled: false,
               ),
             ),

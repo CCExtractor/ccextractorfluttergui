@@ -38,3 +38,21 @@ class LogsUpdate extends ProcessEvent {
   @override
   List<Object> get props => [logs];
 }
+
+class AddFilesToPrcessingQueue extends ProcessEvent {
+  final List<String> filePaths;
+
+  AddFilesToPrcessingQueue(this.filePaths);
+  @override
+  List<Object> get props => [filePaths];
+}
+
+class CustomProcessEnded extends ProcessEvent {
+  final int processedFileIndex;
+
+  CustomProcessEnded(this.processedFileIndex);
+  @override
+  List<Object> get props => [processedFileIndex];
+}
+
+class FinsihedProcessingAllFiles extends ProcessEvent {}

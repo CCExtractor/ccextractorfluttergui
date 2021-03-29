@@ -15,17 +15,38 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
   StreamSubscription? _stdErrorSubscription;
   StreamSubscription? _stdOutSubscription;
   Video? _temp;
-  RegExp progressReg = RegExp(r"###PROGRESS#(\d+)", multiLine: true);
-  RegExp subtitlesReg = RegExp(r"###SUBTITLE###(.+)", multiLine: true);
-  RegExp timeReg = RegExp(r"###TIME#(.+)", multiLine: true);
-  RegExp summaryReg = RegExp(r"\[(.*?)\]", multiLine: true);
-  RegExp logsReg = RegExp(r"###SUBTITLE###(.+)|###TIME#(.+)", multiLine: true);
-
+  final RegExp progressReg = RegExp(r"###PROGRESS#(\d+)", multiLine: true);
+  final RegExp subtitlesReg = RegExp(r"###SUBTITLE###(.+)", multiLine: true);
+  final RegExp timeReg = RegExp(r"###TIME#(.+)", multiLine: true);
+  final RegExp summaryReg = RegExp(r"\[(.*?)\]", multiLine: true);
+  final RegExp logsReg =
+      RegExp(r"###SUBTITLE###(.+)|###TIME#(.+)", multiLine: true);
+  int currentlyProcessingFile = 0;
+  List<String> filePaths = [];
   List<String?> videoDetails = [];
   @override
   Stream<ProcessState> mapEventToState(
     ProcessEvent event,
   ) async* {
+    if (event is AddFilesToPrcessingQueue) {
+      filePaths = event.filePaths;
+      print("starting index $currentlyProcessingFile");
+      add(
+        ProcessStarted(CustomProcess(event.filePaths[currentlyProcessingFile])),
+      );
+    }
+    if (event is CustomProcessEnded) {
+      if (filePaths.length - 1 > currentlyProcessingFile) {
+        currentlyProcessingFile++;
+        add(AddFilesToPrcessingQueue(filePaths));
+      } else {
+        currentlyProcessingFile = 0;
+        add(FinsihedProcessingAllFiles());
+      }
+    }
+    if (event is FinsihedProcessingAllFiles) {
+      print("FINSIHED ALL");
+    }
     if (event is ProcessStarted) {
       await _stdErrorSubscription?.cancel();
       await _stdOutSubscription?.cancel();
@@ -35,6 +56,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
           if (progressReg.hasMatch(update)) {
             for (RegExpMatch i in progressReg.allMatches(update)) {
               add(ProcessProgressUpdate(i[1]!));
+              print(i[1]);
             }
           }
           if (logsReg.hasMatch(update)) {
@@ -72,11 +94,14 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     }
 
     if (event is ProcessProgressUpdate) {
-      yield state.copyWith(
-        progress: event.progress,
-        video: state.video,
-        logs: state.logs,
-      );
+      if (int.parse(event.progress) == 100) {
+        add(CustomProcessEnded(currentlyProcessingFile));
+      } else
+        yield state.copyWith(
+          progress: event.progress,
+          video: state.video,
+          logs: state.logs,
+        );
     }
 
     if (event is LogsUpdate) {

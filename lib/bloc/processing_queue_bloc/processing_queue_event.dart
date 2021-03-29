@@ -7,19 +7,19 @@ abstract class ProcessingQueueEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AddFilesToPrcessingQueue extends ProcessingQueueEvent {
-  final List<String> filePaths;
 
-  AddFilesToPrcessingQueue(this.filePaths);
+
+class FileRemovedFromQueue extends ProcessingQueueEvent {
+  final String filePath;
+  FileRemovedFromQueue(this.filePath);
   @override
-  List<Object> get props => [filePaths];
+  List<Object> get props => [filePath];
 }
 
-// class RemoveFileFromProcessingQueue extends ProcessingQueueEvent {
-//   final int fileIndex;
+class FileProcessed extends ProcessingQueueEvent {
+  final String filePath;
 
-//   RemoveFileFromProcessingQueue(this.fileIndex);
-//   @override
-//   List<Object> get props => [fileIndex];
-// }
-
+  FileProcessed(this.filePath);
+  @override
+  List<Object> get props => [filePath];
+}
