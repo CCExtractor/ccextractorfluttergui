@@ -10,11 +10,16 @@ part 'process_event.dart';
 part 'process_state.dart';
 
 class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
-  ProcessBloc() : super(ProcessState(progress: "0"));
-  List<String> logs = [];
+  ProcessBloc()
+      : super(ProcessState(
+          progress: "0",
+          comepletedIndices: [],
+          finishedAll: false,
+          logs: ["To start, please select files and click start all"],
+          video: Video("", "", "", "", ""),
+        ));
   StreamSubscription? _stdErrorSubscription;
   StreamSubscription? _stdOutSubscription;
-  Video? _temp;
   final RegExp progressReg = RegExp(r"###PROGRESS#(\d+)", multiLine: true);
   final RegExp subtitlesReg = RegExp(r"###SUBTITLE###(.+)", multiLine: true);
   final RegExp timeReg = RegExp(r"###TIME#(.+)", multiLine: true);
@@ -22,31 +27,54 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
   final RegExp logsReg =
       RegExp(r"###SUBTITLE###(.+)|###TIME#(.+)", multiLine: true);
   int currentlyProcessingFile = 0;
+  List<String> logs = [];
   List<String> filePaths = [];
   List<String?> videoDetails = [];
+  List<int> comepletedIndices = [];
+  bool finishedAll = false;
+  Video video = Video("", "", "", "", "");
   @override
   Stream<ProcessState> mapEventToState(
     ProcessEvent event,
   ) async* {
     if (event is AddFilesToPrcessingQueue) {
+      if (event.startAll) {
+        logs = [];
+        filePaths = [];
+        videoDetails = [];
+        comepletedIndices = [];
+        finishedAll = false;
+      }
       filePaths = event.filePaths;
       print("starting index $currentlyProcessingFile");
+      String currentFile = event.filePaths[currentlyProcessingFile];
       add(
-        ProcessStarted(CustomProcess(event.filePaths[currentlyProcessingFile])),
+        ProcessStarted(CustomProcess(currentFile)),
       );
     }
     if (event is CustomProcessEnded) {
       if (filePaths.length - 1 > currentlyProcessingFile) {
+        // -1 here because start 0 is already counted.
+        videoDetails = [];
+        video = Video("", "", "", "", "");
+        comepletedIndices.add(currentlyProcessingFile);
         currentlyProcessingFile++;
-        add(AddFilesToPrcessingQueue(filePaths));
+        add(AddFilesToPrcessingQueue(filePaths, false));
       } else {
+        comepletedIndices.add(currentlyProcessingFile);
         currentlyProcessingFile = 0;
         add(FinsihedProcessingAllFiles());
       }
     }
+    if (event is FileRemovedFromProcessingQueue) {
+      filePaths.removeAt(event.removedFileIndex);
+      add(AddFilesToPrcessingQueue(filePaths, false));
+    }
     if (event is FinsihedProcessingAllFiles) {
+      finishedAll = true;
       print("FINSIHED ALL");
     }
+
     if (event is ProcessStarted) {
       await _stdErrorSubscription?.cancel();
       await _stdOutSubscription?.cancel();
@@ -56,14 +84,12 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
           if (progressReg.hasMatch(update)) {
             for (RegExpMatch i in progressReg.allMatches(update)) {
               add(ProcessProgressUpdate(i[1]!));
-              print(i[1]);
             }
           }
           if (logsReg.hasMatch(update)) {
             for (RegExpMatch i in logsReg.allMatches(update)) {
               if (i[1] != null) logs.add(i[1]!);
               if (i[2] != null) logs.add(i[2]!);
-              // logs.add(i[1]!);
               add(LogsUpdate(logs));
             }
           }
@@ -78,7 +104,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
           }
 
           if (videoDetails.length > 26) {
-            _temp = Video(
+            video = Video(
               videoDetails[26]!,
               videoDetails[27]!.substring(9),
               videoDetails[28]!.substring(9),
@@ -86,7 +112,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
               videoDetails[10]!.substring(15),
             );
             add(
-              VideoDetails(_temp!),
+              VideoDetails(video),
             );
           }
         },
@@ -99,23 +125,32 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       } else
         yield state.copyWith(
           progress: event.progress,
-          video: state.video,
+          video: video,
           logs: state.logs,
+          currentIndex: currentlyProcessingFile,
+          comepletedIndices: comepletedIndices,
+          finishedAll: finishedAll,
         );
     }
 
     if (event is LogsUpdate) {
       yield state.copyWith(
         progress: state.progress,
-        video: state.video,
+        video: video,
         logs: event.logs,
+        currentIndex: currentlyProcessingFile,
+        comepletedIndices: comepletedIndices,
+        finishedAll: finishedAll,
       );
     }
     if (event is VideoDetails) {
       yield state.copyWith(
         progress: state.progress,
-        video: event.video,
+        video: video,
         logs: state.logs,
+        currentIndex: currentlyProcessingFile,
+        comepletedIndices: comepletedIndices,
+        finishedAll: finishedAll,
       );
     }
   }

@@ -34,7 +34,7 @@ class NestedNavigator extends StatelessWidget {
   ) {
     return {
       NestedNavigatorRoutes.dashboard: (context) => Dashboard(),
-      NestedNavigatorRoutes.preview: (context) => PreviewScreen(),
+      // NestedNavigatorRoutes.preview: (context) => PreviewScreen(),
     };
   }
 

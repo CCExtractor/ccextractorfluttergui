@@ -1,4 +1,5 @@
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
+import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/bloc/processing_queue_bloc/processing_queue_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,13 +9,11 @@ class ProcessTile extends StatefulWidget {
   final String fileName;
   final String filePath;
   final int fileIndex;
-  final bool hasStarted;
   const ProcessTile({
     Key? key,
     required this.isComepleted,
     required this.fileName,
     required this.filePath,
-    required this.hasStarted,
     required this.fileIndex,
   }) : super(key: key);
   @override
@@ -91,26 +90,60 @@ class _ProcessTileState extends State<ProcessTile> {
                   //     : Container(),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
-                    child: !widget.hasStarted
-                        ? Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: IconButton(
-                              onPressed: () {
-                                context.read<DashboardBloc>().add(
-                                      FileRemoved(widget.fileIndex),
-                                    );
-                              },
-                              icon: Icon(
-                                Icons.delete_outline,
-                                color: Colors.red,
+                    child: BlocBuilder<ProcessBloc, ProcessState>(
+                      builder: (context, state) {
+                        if (state.finishedAll) {
+                          return Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: Icon(Icons.check),
+                          );
+                        }
+                        if (int.parse(state.progress!) > 0 &&
+                            widget.fileIndex == state.currentIndex &&
+                            !state.comepletedIndices.contains(widget.fileIndex))
+                          return Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: Container(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.green,
+                                strokeWidth: 4,
+                                value: int.parse(state.progress!) / 100,
+                                backgroundColor: Colors.white,
                               ),
                             ),
-                          )
-                        : CircularProgressIndicator(
-                            // : Colors.green,
-                            value: 0.4,
-                            backgroundColor: Colors.white,
+                          );
+                        else if (state.comepletedIndices
+                            .contains(widget.fileIndex)) {
+                          return Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: Icon(Icons.check),
+                          );
+                        }
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: IconButton(
+                            onPressed: () {
+                              context
+                                  .read<DashboardBloc>()
+                                  .add(FileRemoved(widget.fileIndex));
+                              try {
+                                context.read<ProcessBloc>().add(
+                                    FileRemovedFromProcessingQueue(
+                                        widget.fileIndex));
+                              } catch (e) {
+                                print("processing for this file never started");
+                              }
+                            },
+                            icon: Icon(
+                              Icons.delete_outline,
+                              color: Colors.red,
+                            ),
                           ),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),

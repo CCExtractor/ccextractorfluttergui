@@ -21,6 +21,7 @@ class AddFilesButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
       child: InkWell(
+        hoverColor: Colors.transparent,
         onTap: () => _openImageFile(context),
         child: Container(
           child: Center(
@@ -43,5 +44,3 @@ class AddFilesButton extends StatelessWidget {
     );
   }
 }
-
-

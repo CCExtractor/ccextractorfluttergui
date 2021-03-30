@@ -1,11 +1,9 @@
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
-import 'package:ccxgui/bloc/processing_queue_bloc/processing_queue_bloc.dart';
 import 'package:ccxgui/screens/dashboard/components/add_files.dart';
 import 'package:ccxgui/screens/dashboard/components/udp_button.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/screens/dashboard/components/process_tile.dart';
-import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,22 +21,15 @@ class Dashboard extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SelectedFilesContainer(),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: SelectedFilesContainer()),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            child: Text("Logs", style: TextStyle(fontSize: 20)),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            child: Text(
-              "Logs",
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: LogsContainer(),
-          ),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: LogsContainer()),
         ],
       ),
     );
@@ -67,7 +58,7 @@ class _StartStopButtonState extends State<StartStopButton> {
                 ? () {
                     context
                         .read<ProcessBloc>()
-                        .add(AddFilesToPrcessingQueue(processingQueue));
+                        .add(AddFilesToPrcessingQueue(processingQueue, true));
                   }
                 : null,
             child: Padding(
@@ -136,10 +127,7 @@ class CustomSnackBarMessage {
   ) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        action: SnackBarAction(
-          label: 'Close',
-          onPressed: () {},
-        ),
+        duration: Duration(seconds: 1),
         content: Text(message),
         margin: EdgeInsets.only(
           left: MediaQuery.of(context).size.width / 1.4,
@@ -160,32 +148,38 @@ class SelectedFilesContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+          color: kBgLightColor,
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              10,
+            ),
+          )),
       height: MediaQuery.of(context).size.height / 2,
       child: BlocConsumer<DashboardBloc, DashboardState>(
         builder: (context, state) {
           if (state is NewFileSelectedState) {
             if (state.fileNames.length > 0)
               return Column(
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Text(
+                  Container(
+                    color: kBgDarkColor,
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
                           "Selected files",
                           style: TextStyle(
                             fontSize: 20,
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 18),
-                        child: StartStopButton(
+                        StartStopButton(
                           isEnabled: state.fileNames.length > 0 ? true : false,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   Expanded(
                     child: Scrollbar(
@@ -201,7 +195,6 @@ class SelectedFilesContainer extends StatelessWidget {
                               filePath: state.filePaths[index],
                               fileIndex: index,
                               isComepleted: false,
-                              hasStarted: false,
                             ),
                           );
                         },
@@ -227,57 +220,102 @@ class SelectedFilesContainer extends StatelessWidget {
 }
 
 class LogsContainer extends StatelessWidget {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          color: kBgLightColor,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Text(
-                    "Resolutionn:  700 * 700",
-                    style: TextStyle(fontSize: 15),
+    return BlocBuilder<ProcessBloc, ProcessState>(
+      builder: (context, state) {
+        WidgetsBinding.instance!.addPostFrameCallback(
+          (_) {
+            _scrollController.jumpTo(
+              _scrollController.position.maxScrollExtent,
+            );
+          },
+        );
+        return Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: kBgLightColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(
+                    10,
+                  ),
+                  topRight: Radius.circular(
+                    10,
                   ),
                 ),
-                Text(
-                  "Aspect ratio:  4:3",
-                  style: TextStyle(fontSize: 15),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        "Resolutionn:  ${state.video.resolution}",
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                    Text(
+                      "Aspect ratio:  ${state.video.aspectRatio}",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    Text(
+                      "Framerate:  ${state.video.frameRate}",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Text(
+                        "Encoding:  ${state.video.encoding}",
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  "Framerate:  29.97",
-                  style: TextStyle(fontSize: 15),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: Text(
-                    "Encoding:  latin1",
-                    style: TextStyle(fontSize: 15),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-        Container(
-          height: MediaQuery.of(context).size.height / 4,
-          color: kBgLightColor,
-          child: ListView.builder(
-            itemCount: 100,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(index.toString()),
-              );
-            },
-          ),
-        ),
-      ],
+            Container(
+              decoration: BoxDecoration(
+                color: kBgLightColor,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(
+                    10,
+                  ),
+                  bottomRight: Radius.circular(
+                    10,
+                  ),
+                ),
+              ),
+              height: MediaQuery.of(context).size.height / 4,
+              child: Scrollbar(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  controller: _scrollController,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        state.logs[index],
+                        style: TextStyle(
+                          color: state.logs[index]
+                                  .contains(RegExp(r"\d+:\d+-\d+:\d+"))
+                              ? Colors.amber
+                              : Colors.white,
+                        ),
+                      ),
+                    );
+                  },
+                  itemCount: state.logs.length,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -287,25 +325,23 @@ class NoFilesSelectedContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Text(
+        Container(
+          color: kBgDarkColor,
+          padding: EdgeInsets.symmetric(vertical: 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
                 "Selected files",
                 style: TextStyle(
                   fontSize: 20,
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 18),
-              child: StartStopButton(
+              StartStopButton(
                 isEnabled: false,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         Expanded(
           child: Container(

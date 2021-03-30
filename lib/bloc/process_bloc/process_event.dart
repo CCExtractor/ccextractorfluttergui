@@ -42,9 +42,11 @@ class LogsUpdate extends ProcessEvent {
 class AddFilesToPrcessingQueue extends ProcessEvent {
   final List<String> filePaths;
 
-  AddFilesToPrcessingQueue(this.filePaths);
+  /// if the event has been added from startAll or other events
+  final bool startAll;
+  AddFilesToPrcessingQueue(this.filePaths, this.startAll);
   @override
-  List<Object> get props => [filePaths];
+  List<Object> get props => [filePaths, startAll];
 }
 
 class CustomProcessEnded extends ProcessEvent {
@@ -53,6 +55,14 @@ class CustomProcessEnded extends ProcessEvent {
   CustomProcessEnded(this.processedFileIndex);
   @override
   List<Object> get props => [processedFileIndex];
+}
+
+class FileRemovedFromProcessingQueue extends ProcessEvent {
+  final int removedFileIndex;
+
+  FileRemovedFromProcessingQueue(this.removedFileIndex);
+  @override
+  List<Object> get props => [removedFileIndex];
 }
 
 class FinsihedProcessingAllFiles extends ProcessEvent {}

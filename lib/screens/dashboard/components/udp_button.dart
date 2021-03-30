@@ -7,6 +7,7 @@ class ListenOnUDPButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 20, right: 20),
       child: InkWell(
+        hoverColor: Colors.transparent,
         onTap: () => showDialog(
           context: context,
           builder: (context) {
