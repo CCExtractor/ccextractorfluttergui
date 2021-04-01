@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
-import 'package:ccxgui/bloc/processing_queue_bloc/processing_queue_bloc.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/screens/home.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +28,6 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<DashboardBloc>(
           create: (context) => DashboardBloc(),
-        ),
-        BlocProvider<ProcessingQueueBloc>(
-          create: (context) => ProcessingQueueBloc(),
         ),
       ],
       child: MaterialApp(
@@ -63,48 +59,3 @@ class SimpleBlocObserver extends BlocObserver {
     super.onError(bloc, error, stackTrace);
   }
 }
-
-// Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Text(
-//               'Current Progress:',
-//             ),
-//             FutureBuilder(
-//                 future: _incrementCounter(),
-//                 builder: (context, snapshot) {
-//                   if (snapshot.hasData) {
-//                     return StreamBuilder(
-//                       stream: test(),
-//                       initialData: progress.last,
-//                       builder: (context, snapshot) {
-//                         if (snapshot.hasData) {
-//                           double test =
-//                               double.parse((snapshot.data.toString()));
-//                           return CircularPercentIndicator(
-//                             radius: 60.0,
-//                             lineWidth: 5.0,
-//                             percent: test / 100,
-//                             center: Text("$test%"),
-//                             progressColor: Colors.green,
-//                           );
-//                         } else if (snapshot.hasError) {
-//                           print(snapshot.error);
-//                         }
-
-//                         return CircularPercentIndicator(
-//                           radius: 60.0,
-//                           lineWidth: 5.0,
-//                           percent: double.parse(progress.last.toString()) / 100,
-//                           center: Text("${progress.last}%"),
-//                           progressColor: Colors.green,
-//                         );
-//                       },
-//                     );
-//                   }
-//                   return CircularProgressIndicator();
-//                 }),
-//           ],
-//         ),
-//       ),
