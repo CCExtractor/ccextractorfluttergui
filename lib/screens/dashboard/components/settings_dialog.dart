@@ -9,32 +9,7 @@ class SettingsDialog extends StatefulWidget {
 }
 
 class _SettingsDialogState extends State<SettingsDialog> {
-  List<String> _inputFormats = [
-    "ts   -> For Transport Streams.",
-    "ps   -> For Program Streams.",
-    "es   -> For Elementary Streams.",
-    "asf  -> ASF container (such as DVR-MS).",
-    "wtv  -> Windows Television (WTV)",
-    "bin  -> CCExtractor's own binary format.",
-    "raw  -> For McPoodle's raw files.",
-    "mp4  -> MP4/MOV/M4V and similar."
-  ]; // Option 2
-  String? _selectedInputFormat; // Option 2
-  List<String> _outputFormats = [
-    "srt     -> SubRip (default, so not actually needed).",
-    "ass/ssa -> SubStation Alpha.",
-    "webvtt  -> WebVTT format",
-    "sami    -> MS Synchronized Accesible Media Interface.",
-    "bin     -> CC data in CCExtractor's own binary format.",
-    "raw     -> CC data in McPoodle's Broadcast format.",
-    "dvdraw  -> CC data in McPoodle's DVD format.",
-    "txt     -> Transcript (no time codes, no roll-up captions, just the plain transcription.",
-    "ttxt    -> Timed Transcript (transcription with time info)",
-    "smptett -> SMPTE Timed Text (W3C TTML) format.",
-    "spupng  -> Set of .xml and .png files for use with dvdauthor's spumux.",
-    "null    -> Don't produce any file output",
-    "report  -> Prints to stdout information about captions in specified input. Don't produce any file output"
-  ]; // Option 2
+// Option 2
   String? _selectedOutputFormat; // Option 2
   int _settingsIndex = 0;
   @override

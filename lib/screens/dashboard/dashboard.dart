@@ -135,7 +135,7 @@ class CustomSnackBarMessage {
           right: 20,
         ),
         behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.amber.shade200,
+        backgroundColor: Theme.of(context).accentColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -221,16 +221,17 @@ class SelectedFilesContainer extends StatelessWidget {
 
 class LogsContainer extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProcessBloc, ProcessState>(
       builder: (context, state) {
         WidgetsBinding.instance!.addPostFrameCallback(
           (_) {
-            _scrollController.jumpTo(
-              _scrollController.position.maxScrollExtent,
-            );
+            if (_scrollController.hasClients) {
+              _scrollController.jumpTo(
+                _scrollController.position.maxScrollExtent,
+              );
+            }
           },
         );
         return Column(

@@ -5,17 +5,31 @@ import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:window_size/window_size.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
+  final appDocumentDir = await getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDir.path);
+  var box = await Hive.openBox('settingsBox');
+  if (box.isEmpty) {
+    initializeSettings();
+  }
+  print(box.get("output_file_name"));
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle('CCExtractor');
     setWindowMinSize(const Size(800, 800));
     setWindowMaxSize(const Size(10000, 10000));
   }
   runApp(MyApp());
+}
+
+void initializeSettings() {
+  var settingsBox = Hive.box("settingsBox");
+  settingsBox.putAll(settings);
 }
 
 class MyApp extends StatelessWidget {
@@ -33,7 +47,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          accentColor: Color(0xff2e8fff),
+          accentColor: Color(0xff01bcd6),
           backgroundColor: kBgDarkColor,
           canvasColor: kBgDarkColor,
           brightness: Brightness.dark,

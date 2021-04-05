@@ -81,6 +81,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       await event.customProcess.startprocess();
       _stdErrorSubscription = event.customProcess.processStdError().listen(
         (update) {
+          print(update);
           if (progressReg.hasMatch(update)) {
             for (RegExpMatch i in progressReg.allMatches(update)) {
               add(ProcessProgressUpdate(i[1]!));

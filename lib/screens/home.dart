@@ -1,4 +1,5 @@
 import 'package:ccxgui/screens/dashboard/nested_navigator.dart';
+import 'package:ccxgui/screens/settings/basic_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:navigation_rail/navigation_rail.dart';
@@ -40,7 +41,7 @@ class _HomeState extends State<Home> {
         index: _currentIndex,
         children: <Widget>[
           NestedNavigator(navigatorKey: navigatorKey),
-          Container(color: Colors.red[300]),
+          BasicSettingsScreen(),
           Container(color: Colors.purple[300]),
           Container(color: Colors.grey[300]),
         ],
@@ -51,15 +52,15 @@ class _HomeState extends State<Home> {
           icon: Icon(Icons.dashboard),
         ),
         BottomNavigationBarItem(
-          label: "Settings",
+          label: "Basic Settings",
           icon: Icon(Icons.settings),
         ),
         BottomNavigationBarItem(
-          label: "Option",
+          label: "Advanced Settings",
           icon: Icon(Icons.folder),
         ),
         BottomNavigationBarItem(
-          label: "Option",
+          label: "Obscure Settings",
           icon: Icon(Icons.camera),
         ),
       ],
