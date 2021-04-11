@@ -19,12 +19,16 @@ void main() async {
     setWindowMinSize(const Size(800, 800));
     setWindowMaxSize(const Size(10000, 10000));
   }
-  runApp(MyApp());  
+  runApp(MyApp());
 }
 
 Future initializeSettings(bool force) async {
   await storage.ready;
-  if (await storage.getItem("append") == null || force) {
+  if (!outputFormats.contains(await storage.getItem("output_format")) ||
+      await storage.getItem("output_file_name") is! String ||
+      await storage.getItem("append") is! bool ||
+      await storage.getItem("autoprogram") is! bool ||
+      force) {
     await storage.setItem("output_format", "srt");
     await storage.setItem("output_file_name", "");
     await storage.setItem("append", false);

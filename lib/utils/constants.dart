@@ -5,12 +5,11 @@ const kBgDarkColor = Color(0xFF181818);
 const kDefaultPadding = 20.0;
 
 Map<String, dynamic> settings = {
-  "output_file_name": null,
+  "output_file_name": "",
   "output_format": "srt",
   "append": false,
   "autoprogram": true,
 };
-
 
 /// Input formats
 List<String> inputFormats = [
@@ -23,6 +22,7 @@ List<String> inputFormats = [
   "raw  -> For McPoodle's raw files.",
   "mp4  -> MP4/MOV/M4V and similar."
 ];
+
 /// Output formats
 List<String> outputFormats = [
   "srt",

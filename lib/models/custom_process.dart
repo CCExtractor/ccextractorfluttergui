@@ -22,7 +22,6 @@ class CustomProcess {
 
   Future startprocess() async {
     await getData();
-
     _process = await Process.start(
       './assets/ccextractor',
       [
