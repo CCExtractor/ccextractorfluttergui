@@ -1,7 +1,6 @@
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/screens/dashboard/components/settings_dialog.dart';
-import 'package:ccxgui/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -94,22 +93,22 @@ class _ProcessTileState extends State<ProcessTile> {
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
-                            IconButton(
-                              onPressed: () {
-                                showDialog<void>(
-                                  context: context,
-                                  builder: (context) => SettingsDialog(),
-                                );
-                              },
-                              icon: Icon(
-                                Icons.settings,
-                                size: 25,
-                                color: Colors.blueAccent,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
+                            // IconButton(
+                            //   onPressed: () {
+                            //     showDialog<void>(
+                            //       context: context,
+                            //       builder: (context) => SettingsDialog(),
+                            //     );
+                            //   },
+                            //   icon: Icon(
+                            //     Icons.settings,
+                            //     size: 25,
+                            //     color: Colors.blueAccent,
+                            //   ),
+                            // ),
+                            // SizedBox(
+                            //   width: 10,
+                            // ),
                             IconButton(
                               onPressed: () {
                                 context

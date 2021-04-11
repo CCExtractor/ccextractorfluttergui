@@ -9,8 +9,6 @@ class SettingsDialog extends StatefulWidget {
 }
 
 class _SettingsDialogState extends State<SettingsDialog> {
-// Option 2
-  String? _selectedOutputFormat; // Option 2
   int _settingsIndex = 0;
   @override
   Widget build(BuildContext context) {

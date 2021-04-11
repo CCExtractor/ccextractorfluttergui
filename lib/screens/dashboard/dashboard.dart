@@ -4,6 +4,7 @@ import 'package:ccxgui/screens/dashboard/components/add_files.dart';
 import 'package:ccxgui/screens/dashboard/components/udp_button.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/screens/dashboard/components/process_tile.dart';
+import 'package:ccxgui/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -130,7 +131,7 @@ class CustomSnackBarMessage {
         duration: Duration(seconds: 1),
         content: Text(message),
         margin: EdgeInsets.only(
-          left: MediaQuery.of(context).size.width / 1.4,
+          left: MediaQuery.of(context).size.width / 1.5,
           bottom: 20,
           right: 20,
         ),

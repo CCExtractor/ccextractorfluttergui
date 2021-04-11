@@ -1,5 +1,7 @@
+import 'package:ccxgui/screens/dashboard/dashboard.dart';
 import 'package:ccxgui/screens/dashboard/nested_navigator.dart';
 import 'package:ccxgui/screens/settings/basic_settings.dart';
+import 'package:ccxgui/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:navigation_rail/navigation_rail.dart';
@@ -40,7 +42,7 @@ class _HomeState extends State<Home> {
       body: IndexedStack(
         index: _currentIndex,
         children: <Widget>[
-          NestedNavigator(navigatorKey: navigatorKey),
+          Dashboard(),
           BasicSettingsScreen(),
           Container(color: Colors.purple[300]),
           Container(color: Colors.grey[300]),

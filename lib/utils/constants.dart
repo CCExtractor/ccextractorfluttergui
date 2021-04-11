@@ -26,7 +26,7 @@ List<String> inputFormats = [
 /// Output formats
 List<String> outputFormats = [
   "srt",
-  "ass/ssa",
+  "ssa",
   "webvtt",
   "sami",
   "bin",

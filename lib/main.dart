@@ -3,33 +3,33 @@ import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/screens/home.dart';
+import 'package:ccxgui/utils/storage_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:window_size/window_size.dart';
+
+LocalStorage storage = LocalStorage("config.json");
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
-  final appDocumentDir = await getApplicationDocumentsDirectory();
-  Hive.init(appDocumentDir.path);
-  var box = await Hive.openBox('settingsBox');
-  if (box.isEmpty) {
-    initializeSettings();
-  }
-  print(box.get("output_file_name"));
+  await initializeSettings(false);
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle('CCExtractor');
     setWindowMinSize(const Size(800, 800));
     setWindowMaxSize(const Size(10000, 10000));
   }
-  runApp(MyApp());
+  runApp(MyApp());  
 }
 
-void initializeSettings() {
-  var settingsBox = Hive.box("settingsBox");
-  settingsBox.putAll(settings);
+Future initializeSettings(bool force) async {
+  await storage.ready;
+  if (await storage.getItem("append") == null || force) {
+    await storage.setItem("output_format", "srt");
+    await storage.setItem("output_file_name", "");
+    await storage.setItem("append", false);
+    await storage.setItem("autoprogram", true);
+  }
 }
 
 class MyApp extends StatelessWidget {
