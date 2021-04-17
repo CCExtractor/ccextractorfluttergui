@@ -4,12 +4,12 @@ const kBgLightColor = Color(0xFF303030);
 const kBgDarkColor = Color(0xFF181818);
 const kDefaultPadding = 20.0;
 
-Map<String, dynamic> settings = {
-  "output_file_name": "",
-  "output_format": "srt",
-  "append": false,
-  "autoprogram": true,
-};
+List<String> settingsList = [
+  "output_format",
+  "output_file_name",
+  "autoprogram",
+  "append"
+];
 
 /// Input formats
 List<String> inputFormats = [

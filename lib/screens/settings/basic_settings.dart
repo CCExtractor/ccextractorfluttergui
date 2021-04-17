@@ -1,70 +1,61 @@
-import 'package:ccxgui/main.dart';
+import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
+import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/screens/dashboard/dashboard.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/utils/responsive.dart';
-import 'package:ccxgui/utils/storage_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BasicSettingsScreen extends StatefulWidget {
-  @override
-  _BasicSettingsScreenState createState() => _BasicSettingsScreenState();
-}
-
-class _BasicSettingsScreenState extends State<BasicSettingsScreen> {
-  late String selectedOutputFormat;
-  late bool append;
-  late bool autoprogram;
-  bool isReady = false;
-  TextEditingController outputFileNameController = TextEditingController();
-  @override
-  void initState() {
-    super.initState();
-    getSettings().whenComplete(() {
-      setState(() {
-        isReady = true;
-      });
-    });
-  }
-
-  Future getSettings() async {
-    await storage.ready;
-    selectedOutputFormat = await storage.getItem("output_format");
-    append = await storage.getItem("append");
-    autoprogram = await storage.getItem("autoprogram");
-    outputFileNameController.text = await storage.getItem("output_file_name");
-  }
-
+class BasicSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Basic Settings"),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(top: 20, right: 20),
-            child: MaterialButton(
-                child: Text("Apply"),
-                color: Theme.of(context).accentColor,
-                onPressed: () async {
-                  print(selectedOutputFormat);
-                  await storage.ready;
-                  await storage.setItem("append", append);
-                  await storage.setItem("autoprogram", autoprogram);
-                  await storage.setItem("output_format", selectedOutputFormat);
-                  await storage.setItem(
-                      "output_file_name", outputFileNameController.text);
-                  CustomSnackBarMessage.show(
-                    context,
-                    "Settings applied",
-                  );
-                }),
-          ),
-        ],
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
-      body: isReady
-          ? Padding(
+    return BlocBuilder<SettingsBloc, SettingsState>(
+      builder: (context, state) {
+        print(state);
+        if (state is SettingsErrorState) {
+          // If pasrsing local json gives error, go back to default values
+          context.read<SettingsBloc>().add(SaveSettingsEvent(SettingsModel()));
+          return Center(
+            child: Container(
+              child: Text(state.message),
+            ),
+          );
+        }
+        if (state is CurrentSettingsState) {
+          TextEditingController outputFileNameController =
+              TextEditingController(text: state.settingsModel.outputFilename);
+
+          return Scaffold(
+            appBar: AppBar(
+              title: Text("Basic Settings"),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, right: 20),
+                  child: MaterialButton(
+                      child: Text("Apply"),
+                      color: Theme.of(context).accentColor,
+                      onPressed: () {
+                        print(state.settingsModel.toJson().toString());
+                        context
+                            .read<SettingsBloc>()
+                            .add(SaveSettingsEvent(state.settingsModel.copyWith(
+                              outputFormat: state.settingsModel.outputFormat,
+                              outputFilename: outputFileNameController.text,
+                              append: state.settingsModel.append,
+                              autoprogram: state.settingsModel.autoprogram,
+                            )));
+                        CustomSnackBarMessage.show(
+                          context,
+                          "Settings applied",
+                        );
+                      }),
+                ),
+              ],
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+            ),
+            body: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView(
                 children: [
@@ -77,16 +68,18 @@ class _BasicSettingsScreenState extends State<BasicSettingsScreen> {
                       color: kBgLightColor,
                       child: TextFormField(
                         controller: outputFileNameController,
-                        initialValue: null,
                         decoration: InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 12, horizontal: 6),
-                            isDense: true),
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 6,
+                          ),
+                          isDense: true,
+                        ),
                         cursorColor: Colors.transparent,
                       ),
                       width: Responsive.isDesktop(context) ? 300 : 100,
@@ -101,7 +94,7 @@ class _BasicSettingsScreenState extends State<BasicSettingsScreen> {
                       child: DropdownButton<String>(
                         underline: Container(),
                         isExpanded: true,
-                        value: selectedOutputFormat,
+                        value: state.settingsModel.outputFormat,
                         items: outputFormats.map((String value) {
                           return DropdownMenuItem(
                             value: value,
@@ -113,9 +106,10 @@ class _BasicSettingsScreenState extends State<BasicSettingsScreen> {
                           );
                         }).toList(),
                         onChanged: (String? newValue) {
-                          setState(() {
-                            selectedOutputFormat = newValue!;
-                          });
+                          context.read<SettingsBloc>().add(SettingsUpdatedEvent(
+                                  state.settingsModel.copyWith(
+                                outputFormat: newValue,
+                              )));
                         },
                       ),
                     ),
@@ -128,11 +122,12 @@ class _BasicSettingsScreenState extends State<BasicSettingsScreen> {
                     trailing: Container(
                       child: Checkbox(
                         activeColor: Theme.of(context).accentColor,
-                        value: append,
-                        onChanged: (_) {
-                          setState(() {
-                            append = !append;
-                          });
+                        value: state.settingsModel.append,
+                        onChanged: (value) {
+                          context.read<SettingsBloc>().add(SettingsUpdatedEvent(
+                                  state.settingsModel.copyWith(
+                                append: value,
+                              )));
                         },
                       ),
                     ),
@@ -145,19 +140,23 @@ class _BasicSettingsScreenState extends State<BasicSettingsScreen> {
                     trailing: Container(
                       child: Switch(
                         activeColor: Theme.of(context).accentColor,
-                        value: autoprogram,
-                        onChanged: (_) {
-                          setState(() {
-                            autoprogram = !autoprogram;
-                          });
+                        value: state.settingsModel.autoprogram,
+                        onChanged: (value) {
+                          context.read<SettingsBloc>().add(SettingsUpdatedEvent(
+                                  state.settingsModel.copyWith(
+                                autoprogram: value,
+                              )));
                         },
                       ),
                     ),
                   ),
                 ],
               ),
-            )
-          : Container(),
+            ),
+          );
+        }
+        return Container();
+      },
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:ccxgui/screens/dashboard/components/add_files.dart';
 import 'package:ccxgui/screens/dashboard/components/udp_button.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/screens/dashboard/components/process_tile.dart';
-import 'package:ccxgui/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

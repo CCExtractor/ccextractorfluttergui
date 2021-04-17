@@ -7,7 +7,10 @@
         {
             "name": "ccxgui",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--no-sound-null-safety",
+            ],
         }
     ]
 }
