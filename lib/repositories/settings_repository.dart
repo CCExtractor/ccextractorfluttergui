@@ -32,15 +32,19 @@ class SettingsRepository {
         // This checks if all the keys from settings mode (put in a seperate list in contants file), exists or not.
         // If not, exception is thrown and default settings are written.
         if (!data.containsKey(item)) {
-          throw Exception('setting name not found');
+          throw Exception('Setting key not found');
         }
       }
       // This checks if all the values are of the intended datatype.
-      if (outputFormats.contains(data['output_format']) ||
-          data['output_file_name'] is String ||
-          data['append'] is bool ||
+      if (outputFormats.contains(data['output_format']) &&
+          data['output_file_name'] is String &&
+          data['append'] is bool &&
           data['autoprogram'] is bool) {
+        print("true");
         return true;
+      }
+      else {
+        throw Exception('Settings value has mismatched datatype');
       }
     } catch (e) {
       await file.writeAsString(jsonEncode(SettingsModel()));
