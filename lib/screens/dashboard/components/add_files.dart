@@ -24,12 +24,6 @@ class AddFilesButton extends StatelessWidget {
         hoverColor: Colors.transparent,
         onTap: () => _openImageFile(context),
         child: Container(
-          child: Center(
-            child: Text(
-              "Add more files",
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
           decoration: BoxDecoration(
             color: kBgLightColor,
             borderRadius: BorderRadius.all(
@@ -39,6 +33,12 @@ class AddFilesButton extends StatelessWidget {
             ),
           ),
           height: 75,
+          child: Center(
+            child: Text(
+              'Add more files',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
         ),
       ),
     );

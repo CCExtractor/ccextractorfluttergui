@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_size/window_size.dart';
 
-LocalStorage storage = LocalStorage("config.json");
+LocalStorage storage = LocalStorage('config.json');
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

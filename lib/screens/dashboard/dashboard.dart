@@ -25,7 +25,7 @@ class Dashboard extends StatelessWidget {
               child: SelectedFilesContainer()),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: Text("Logs", style: TextStyle(fontSize: 20)),
+            child: Text('Logs', style: TextStyle(fontSize: 20)),
           ),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -74,7 +74,7 @@ class _StartStopButtonState extends State<StartStopButton> {
                     width: 5,
                   ),
                   Text(
-                    "Start all",
+                    'Start all',
                     style: TextStyle(
                       fontSize: 20,
                     ),
@@ -100,7 +100,7 @@ class _StartStopButtonState extends State<StartStopButton> {
                   width: 5,
                 ),
                 Text(
-                  "Start all",
+                  'Start all',
                   style: TextStyle(
                     fontSize: 20,
                   ),
@@ -121,11 +121,12 @@ class CustomSnackBarMessage {
     required this.message,
   });
 
+  // ignore: always_declare_return_types
   static show(
     BuildContext context,
     String message,
   ) {
-    ScaffoldMessenger.of(context).showSnackBar(
+     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: Duration(seconds: 1),
         content: Text(message),
@@ -159,7 +160,7 @@ class SelectedFilesContainer extends StatelessWidget {
       child: BlocConsumer<DashboardBloc, DashboardState>(
         builder: (context, state) {
           if (state is NewFileSelectedState) {
-            if (state.fileNames.length > 0)
+            if (state.fileNames.isNotEmpty) {
               return Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -170,13 +171,13 @@ class SelectedFilesContainer extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Selected files",
+                          'Selected files',
                           style: TextStyle(
                             fontSize: 20,
                           ),
                         ),
                         StartStopButton(
-                          isEnabled: state.fileNames.length > 0 ? true : false,
+                          isEnabled: state.fileNames.isNotEmpty ? true : false,
                         ),
                       ],
                     ),
@@ -203,15 +204,16 @@ class SelectedFilesContainer extends StatelessWidget {
                   ),
                 ],
               );
-            else
+            } else {
               NoFilesSelectedContainer();
+            }
           }
           return NoFilesSelectedContainer();
         },
         listener: (context, state) {
           if (state is SelectedFileAlreadyPresentState) {
             CustomSnackBarMessage.show(
-                context, "${state.fileName} was already selected");
+                context, '${state.fileName} was already selected');
           }
         },
       ),
@@ -256,22 +258,22 @@ class LogsContainer extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Text(
-                        "Resolutionn:  ${state.video.resolution}",
+                        'Resolutionn:  ${state.video.resolution}',
                         style: TextStyle(fontSize: 15),
                       ),
                     ),
                     Text(
-                      "Aspect ratio:  ${state.video.aspectRatio}",
+                      'Aspect ratio:  ${state.video.aspectRatio}',
                       style: TextStyle(fontSize: 15),
                     ),
                     Text(
-                      "Framerate:  ${state.video.frameRate}",
+                      'Framerate:  ${state.video.frameRate}',
                       style: TextStyle(fontSize: 15),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 10.0),
                       child: Text(
-                        "Encoding:  ${state.video.encoding}",
+                        'Encoding:  ${state.video.encoding}',
                         style: TextStyle(fontSize: 15),
                       ),
                     ),
@@ -303,7 +305,7 @@ class LogsContainer extends StatelessWidget {
                         state.logs[index],
                         style: TextStyle(
                           color: state.logs[index]
-                                  .contains(RegExp(r"\d+:\d+-\d+:\d+"))
+                                  .contains(RegExp(r'\d+:\d+-\d+:\d+'))
                               ? Colors.amber
                               : Colors.white,
                         ),
@@ -333,7 +335,7 @@ class NoFilesSelectedContainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Selected files",
+                'Selected files',
                 style: TextStyle(
                   fontSize: 20,
                 ),
@@ -357,7 +359,7 @@ class NoFilesSelectedContainer extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: Center(
               child: Text(
-                "No files selected",
+                'No files selected',
                 style: TextStyle(
                   fontSize: 15,
                 ),

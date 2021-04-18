@@ -23,6 +23,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             namesList.add(file.name);
             pathsList.add(file.path);
           } else
+            // ignore: curly_braces_in_flow_control_structures
             yield SelectedFileAlreadyPresentState(file.name);
         }
         yield NewFileSelectedState(

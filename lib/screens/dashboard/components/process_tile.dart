@@ -27,6 +27,7 @@ class _ProcessTileState extends State<ProcessTile> {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20),
       child: Container(
+        height: 90,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -67,7 +68,7 @@ class _ProcessTileState extends State<ProcessTile> {
                       }
                       if (int.parse(state.progress!) > 0 &&
                           widget.fileIndex == state.currentIndex &&
-                          !state.comepletedIndices.contains(widget.fileIndex))
+                          !state.comepletedIndices.contains(widget.fileIndex)) {
                         return Padding(
                           padding: const EdgeInsets.all(18.0),
                           child: Container(
@@ -81,7 +82,7 @@ class _ProcessTileState extends State<ProcessTile> {
                             ),
                           ),
                         );
-                      else if (state.comepletedIndices
+                      } else if (state.comepletedIndices
                           .contains(widget.fileIndex)) {
                         return Padding(
                           padding: const EdgeInsets.all(18.0),
@@ -100,8 +101,7 @@ class _ProcessTileState extends State<ProcessTile> {
                                   FileRemovedFromProcessingQueue(
                                       widget.fileIndex));
                             } catch (e) {
-                              print(
-                                  "processing for this file never started");
+                              print('processing for this file never started');
                             }
                           },
                           icon: Icon(
@@ -117,7 +117,6 @@ class _ProcessTileState extends State<ProcessTile> {
             ),
           ],
         ),
-        height: 90,
       ),
     );
   }

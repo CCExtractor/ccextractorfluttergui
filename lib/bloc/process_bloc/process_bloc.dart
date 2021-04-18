@@ -12,27 +12,27 @@ part 'process_state.dart';
 class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
   ProcessBloc()
       : super(ProcessState(
-          progress: "0",
+          progress: '0',
           comepletedIndices: [],
           finishedAll: false,
-          logs: ["To start, please select files and click start all"],
-          video: Video("", "", "", "", ""),
+          logs: ['To start, please select files and click start all'],
+          video: Video('', '', '', '', ''),
         ));
   StreamSubscription? _stdErrorSubscription;
   StreamSubscription? _stdOutSubscription;
-  final RegExp progressReg = RegExp(r"###PROGRESS#(\d+)", multiLine: true);
-  final RegExp subtitlesReg = RegExp(r"###SUBTITLE###(.+)", multiLine: true);
-  final RegExp timeReg = RegExp(r"###TIME#(.+)", multiLine: true);
-  final RegExp summaryReg = RegExp(r"\[(.*?)\]", multiLine: true);
+  final RegExp progressReg = RegExp(r'###PROGRESS#(\d+)', multiLine: true);
+  final RegExp subtitlesReg = RegExp(r'###SUBTITLE###(.+)', multiLine: true);
+  final RegExp timeReg = RegExp(r'###TIME#(.+)', multiLine: true);
+  final RegExp summaryReg = RegExp(r'\[(.*?)\]', multiLine: true);
   final RegExp logsReg =
-      RegExp(r"###SUBTITLE###(.+)|###TIME#(.+)", multiLine: true);
+      RegExp(r'###SUBTITLE###(.+)|###TIME#(.+)', multiLine: true);
   int currentlyProcessingFile = 0;
   List<String> logs = [];
   List<String> filePaths = [];
   List<String?> videoDetails = [];
   List<int> comepletedIndices = [];
   bool finishedAll = false;
-  Video video = Video("", "", "", "", "");
+  Video video = Video('', '', '', '', '');
   @override
   Stream<ProcessState> mapEventToState(
     ProcessEvent event,
@@ -46,7 +46,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         finishedAll = false;
       }
       filePaths = event.filePaths;
-      print("starting index $currentlyProcessingFile");
+      print('starting index $currentlyProcessingFile');
       String currentFile = event.filePaths[currentlyProcessingFile];
       add(
         ProcessStarted(CustomProcess(currentFile)),
@@ -56,7 +56,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       if (filePaths.length - 1 > currentlyProcessingFile) {
         // -1 here because start 0 is already counted.
         videoDetails = [];
-        video = Video("", "", "", "", "");
+        video = Video('', '', '', '', '');
         comepletedIndices.add(currentlyProcessingFile);
         currentlyProcessingFile++;
         add(AddFilesToPrcessingQueue(filePaths, false));
@@ -72,7 +72,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     }
     if (event is FinsihedProcessingAllFiles) {
       finishedAll = true;
-      print("FINSIHED ALL");
+      print('FINSIHED ALL');
     }
 
     if (event is ProcessStarted) {
@@ -122,7 +122,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     if (event is ProcessProgressUpdate) {
       if (int.parse(event.progress) == 100) {
         add(CustomProcessEnded(currentlyProcessingFile));
-      } else
+      } else {
         yield state.copyWith(
           progress: event.progress,
           video: video,
@@ -131,6 +131,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
           comepletedIndices: comepletedIndices,
           finishedAll: finishedAll,
         );
+      }
     }
 
     if (event is LogsUpdate) {

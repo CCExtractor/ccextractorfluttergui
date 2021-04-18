@@ -15,8 +15,8 @@ class CustomProcess {
   CustomProcess(this.filePath);
   Future getData() async {
     await storage.ready;
-    outputFileName = await storage.getItem("output_file_name");
-    outputFormat = await storage.getItem("output_format");
+    outputFileName = await storage.getItem('output_file_name');
+    outputFormat = await storage.getItem('output_format');
     print(outputFileName);
   }
 
@@ -29,7 +29,7 @@ class CustomProcess {
         '--gui_mode_reports',
         '-latin1',
         '-o',
-        '${filePath.substring(0, filePath.lastIndexOf("/"))}/$outputFileName.$outputFormat',
+        '${filePath.substring(0, filePath.lastIndexOf('/'))}/$outputFileName.$outputFormat',
         '-out=$outputFormat'
       ],
     );

@@ -21,10 +21,10 @@ class ListenOnUDPButton extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
-                      initialValue: "127.0.0.1",
+                      initialValue: '127.0.0.1',
                       decoration: InputDecoration(
-                        hintText: "Enter host here",
-                        labelText: "Host: ",
+                        hintText: 'Enter host here',
+                        labelText: 'Host: ',
                         labelStyle: TextStyle(fontSize: 18),
                         hintStyle: TextStyle(height: 2),
                       ),
@@ -35,8 +35,8 @@ class ListenOnUDPButton extends StatelessWidget {
                     child: TextFormField(
                       autofocus: true,
                       decoration: InputDecoration(
-                        hintText: "Enter port here",
-                        labelText: "Port: ",
+                        hintText: 'Enter port here',
+                        labelText: 'Port: ',
                         labelStyle: TextStyle(fontSize: 18),
                         hintStyle: TextStyle(height: 2),
                       ),
@@ -48,8 +48,8 @@ class ListenOnUDPButton extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16, right: 12),
                   child: MaterialButton(
-                    child: Text("Start"),
                     onPressed: () => Navigator.pop(context),
+                    child: Text('Start'),
                   ),
                 ),
               ],
@@ -57,12 +57,6 @@ class ListenOnUDPButton extends StatelessWidget {
           },
         ),
         child: Container(
-          child: Center(
-            child: Text(
-              "Listen on UDP",
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
           decoration: BoxDecoration(
             color: kBgLightColor,
             borderRadius: BorderRadius.all(
@@ -72,6 +66,12 @@ class ListenOnUDPButton extends StatelessWidget {
             ),
           ),
           height: 75,
+          child: Center(
+            child: Text(
+              'Listen on UDP',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
         ),
       ),
     );

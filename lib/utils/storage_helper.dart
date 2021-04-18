@@ -11,7 +11,7 @@ class LocalStorage {
   Stream<Map<String, dynamic>> get stream => _dir.stream;
   Map<String, dynamic>? _initialData;
 
-  static final Map<String, LocalStorage> _cache = Map();
+  static final Map<String, LocalStorage> _cache = {};
 
   late DirUtils _dir;
 
@@ -45,7 +45,7 @@ class LocalStorage {
     _initialData = initialData;
 
     ready = Future<bool>(() async {
-      await this._init();
+      await _init();
       return true;
     });
   }
@@ -70,9 +70,9 @@ class LocalStorage {
   Future<void> setItem(
     String key,
     value, [
-    Object toEncodable(Object nonEncodable)?,
+    Object Function(Object nonEncodable)? toEncodable,
   ]) async {
-    var data = toEncodable?.call(value) ?? null;
+    var data = toEncodable?.call(value);
     if (data == null) {
       try {
         data = value.toJson();
@@ -136,10 +136,12 @@ abstract class LocalStorageImpl {
 class DirUtils implements LocalStorageImpl {
   DirUtils(this.fileName, [this.path]);
 
+  @override
   final String? path;
+  @override
   final String fileName;
 
-  Map<String, dynamic> _data = Map();
+  Map<String, dynamic> _data = {};
 
   @override
   Stream<Map<String, dynamic>> get stream => storage.stream;

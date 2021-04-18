@@ -32,10 +32,11 @@ class _HomeState extends State<Home> {
       },
       currentIndex: _currentIndex,
       onTap: (val) {
-        if (mounted)
+        if (mounted) {
           setState(() {
             _currentIndex = val;
           });
+        }
       },
       body: IndexedStack(
         index: _currentIndex,
@@ -48,19 +49,19 @@ class _HomeState extends State<Home> {
       ),
       tabs: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          label: "Dashboard",
+          label: 'Dashboard',
           icon: Icon(Icons.dashboard),
         ),
         BottomNavigationBarItem(
-          label: "Basic Settings",
+          label: 'Basic Settings',
           icon: Icon(Icons.settings),
         ),
         BottomNavigationBarItem(
-          label: "Advanced Settings",
+          label: 'Advanced Settings',
           icon: Icon(Icons.folder),
         ),
         BottomNavigationBarItem(
-          label: "Obscure Settings",
+          label: 'Obscure Settings',
           icon: Icon(Icons.camera),
         ),
       ],

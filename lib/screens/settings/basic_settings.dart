@@ -1,5 +1,4 @@
 import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
-import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/screens/dashboard/dashboard.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/utils/responsive.dart';
@@ -12,13 +11,13 @@ class BasicSettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, state) {
-        print(state);
         if (state is SettingsErrorState) {
+          context.read<SettingsBloc>().add(GetSettingsEvent());
           // If pasrsing local json gives error, go back to default values
-          context.read<SettingsBloc>().add(SaveSettingsEvent(SettingsModel()));
           return Center(
             child: Container(
-              child: Text(state.message),
+              child: Text(
+                  'Settings file corrupted, restoring default values. \n ${state.message}'),
             ),
           );
         }
@@ -28,12 +27,11 @@ class BasicSettingsScreen extends StatelessWidget {
 
           return Scaffold(
             appBar: AppBar(
-              title: Text("Basic Settings"),
+              title: Text('Basic Settings'),
               actions: [
                 Padding(
                   padding: const EdgeInsets.only(top: 20, right: 20),
                   child: MaterialButton(
-                      child: Text("Apply"),
                       color: Theme.of(context).accentColor,
                       onPressed: () {
                         print(state.settingsModel.toJson().toString());
@@ -47,9 +45,10 @@ class BasicSettingsScreen extends StatelessWidget {
                             )));
                         CustomSnackBarMessage.show(
                           context,
-                          "Settings applied",
+                          'Settings applied',
                         );
-                      }),
+                      },
+                      child: Text('Apply')),
                 ),
               ],
               elevation: 0,
@@ -60,12 +59,13 @@ class BasicSettingsScreen extends StatelessWidget {
               child: ListView(
                 children: [
                   ListTile(
-                    title: Text("Output file name"),
+                    title: Text('Output file name'),
                     subtitle: Text(
                       "This will define the output filename if you don't like the default ones, each file will be appeded with a _1, _2 when needed",
                     ),
                     trailing: Container(
                       color: kBgLightColor,
+                      width: Responsive.isDesktop(context) ? 300 : 100,
                       child: TextFormField(
                         controller: outputFileNameController,
                         decoration: InputDecoration(
@@ -82,13 +82,12 @@ class BasicSettingsScreen extends StatelessWidget {
                         ),
                         cursorColor: Colors.transparent,
                       ),
-                      width: Responsive.isDesktop(context) ? 300 : 100,
                     ),
                   ),
                   ListTile(
-                    title: Text("Output file format"),
+                    title: Text('Output file format'),
                     subtitle: Text(
-                        "This will generate the output in the selected format."),
+                        'This will generate the output in the selected format.'),
                     trailing: Container(
                       width: Responsive.isDesktop(context) ? 300 : 100,
                       child: DropdownButton<String>(
@@ -115,9 +114,9 @@ class BasicSettingsScreen extends StatelessWidget {
                     ),
                   ),
                   ListTile(
-                    title: Text("Append"),
+                    title: Text('Append'),
                     subtitle: Text(
-                      "This will prevent overwriting of existing files. The output will be appended instead.",
+                      'This will prevent overwriting of existing files. The output will be appended instead.',
                     ),
                     trailing: Container(
                       child: Checkbox(
@@ -133,7 +132,7 @@ class BasicSettingsScreen extends StatelessWidget {
                     ),
                   ),
                   ListTile(
-                    title: Text("Autoprogram"),
+                    title: Text('Autoprogram'),
                     subtitle: Text(
                       "If there's more than one program in the stream, this will the first one we find that contains a suitable stream.",
                     ),
