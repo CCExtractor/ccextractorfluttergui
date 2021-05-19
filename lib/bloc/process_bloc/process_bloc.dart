@@ -21,11 +21,11 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
   StreamSubscription? _stdErrorSubscription;
   StreamSubscription? _stdOutSubscription;
   final RegExp progressReg = RegExp(r'###PROGRESS#(\d+)', multiLine: true);
-  final RegExp subtitlesReg = RegExp(r'###SUBTITLE###(.+)', multiLine: true);
-  final RegExp timeReg = RegExp(r'###TIME#(.+)', multiLine: true);
+  //final RegExp subtitlesReg = RegExp(r'###SUBTITLE###(.+)', multiLine: true);
+  //final RegExp timeReg = RegExp(r'###TIME###(.+)', multiLine: true);
   final RegExp summaryReg = RegExp(r'\[(.*?)\]', multiLine: true);
   final RegExp logsReg =
-      RegExp(r'###SUBTITLE###(.+)|###TIME#(.+)', multiLine: true);
+      RegExp(r'###SUBTITLE###(.+)|###TIME###(.+)', multiLine: true);
   int currentlyProcessingFile = 0;
   List<String> logs = [];
   List<String> filePaths = [];
