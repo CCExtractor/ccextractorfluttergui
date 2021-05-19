@@ -40,13 +40,12 @@ class SettingsRepository {
           data['output_file_name'] is String &&
           data['append'] is bool &&
           data['autoprogram'] is bool) {
-        print("true");
         return true;
-      }
-      else {
+      } else {
         throw Exception('Settings value has mismatched datatype');
       }
     } catch (e) {
+      print('Rewriting config.json file');
       await file.writeAsString(jsonEncode(SettingsModel()));
     }
     return false;
