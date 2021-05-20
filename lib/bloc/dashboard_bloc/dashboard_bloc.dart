@@ -7,6 +7,7 @@ import 'package:file_selector/file_selector.dart';
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
 
+/// Handles selecting and removing files.
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc() : super(DashboardInitial());
   @override
@@ -16,40 +17,32 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     final currentState = state;
     if (event is NewFileAdded) {
       if (currentState is NewFileSelectedState) {
-        List<String> namesList = List.from(currentState.fileNames);
-        List<String> pathsList = List.from(currentState.filePaths);
+        List<XFile> currentFiles = List.from(currentState.files);
         for (XFile file in event.files) {
-          if (!pathsList.contains(file.path)) {
-            namesList.add(file.name);
-            pathsList.add(file.path);
-          } else
-            // ignore: curly_braces_in_flow_control_structures
-            yield SelectedFileAlreadyPresentState(file.name);
+          if (!currentFiles.contains(file)) {
+            currentFiles.add(file);
+          } else {
+            yield SelectedFileAlreadyPresentState(file);
+          }
         }
         yield NewFileSelectedState(
-          fileNames: namesList,
-          filePaths: pathsList,
+          files: currentFiles,
         );
       } else if (currentState is DashboardInitial) {
-        List<String> namesList = [];
-        List<String> pathsList = [];
+        List<XFile> currentFiles = [];
         for (XFile file in event.files) {
-          namesList.add(file.name);
-          pathsList.add(file.path);
+          currentFiles.add(file);
         }
         yield NewFileSelectedState(
-          fileNames: namesList,
-          filePaths: pathsList,
+          files: currentFiles,
         );
       }
     }
     if (event is FileRemoved) {
       if (currentState is NewFileSelectedState) {
-        List<String> namesList = List.from(currentState.fileNames);
-        List<String> pathsList = List.from(currentState.filePaths);
-        namesList.removeAt(event.removedFileIndex);
-        pathsList.removeAt(event.removedFileIndex);
-        yield NewFileSelectedState(fileNames: namesList, filePaths: pathsList);
+        List<XFile> currentFiles = List.from(currentState.files);
+        currentFiles.remove(event.file);
+        yield NewFileSelectedState(files: currentFiles);
       }
     }
   }

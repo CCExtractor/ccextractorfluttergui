@@ -1,5 +1,23 @@
 ## Super good docs:
 
+### Project structure
+```
+lib
+├── bloc
+│   ├── dashboard_bloc
+│   ├── process_bloc
+│   └── settings_bloc
+├── models
+├── repositories
+├── screens
+│   ├── dashboard
+│   │   └── components
+│   └── settings
+└── utils
+
+11 directories
+
+```
 ### checkValidJSON currenty supports 3 cases
 
 - Check if the .json file is a valid json file.

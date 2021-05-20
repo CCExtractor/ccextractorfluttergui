@@ -1,36 +1,40 @@
 part of 'process_bloc.dart';
 
 class ProcessState extends Equatable {
-  final String? progress;
-  final Video video;
-  final List<String> logs;
-  final int? currentIndex;
-  final List<int> comepletedIndices;
-  final bool finishedAll;
-  ProcessState(
-      {this.progress,
-      required this.video,
-      required this.logs,
-      this.currentIndex,
-      required this.finishedAll,
-      required this.comepletedIndices});
+  final List<XFile> processed;
+  final List<XFile> queue;
+  final List<String> log;
+  final String progress;
+  final XFile? current;
+  final bool started;
+
+  const ProcessState({
+    required this.queue,
+    required this.processed,
+    required this.log,
+    required this.started,
+    required this.progress,
+    required this.current,
+  });
+
   ProcessState copyWith({
+    List<XFile>? processed,
+    List<XFile>? queue,
+    List<String>? log,
+    bool? started,
     String? progress,
-    Video? video,
-    List<String>? logs,
-    int? currentIndex,
-    required bool finishedAll,
-    required List<int> comepletedIndices,
+    required XFile? current,
   }) =>
       ProcessState(
+        queue: queue ?? this.queue,
+        processed: processed ?? this.processed,
+        log: log ?? this.log,
+        started: started ?? this.started,
         progress: progress ?? this.progress,
-        video: video ?? this.video,
-        logs: logs ?? this.logs,
-        currentIndex: currentIndex ?? this.currentIndex,
-        comepletedIndices: comepletedIndices,
-        finishedAll: finishedAll,
+        current: current,
       );
+
   @override
   List<Object?> get props =>
-      [progress, video, logs, currentIndex, comepletedIndices, finishedAll];
+      [queue, processed, log, current, started, progress];
 }

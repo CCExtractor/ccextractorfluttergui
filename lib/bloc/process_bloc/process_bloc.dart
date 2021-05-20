@@ -1,157 +1,83 @@
-import 'dart:async';
-import 'package:bloc/bloc.dart';
-import 'package:ccxgui/models/custom_process.dart';
-import 'package:ccxgui/models/video.dart';
+import 'package:ccxgui/models/ccextractor.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:meta/meta.dart';
+import 'package:file_selector/file_selector.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pedantic/pedantic.dart';
 
 part 'process_event.dart';
 part 'process_state.dart';
 
 class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
+  final CCExtractor _extractor = CCExtractor();
+
   ProcessBloc()
       : super(ProcessState(
+          queue: [],
+          processed: [],
+          log: [],
+          started: false,
           progress: '0',
-          comepletedIndices: [],
-          finishedAll: false,
-          logs: ['To start, please select files and click start all'],
-          video: Video('', '', '', '', ''),
+          current: null,
         ));
-  StreamSubscription? _stdErrorSubscription;
-  StreamSubscription? _stdOutSubscription;
-  final RegExp progressReg = RegExp(r'###PROGRESS#(\d+)', multiLine: true);
-  //final RegExp subtitlesReg = RegExp(r'###SUBTITLE###(.+)', multiLine: true);
-  //final RegExp timeReg = RegExp(r'###TIME###(.+)', multiLine: true);
-  final RegExp summaryReg = RegExp(r'\[(.*?)\]', multiLine: true);
-  final RegExp logsReg =
-      RegExp(r'###SUBTITLE###(.+)|###TIME###(.+)', multiLine: true);
-  int currentlyProcessingFile = 0;
-  List<String> logs = [];
-  List<String> filePaths = [];
-  List<String?> videoDetails = [];
-  List<int> comepletedIndices = [];
-  bool finishedAll = false;
-  Video video = Video('', '', '', '', '');
+
+  Stream<ProcessState> _extractNext() async* {
+    if (!state.started || state.current != null || state.queue.isEmpty) {
+      return;
+    }
+    final file = state.queue.first;
+    yield state.copyWith(
+      current: file,
+      queue: state.queue.skip(1).toList(),
+      progress: '0',
+    );
+    unawaited(_extractor
+        .extractFile(
+          file,
+          listenOutput: (line) => add(ProcessFileExtractorOutput(line)),
+          listenProgress: (progress) =>
+              add(ProcessFileExtractorProgress(progress)),
+        )
+        .then((value) => add(ProcessFileComplete(file))));
+  }
+
   @override
-  Stream<ProcessState> mapEventToState(
-    ProcessEvent event,
-  ) async* {
-    if (event is AddFilesToPrcessingQueue) {
-      if (event.startAll) {
-        logs = [];
-        filePaths = [];
-        videoDetails = [];
-        comepletedIndices = [];
-        finishedAll = false;
-      }
-      filePaths = event.filePaths;
-      print('starting index $currentlyProcessingFile');
-      String currentFile = event.filePaths[currentlyProcessingFile];
-      add(
-        ProcessStarted(CustomProcess(currentFile)),
-      );
-    }
-    if (event is CustomProcessEnded) {
-      if (filePaths.length - 1 > currentlyProcessingFile) {
-        // -1 here because start 0 is already counted.
-        videoDetails = [];
-        video = Video('', '', '', '', '');
-        comepletedIndices.add(currentlyProcessingFile);
-        currentlyProcessingFile++;
-        add(AddFilesToPrcessingQueue(filePaths, false));
-      } else {
-        comepletedIndices.add(currentlyProcessingFile);
-        currentlyProcessingFile = 0;
-        add(FinsihedProcessingAllFiles());
-      }
-    }
-    if (event is FileRemovedFromProcessingQueue) {
-      filePaths.removeAt(event.removedFileIndex);
-      add(AddFilesToPrcessingQueue(filePaths, false));
-    }
-    if (event is FinsihedProcessingAllFiles) {
-      finishedAll = true;
-      print('FINSIHED ALL');
-    }
-
+  Stream<ProcessState> mapEventToState(ProcessEvent event) async* {
     if (event is ProcessStarted) {
-      await _stdErrorSubscription?.cancel();
-      await _stdOutSubscription?.cancel();
-      await event.customProcess.startprocess();
-      _stdErrorSubscription = event.customProcess.processStdError().listen(
-        (update) {
-          if (progressReg.hasMatch(update)) {
-            for (RegExpMatch i in progressReg.allMatches(update)) {
-              add(ProcessProgressUpdate(i[1]!));
-            }
-          }
-          if (logsReg.hasMatch(update)) {
-            for (RegExpMatch i in logsReg.allMatches(update)) {
-              if (i[1] != null) logs.add(i[1]!);
-              if (i[2] != null) logs.add(i[2]!);
-              add(LogsUpdate(logs));
-            }
-          }
-        },
+      yield state.copyWith(
+        current: state.current,
+        started: true,
       );
-      _stdOutSubscription = event.customProcess.processStdOut().listen(
-        (update) {
-          if (summaryReg.hasMatch(update)) {
-            for (RegExpMatch i in summaryReg.allMatches(update)) {
-              videoDetails.add(i[1]);
-            }
-          }
-
-          if (videoDetails.length > 26) {
-            video = Video(
-              videoDetails[26]!,
-              videoDetails[27]!.substring(9),
-              videoDetails[28]!.substring(9),
-              videoDetails[11]!.substring(10),
-              videoDetails[10]!.substring(15),
-            );
-            add(
-              VideoDetails(video),
-            );
-          }
-        },
+      yield* _extractNext();
+    } else if (event is ProcessStopped) {
+      yield state.copyWith(
+        current: state.current,
+        started: false,
       );
-    }
-
-    if (event is ProcessProgressUpdate) {
-      if (int.parse(event.progress) == 100) {
-        add(CustomProcessEnded(currentlyProcessingFile));
-      } else {
+    } else if (event is ProcessFileExtractorProgress) {
+      print(event.progress);
+      yield state.copyWith(current: state.current, progress: event.progress);
+    } else if (event is ProcessFileExtractorOutput) {
+      yield state.copyWith(
+        current: state.current,
+        log: state.log.followedBy([event.log]).toList(),
+      );
+    } else if (event is ProcessFileComplete) {
+      if (state.current == event.file) {
         yield state.copyWith(
-          progress: event.progress,
-          video: video,
-          logs: state.logs,
-          currentIndex: currentlyProcessingFile,
-          comepletedIndices: comepletedIndices,
-          finishedAll: finishedAll,
+          current: null,
+          processed: state.processed.followedBy([event.file]).toList(),
         );
+        yield* _extractNext();
       }
-    }
-
-    if (event is LogsUpdate) {
+    } else if (event is ProcessFilesSubmitted) {
       yield state.copyWith(
-        progress: state.progress,
-        video: video,
-        logs: event.logs,
-        currentIndex: currentlyProcessingFile,
-        comepletedIndices: comepletedIndices,
-        finishedAll: finishedAll,
+        current: state.current,
+        queue: state.queue.followedBy(event.files).toList(),
       );
-    }
-    if (event is VideoDetails) {
+    } else if (event is ProcessFileRemoved) {
       yield state.copyWith(
-        progress: state.progress,
-        video: video,
-        logs: state.logs,
-        currentIndex: currentlyProcessingFile,
-        comepletedIndices: comepletedIndices,
-        finishedAll: finishedAll,
+        current: state.current,
+        queue: state.queue.where((element) => element != event.file).toList(),
       );
     }
   }

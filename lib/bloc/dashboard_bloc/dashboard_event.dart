@@ -18,8 +18,8 @@ class NewFileAdded extends DashboardEvent {
 
 /// Remove file from selected files in UI only, to remove from processing, check processing_bloc
 class FileRemoved extends DashboardEvent {
-  final int removedFileIndex;
-  FileRemoved(this.removedFileIndex);
+  final XFile file;
+  FileRemoved(this.file);
   @override
-  List<Object> get props => [removedFileIndex];
+  List<Object> get props => [file];
 }

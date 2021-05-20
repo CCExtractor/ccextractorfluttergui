@@ -1,68 +1,40 @@
 part of 'process_bloc.dart';
 
-@immutable
 abstract class ProcessEvent {
   const ProcessEvent();
-  List<Object> get props => [];
 }
 
-class ProcessStarted extends ProcessEvent {
-  final CustomProcess customProcess;
+class ProcessFilesSubmitted extends ProcessEvent {
+  // One or more files? Your choice.
+  final List<XFile> files;
 
-  ProcessStarted(this.customProcess);
-  @override
-  List<Object> get props => [customProcess];
+  const ProcessFilesSubmitted(this.files);
 }
 
-class ProcessProgressUpdate extends ProcessEvent {
-  const ProcessProgressUpdate(this.progress);
+class ProcessStarted extends ProcessEvent {}
 
+class ProcessStopped extends ProcessEvent {}
+
+class ProcessFileRemoved extends ProcessEvent {
+  final XFile file;
+
+  const ProcessFileRemoved(this.file);
+}
+
+class ProcessFileExtractorOutput extends ProcessEvent {
+  final String log;
+
+  const ProcessFileExtractorOutput(this.log);
+}
+
+class ProcessFileExtractorProgress extends ProcessEvent {
   final String progress;
 
-  @override
-  List<Object> get props => [progress];
+  const ProcessFileExtractorProgress(this.progress);
 }
 
-class VideoDetails extends ProcessEvent {
-  final Video video;
+class ProcessFileComplete extends ProcessEvent {
+  final XFile file;
 
-  VideoDetails(this.video);
-
-  @override
-  List<Object> get props => [video];
+  const ProcessFileComplete(this.file);
 }
-
-class LogsUpdate extends ProcessEvent {
-  final List<String> logs;
-  LogsUpdate(this.logs);
-  @override
-  List<Object> get props => [logs];
-}
-
-class AddFilesToPrcessingQueue extends ProcessEvent {
-  final List<String> filePaths;
-
-  /// if the event has been added from startAll or other events
-  final bool startAll;
-  AddFilesToPrcessingQueue(this.filePaths, this.startAll);
-  @override
-  List<Object> get props => [filePaths, startAll];
-}
-
-class CustomProcessEnded extends ProcessEvent {
-  final int processedFileIndex;
-
-  CustomProcessEnded(this.processedFileIndex);
-  @override
-  List<Object> get props => [processedFileIndex];
-}
-
-class FileRemovedFromProcessingQueue extends ProcessEvent {
-  final int removedFileIndex;
-
-  FileRemovedFromProcessingQueue(this.removedFileIndex);
-  @override
-  List<Object> get props => [removedFileIndex];
-}
-
-class FinsihedProcessingAllFiles extends ProcessEvent {}

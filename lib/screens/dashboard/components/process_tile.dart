@@ -1,19 +1,14 @@
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProcessTile extends StatefulWidget {
-  final bool isComepleted;
-  final String fileName;
-  final String filePath;
-  final int fileIndex;
+  final XFile file;
   const ProcessTile({
     Key? key,
-    required this.isComepleted,
-    required this.fileName,
-    required this.filePath,
-    required this.fileIndex,
+    required this.file,
   }) : super(key: key);
   @override
   _ProcessTileState createState() => _ProcessTileState();
@@ -40,13 +35,13 @@ class _ProcessTileState extends State<ProcessTile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.fileName,
+                        widget.file.name,
                       ),
                       SizedBox(
                         height: 12,
                       ),
                       Text(
-                        widget.filePath,
+                        widget.file.path,
                         style: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
                     ],
@@ -60,15 +55,12 @@ class _ProcessTileState extends State<ProcessTile> {
                   padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
                   child: BlocBuilder<ProcessBloc, ProcessState>(
                     builder: (context, state) {
-                      if (state.finishedAll) {
+                      if (state.processed.contains(widget.file)) {
                         return Padding(
                           padding: const EdgeInsets.all(18.0),
                           child: Icon(Icons.check),
                         );
-                      }
-                      if (int.parse(state.progress!) > 0 &&
-                          widget.fileIndex == state.currentIndex &&
-                          !state.comepletedIndices.contains(widget.fileIndex)) {
+                      } else if (widget.file == state.current) {
                         return Padding(
                           padding: const EdgeInsets.all(18.0),
                           child: Container(
@@ -77,16 +69,10 @@ class _ProcessTileState extends State<ProcessTile> {
                             child: CircularProgressIndicator(
                               color: Colors.green,
                               strokeWidth: 4,
-                              value: int.parse(state.progress!) / 100,
+                              value: int.parse(state.progress) / 100,
                               backgroundColor: Colors.white,
                             ),
                           ),
-                        );
-                      } else if (state.comepletedIndices
-                          .contains(widget.fileIndex)) {
-                        return Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: Icon(Icons.check),
                         );
                       }
                       return Padding(
@@ -95,11 +81,11 @@ class _ProcessTileState extends State<ProcessTile> {
                           onPressed: () {
                             context
                                 .read<DashboardBloc>()
-                                .add(FileRemoved(widget.fileIndex));
+                                .add(FileRemoved(widget.file));
                             try {
-                              context.read<ProcessBloc>().add(
-                                  FileRemovedFromProcessingQueue(
-                                      widget.fileIndex));
+                              context
+                                  .read<ProcessBloc>()
+                                  .add(ProcessFileRemoved(widget.file));
                             } catch (e) {
                               print('processing for this file never started');
                             }

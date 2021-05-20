@@ -10,24 +10,21 @@ abstract class DashboardState extends Equatable {
 class DashboardInitial extends DashboardState {}
 
 class NewFileSelectedState extends DashboardState {
-  final List<String> fileNames;
-  final List<String> filePaths;
+  final List<XFile> files;
 
-  NewFileSelectedState({required this.fileNames, required this.filePaths});
+  NewFileSelectedState({required this.files});
   NewFileSelectedState copyWith({
-    required List<String> fileNames,
-    required List<String> filePaths,
+    required List<XFile> files,
   }) =>
-      NewFileSelectedState(fileNames: fileNames, filePaths: filePaths);
+      NewFileSelectedState(files: files);
   @override
-  List<Object> get props => [fileNames, filePaths];
+  List<Object> get props => [files];
 }
 
 class SelectedFileAlreadyPresentState extends DashboardState {
-  final String fileName;
+  final XFile file;
 
-  SelectedFileAlreadyPresentState(this.fileName);
+  SelectedFileAlreadyPresentState(this.file);
   @override
-  List<Object> get props => [fileName];
+  List<Object> get props => [file];
 }
-

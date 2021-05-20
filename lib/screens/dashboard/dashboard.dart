@@ -45,20 +45,16 @@ class StartStopButton extends StatefulWidget {
 }
 
 class _StartStopButtonState extends State<StartStopButton> {
-  List<String> processingQueue = [];
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DashboardBloc, DashboardState>(
       builder: (context, state) {
         if (state is NewFileSelectedState) {
-          processingQueue = state.filePaths;
           return MaterialButton(
             hoverColor: Colors.green.shade900,
             onPressed: widget.isEnabled
                 ? () {
-                    context
-                        .read<ProcessBloc>()
-                        .add(AddFilesToPrcessingQueue(processingQueue, true));
+                    context.read<ProcessBloc>().add(ProcessStarted());
                   }
                 : null,
             child: Padding(
@@ -126,7 +122,7 @@ class CustomSnackBarMessage {
     BuildContext context,
     String message,
   ) {
-     ScaffoldMessenger.of(context).showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: Duration(seconds: 1),
         content: Text(message),
@@ -160,7 +156,7 @@ class SelectedFilesContainer extends StatelessWidget {
       child: BlocConsumer<DashboardBloc, DashboardState>(
         builder: (context, state) {
           if (state is NewFileSelectedState) {
-            if (state.fileNames.isNotEmpty) {
+            if (state.files.isNotEmpty) {
               return Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -177,7 +173,7 @@ class SelectedFilesContainer extends StatelessWidget {
                           ),
                         ),
                         StartStopButton(
-                          isEnabled: state.fileNames.isNotEmpty ? true : false,
+                          isEnabled: state.files.isNotEmpty ? true : false,
                         ),
                       ],
                     ),
@@ -187,15 +183,12 @@ class SelectedFilesContainer extends StatelessWidget {
                       child: ListView.builder(
                         shrinkWrap: true,
                         physics: ClampingScrollPhysics(),
-                        itemCount: state.fileNames.length,
+                        itemCount: state.files.length,
                         itemBuilder: (context, index) {
                           return Container(
                             color: kBgLightColor,
                             child: ProcessTile(
-                              fileName: state.fileNames[index],
-                              filePath: state.filePaths[index],
-                              fileIndex: index,
-                              isComepleted: false,
+                              file: state.files[index],
                             ),
                           );
                         },
@@ -213,7 +206,7 @@ class SelectedFilesContainer extends StatelessWidget {
         listener: (context, state) {
           if (state is SelectedFileAlreadyPresentState) {
             CustomSnackBarMessage.show(
-                context, '${state.fileName} was already selected');
+                context, '${state.file.name} was already selected');
           }
         },
       ),
@@ -255,28 +248,28 @@ class LogsContainer extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Text(
-                        'Resolutionn:  ${state.video.resolution}',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                    Text(
-                      'Aspect ratio:  ${state.video.aspectRatio}',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                    Text(
-                      'Framerate:  ${state.video.frameRate}',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Text(
-                        'Encoding:  ${state.video.encoding}',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(left: 10),
+                    //   child: Text(
+                    //     'Resolutionn:  ${state.video.resolution}',
+                    //     style: TextStyle(fontSize: 15),
+                    //   ),
+                    // ),
+                    // Text(
+                    //   'Aspect ratio:  ${state.video.aspectRatio}',
+                    //   style: TextStyle(fontSize: 15),
+                    // ),
+                    // Text(
+                    //   'Framerate:  ${state.video.frameRate}',
+                    //   style: TextStyle(fontSize: 15),
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(right: 10.0),
+                    //   child: Text(
+                    //     'Encoding:  ${state.video.encoding}',
+                    //     style: TextStyle(fontSize: 15),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -302,9 +295,9 @@ class LogsContainer extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        state.logs[index],
+                        state.log[index],
                         style: TextStyle(
-                          color: state.logs[index]
+                          color: state.log[index]
                                   .contains(RegExp(r'\d+:\d+-\d+:\d+'))
                               ? Colors.amber
                               : Colors.white,
@@ -312,7 +305,7 @@ class LogsContainer extends StatelessWidget {
                       ),
                     );
                   },
-                  itemCount: state.logs.length,
+                  itemCount: state.log.length,
                 ),
               ),
             ),

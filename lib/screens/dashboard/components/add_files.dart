@@ -1,4 +1,5 @@
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
+import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,9 @@ class AddFilesButton extends StatelessWidget {
     }
     context.read<DashboardBloc>().add(
           NewFileAdded(files),
+        );
+    context.read<ProcessBloc>().add(
+          ProcessFilesSubmitted(files),
         );
   }
 
