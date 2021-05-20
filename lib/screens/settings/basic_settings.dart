@@ -34,7 +34,6 @@ class BasicSettingsScreen extends StatelessWidget {
                   child: MaterialButton(
                       color: Theme.of(context).accentColor,
                       onPressed: () {
-                        print(state.settingsModel.toJson().toString());
                         context
                             .read<SettingsBloc>()
                             .add(SaveSettingsEvent(state.settingsModel.copyWith(

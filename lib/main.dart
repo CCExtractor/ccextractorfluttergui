@@ -5,12 +5,10 @@ import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
 import 'package:ccxgui/repositories/settings_repository.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/screens/home.dart';
-import 'package:ccxgui/utils/storage_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_size/window_size.dart';
 
-LocalStorage storage = LocalStorage('config.json');
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,11 +56,11 @@ class MyApp extends StatelessWidget {
 
 // Logs events and states during transition
 class SimpleBlocObserver extends BlocObserver {
-  @override
-  void onTransition(Bloc bloc, Transition transition) {
-    print(transition);
-    super.onTransition(bloc, transition);
-  }
+  // @override
+  // void onTransition(Bloc bloc, Transition transition) {
+  //   print(transition);
+  //   super.onTransition(bloc, transition);
+  // }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {

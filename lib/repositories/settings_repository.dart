@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:ccxgui/main.dart';
 import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/utils/constants.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:path_provider/path_provider.dart';
 
 class SettingsRepository {
   // final SettingsModel settingsModel;
 
   // SettingsRepository(this.settingsModel);
+  LocalStorage storage = LocalStorage('config.json');
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -45,7 +45,6 @@ class SettingsRepository {
       }
       return true;
     } catch (e) {
-      print(e);
       print('Rewriting config.json file');
       await file.writeAsString(jsonEncode(SettingsModel()));
       return false;

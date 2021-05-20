@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'dart:io';
-
-import 'package:ccxgui/main.dart';
+import 'package:localstorage/localstorage.dart';
 
 /// Class which exposes a start command method to start process and stdErr, stdOut streams.
 class CustomProcess {
@@ -11,13 +9,13 @@ class CustomProcess {
   final String filePath;
   late String outputFileName;
   late String outputFormat;
+  LocalStorage storage = LocalStorage('config.json');
 
   CustomProcess(this.filePath);
   Future getData() async {
     await storage.ready;
     outputFileName = await storage.getItem('output_file_name');
     outputFormat = await storage.getItem('output_format');
-    print(outputFileName);
   }
 
   Future startprocess() async {
