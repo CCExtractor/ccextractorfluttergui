@@ -7,6 +7,8 @@ abstract class SettingsEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// This is just to show UI updates before applying settings.
+/// An alternative to this would be using setState but fuck you setState
 class SettingsUpdatedEvent extends SettingsEvent {
   final SettingsModel settingsModel;
 

@@ -32,8 +32,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         yield SettingsErrorState('Error getting settings.');
       }
     }
-    // This is just to show UI updates before applying settings.
-    // An alternative to this would be using setState but fuck you setState
+
     if (event is SettingsUpdatedEvent) {
       yield CurrentSettingsState(event.settingsModel);
     }
