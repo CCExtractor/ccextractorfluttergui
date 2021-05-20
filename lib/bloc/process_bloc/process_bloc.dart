@@ -1,8 +1,11 @@
-import 'package:ccxgui/models/ccextractor.dart';
+// Package imports:
 import 'package:equatable/equatable.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pedantic/pedantic.dart';
+
+// Project imports:
+import 'package:ccxgui/models/ccextractor.dart';
 
 part 'process_event.dart';
 part 'process_state.dart';

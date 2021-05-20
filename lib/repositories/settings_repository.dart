@@ -1,9 +1,14 @@
+// Dart imports:
 import 'dart:convert';
 import 'dart:io';
-import 'package:ccxgui/models/settings_model.dart';
-import 'package:ccxgui/utils/constants.dart';
+
+// Package imports:
 import 'package:localstorage/localstorage.dart';
 import 'package:path_provider/path_provider.dart';
+
+// Project imports:
+import 'package:ccxgui/models/settings_model.dart';
+import 'package:ccxgui/utils/constants.dart';
 
 class SettingsRepository {
   // final SettingsModel settingsModel;

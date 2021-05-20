@@ -1,11 +1,16 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+// Project imports:
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/screens/dashboard/components/add_files.dart';
+import 'package:ccxgui/screens/dashboard/components/process_tile.dart';
 import 'package:ccxgui/screens/dashboard/components/udp_button.dart';
 import 'package:ccxgui/utils/constants.dart';
-import 'package:ccxgui/screens/dashboard/components/process_tile.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Dashboard extends StatelessWidget {
   @override

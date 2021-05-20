@@ -1,6 +1,8 @@
+// Dart imports:
 import 'dart:convert';
 import 'dart:io';
 
+// Package imports:
 import 'package:file_selector/file_selector.dart';
 
 class CCExtractor {

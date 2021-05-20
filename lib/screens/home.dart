@@ -1,8 +1,13 @@
-import 'package:ccxgui/screens/dashboard/dashboard.dart';
-import 'package:ccxgui/screens/settings/basic_settings.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:navigation_rail/navigation_rail.dart';
+
+// Project imports:
+import 'package:ccxgui/screens/dashboard/dashboard.dart';
+import 'package:ccxgui/screens/settings/basic_settings.dart';
 
 class Home extends StatefulWidget {
   @override

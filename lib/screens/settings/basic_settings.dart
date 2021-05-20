@@ -1,10 +1,15 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+
+// Package imports:
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+// Project imports:
 import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
 import 'package:ccxgui/screens/dashboard/dashboard.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/utils/responsive.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BasicSettingsScreen extends StatelessWidget {
   @override

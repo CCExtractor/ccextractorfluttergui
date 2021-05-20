@@ -1,13 +1,20 @@
+// Dart imports:
 import 'dart:io';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:window_size/window_size.dart';
+
+// Project imports:
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
 import 'package:ccxgui/repositories/settings_repository.dart';
-import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/screens/home.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:window_size/window_size.dart';
+import 'package:ccxgui/utils/constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

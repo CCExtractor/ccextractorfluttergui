@@ -1,23 +1,12 @@
 ## Super good docs:
 
-### Project structure
-```
-lib
-├── bloc
-│   ├── dashboard_bloc
-│   ├── process_bloc
-│   └── settings_bloc
-├── models
-├── repositories
-├── screens
-│   ├── dashboard
-│   │   └── components
-│   └── settings
-└── utils
 
-11 directories
+### Build and run
 
-```
+#### Currently only linux is supported, macOS should work to (not tested) (reason: windows has different filePaths)
+- Check out how to install Flutter [here](https://flutter.dev/docs/get-started/install)
+- To run the GUI, clone the repo and run `flutter run` or `flutter run -d linux` inside the cloned directory. 
+
 ### checkValidJSON currenty supports 3 cases
 
 - Check if the .json file is a valid json file.
@@ -32,3 +21,23 @@ https://user-images.githubusercontent.com/52817235/118916824-5420fb00-b94d-11eb-
 https://user-images.githubusercontent.com/52817235/118916820-51260a80-b94d-11eb-81c8-a433171e5177.mp4
 
 sample files for testing are stored in sample/ (.gitignored)
+
+### Project structure
+```
+lib
+├── bloc
+│   ├── dashboard_bloc
+│   ├── process_bloc
+│   ├── redundant_process_bloc
+│   └── settings_bloc
+├── models
+├── repositories
+├── screens
+│   ├── dashboard
+│   │   └── components
+│   └── settings
+└── utils
+
+12 directories
+
+```

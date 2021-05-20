@@ -1,9 +1,13 @@
+// Dart imports:
 import 'dart:async';
 
+// Package imports:
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+
+// Project imports:
 import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/repositories/settings_repository.dart';
-import 'package:equatable/equatable.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';
