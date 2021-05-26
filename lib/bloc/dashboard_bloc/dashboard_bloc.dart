@@ -11,41 +11,31 @@ part 'dashboard_state.dart';
 
 /// Handles selecting and removing files.
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
-  DashboardBloc() : super(DashboardInitial());
+  DashboardBloc() : super(DashboardState(files: [], alreadyPresent: false));
   @override
-  Stream<DashboardState> mapEventToState(
-    DashboardEvent event,
-  ) async* {
-    final currentState = state;
+  Stream<DashboardState> mapEventToState(DashboardEvent event) async* {
     if (event is NewFileAdded) {
-      if (currentState is NewFileSelectedState) {
-        List<XFile> currentFiles = List.from(currentState.files);
-        for (XFile file in event.files) {
-          if (!currentFiles.contains(file)) {
-            currentFiles.add(file);
-          } else {
-            yield SelectedFileAlreadyPresentState(file);
+      List<XFile> finalEventList = List.from(event.files);
+      bool alreadyPresent = false;
+      // TODO: find a better way to do this check.
+      for (var stateFile in state.files) {
+        for (var eventFile in event.files) {
+          if (eventFile.path == stateFile.path) {
+            alreadyPresent = true;
+            finalEventList.remove(eventFile);
           }
         }
-        yield NewFileSelectedState(
-          files: currentFiles,
-        );
-      } else if (currentState is DashboardInitial) {
-        List<XFile> currentFiles = [];
-        for (XFile file in event.files) {
-          currentFiles.add(file);
-        }
-        yield NewFileSelectedState(
-          files: currentFiles,
-        );
       }
-    }
-    if (event is FileRemoved) {
-      if (currentState is NewFileSelectedState) {
-        List<XFile> currentFiles = List.from(currentState.files);
-        currentFiles.remove(event.file);
-        yield NewFileSelectedState(files: currentFiles);
+      if (alreadyPresent) {
+        yield state.copyWith(
+            files: List.from(state.files)..addAll(finalEventList),
+            alreadyPresent: true);
+      } else {
+        yield state.copyWith(
+            files: List.from(state.files)..addAll(event.files));
       }
+    } else if (event is FileRemoved) {
+      yield state.copyWith(files: List.from(state.files)..remove(event.file));
     }
   }
 }

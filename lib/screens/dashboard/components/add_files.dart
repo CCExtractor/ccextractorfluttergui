@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:file_selector/file_selector.dart';
+import 'package:file_selector_platform_interface/file_selector_platform_interface.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Project imports:
@@ -12,7 +13,8 @@ import 'package:ccxgui/utils/constants.dart';
 
 class AddFilesButton extends StatelessWidget {
   void _openImageFile(BuildContext context) async {
-    final List<XFile> files = await openFiles(acceptedTypeGroups: []);
+    final List<XFile> files =
+        await FileSelectorPlatform.instance.openFiles(acceptedTypeGroups: []);
     if (files.isEmpty) {
       // Operation was canceled by the user.
       return;

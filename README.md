@@ -5,6 +5,7 @@
 
 #### Currently only linux is supported, macOS should work to (not tested) (reason: windows has different filePaths)
 - Check out how to install Flutter [here](https://flutter.dev/docs/get-started/install)
+- Enable the flutter linux flag with `flutter config --enable-linux-desktop`
 - To run the GUI, clone the repo and run `flutter run` or `flutter run -d linux` inside the cloned directory. 
 
 ### checkValidJSON currenty supports 3 cases
@@ -13,6 +14,10 @@
 - Check if all the settings (keys) are present in the json file
 - Check if a value is the same as the datatype as it should be.
 - There is one more case in which, a dropdown can be of datatype `String` but still not be a valid option in the dropdown menu. This is also handled in checkValidJSON with a simple `dropDownOptionsList.contains('json[option]')`
+
+### Other docs
+
+Most of the other parts of super good docs lie in the [process_bloc](lib/bloc/process_bloc/process_bloc.dart) file. Feel free to check that to see how most of the logic and file handling of the app. 
 
 ### Proof of Concept videos submitted before GSoC'21
 
@@ -28,7 +33,6 @@ lib
 ├── bloc
 │   ├── dashboard_bloc
 │   ├── process_bloc
-│   ├── redundant_process_bloc
 │   └── settings_bloc
 ├── models
 ├── repositories
@@ -38,6 +42,6 @@ lib
 │   └── settings
 └── utils
 
-12 directories
+11 directories
 
 ```

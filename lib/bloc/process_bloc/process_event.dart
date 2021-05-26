@@ -13,6 +13,8 @@ class ProcessFilesSubmitted extends ProcessEvent {
 
 class ProcessStarted extends ProcessEvent {}
 
+/// ProcessStopped stops all the files from processing after finishing the 
+/// current one.
 class ProcessStopped extends ProcessEvent {}
 
 class ProcessFileRemoved extends ProcessEvent {
@@ -25,6 +27,12 @@ class ProcessFileExtractorOutput extends ProcessEvent {
   final String log;
 
   const ProcessFileExtractorOutput(this.log);
+}
+
+class ProcessFileVideoDetails extends ProcessEvent {
+  final List<String> videoDetails;
+
+  ProcessFileVideoDetails(this.videoDetails);
 }
 
 class ProcessFileExtractorProgress extends ProcessEvent {

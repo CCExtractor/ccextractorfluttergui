@@ -1,30 +1,18 @@
 part of 'dashboard_bloc.dart';
 
-abstract class DashboardState extends Equatable {
-  const DashboardState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class DashboardInitial extends DashboardState {}
-
-class NewFileSelectedState extends DashboardState {
+class DashboardState extends Equatable {
   final List<XFile> files;
+  final bool alreadyPresent;
+  DashboardState({required this.files, required this.alreadyPresent});
 
-  NewFileSelectedState({required this.files});
-  NewFileSelectedState copyWith({
-    required List<XFile> files,
+  DashboardState copyWith({
+    required List<XFile>? files,
+    bool? alreadyPresent,
   }) =>
-      NewFileSelectedState(files: files);
+      DashboardState(
+        files: files ?? this.files,
+        alreadyPresent: alreadyPresent ?? this.alreadyPresent,
+      );
   @override
-  List<Object> get props => [files];
-}
-
-class SelectedFileAlreadyPresentState extends DashboardState {
-  final XFile file;
-
-  SelectedFileAlreadyPresentState(this.file);
-  @override
-  List<Object> get props => [file];
+  List<Object?> get props => [files, alreadyPresent];
 }

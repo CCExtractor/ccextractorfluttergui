@@ -29,6 +29,7 @@ class Dashboard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SelectedFilesContainer()),
           Padding(
+            // TODO: bundle this Logs text in LogsContainer
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             child: Text('Logs', style: TextStyle(fontSize: 20)),
           ),
@@ -41,74 +42,76 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-class StartStopButton extends StatefulWidget {
-  final bool isEnabled;
-  const StartStopButton({Key? key, required this.isEnabled}) : super(key: key);
-
-  @override
-  _StartStopButtonState createState() => _StartStopButtonState();
-}
-
-class _StartStopButtonState extends State<StartStopButton> {
+class StartStopButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DashboardBloc, DashboardState>(
-      builder: (context, state) {
-        if (state is NewFileSelectedState) {
-          return MaterialButton(
-            hoverColor: Colors.green.shade900,
-            onPressed: widget.isEnabled
-                ? () {
-                    context.read<ProcessBloc>().add(ProcessStarted());
-                  }
-                : null,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.play_arrow,
-                    color: Colors.greenAccent,
-                    size: 30,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Start all',
-                    style: TextStyle(
-                      fontSize: 20,
+    return BlocBuilder<ProcessBloc, ProcessState>(
+      builder: (context, processState) {
+        return BlocBuilder<DashboardBloc, DashboardState>(
+          builder: (context, dashboardState) {
+            return MaterialButton(
+              onPressed: () {
+                dashboardState.files.isEmpty
+                    ? null
+                    : processState.started
+                        ? {
+                            context.read<ProcessBloc>().add(ProcessStopped()),
+                            CustomSnackBarMessage.show(
+                                context, 'Process after ongoing file stopped.')
+                          }
+                        : {
+                            context.read<ProcessBloc>().add(ProcessStarted()),
+                            CustomSnackBarMessage.show(
+                                context, 'Process started.')
+                          };
+              },
+              child: processState.started
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.stop,
+                            color: Colors.redAccent,
+                            size: 30,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Stop all',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.play_arrow,
+                            color: dashboardState.files.isEmpty
+                                ? Colors.grey
+                                : Colors.greenAccent,
+                            size: 30,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            'Start all',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-        return MaterialButton(
-          hoverColor: Colors.green.shade900,
-          onPressed: null,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.play_arrow,
-                  color: Colors.greenAccent,
-                  size: 30,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  'Start all',
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-              ],
-            ),
-          ),
+            );
+          },
         );
       },
     );
@@ -159,60 +162,60 @@ class SelectedFilesContainer extends StatelessWidget {
           )),
       height: MediaQuery.of(context).size.height / 2,
       child: BlocConsumer<DashboardBloc, DashboardState>(
+        listener: (context, state) {
+          if (state.alreadyPresent) {
+            CustomSnackBarMessage.show(
+                context, 'Already selected files were ignored');
+          }
+        },
         builder: (context, state) {
-          if (state is NewFileSelectedState) {
-            if (state.files.isNotEmpty) {
-              return Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Container(
-                    color: kBgDarkColor,
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Selected files',
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                        StartStopButton(
-                          isEnabled: state.files.isNotEmpty ? true : false,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Scrollbar(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                        itemCount: state.files.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            color: kBgLightColor,
-                            child: ProcessTile(
-                              file: state.files[index],
-                            ),
-                          );
-                        },
+          return Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                color: kBgDarkColor,
+                padding: EdgeInsets.symmetric(vertical: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Selected files',
+                      style: TextStyle(
+                        fontSize: 20,
                       ),
                     ),
-                  ),
-                ],
-              );
-            } else {
-              NoFilesSelectedContainer();
-            }
-          }
-          return NoFilesSelectedContainer();
-        },
-        listener: (context, state) {
-          if (state is SelectedFileAlreadyPresentState) {
-            CustomSnackBarMessage.show(
-                context, '${state.file.name} was already selected');
-          }
+                    StartStopButton(),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: state.files.isNotEmpty
+                    ? Scrollbar(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          itemCount: state.files.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              color: kBgLightColor,
+                              child: ProcessTile(
+                                file: state.files[index],
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    : Center(
+                        child: Text(
+                          'No files selected',
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+              ),
+            ],
+          );
         },
       ),
     );
@@ -249,29 +252,30 @@ class LogsContainer extends StatelessWidget {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Padding(
-                    //   padding: const EdgeInsets.only(left: 10),
-                    //   child: Text(
-                    //     'Resolutionn:  ${state.video.resolution}',
-                    //     style: TextStyle(fontSize: 15),
-                    //   ),
-                    // ),
-                    // Text(
-                    //   'Aspect ratio:  ${state.video.aspectRatio}',
-                    //   style: TextStyle(fontSize: 15),
-                    // ),
-                    // Text(
-                    //   'Framerate:  ${state.video.frameRate}',
-                    //   style: TextStyle(fontSize: 15),
-                    // ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Text(
+                        'Resolution: ${state.videoDetails.isNotEmpty ? "${state.videoDetails[0]} * ${state.videoDetails[1]}" : ''}',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                    Text(
+                      'Aspect ratio:  ${state.videoDetails.isNotEmpty ? state.videoDetails[2].substring(5) : ''}',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    Text(
+                      'Framerate:  ${state.videoDetails.isNotEmpty ? state.videoDetails[3].substring(5) : ''}',
+                      style: TextStyle(fontSize: 15),
+                    ),
                     // Padding(
                     //   padding: const EdgeInsets.only(right: 10.0),
                     //   child: Text(
-                    //     'Encoding:  ${state.video.encoding}',
+                    //     'Encoding:  ${state.videoDetails[3]}',
                     //     style: TextStyle(fontSize: 15),
                     //   ),
                     // ),
@@ -317,55 +321,6 @@ class LogsContainer extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class NoFilesSelectedContainer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          color: kBgDarkColor,
-          padding: EdgeInsets.symmetric(vertical: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Selected files',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              StartStopButton(
-                isEnabled: false,
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: kBgLightColor,
-              borderRadius: BorderRadius.all(
-                Radius.circular(
-                  10,
-                ),
-              ),
-            ),
-            width: MediaQuery.of(context).size.width,
-            child: Center(
-              child: Text(
-                'No files selected',
-                style: TextStyle(
-                  fontSize: 15,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
