@@ -3,7 +3,7 @@
 
 ### Build and run
 
-#### Currently only linux is supported, macOS should work to (not tested) (reason: windows has different filePaths)
+#### Currently only linux is supported, macOS should work too (not tested) (reason: windows has different filePaths)
 - Check out how to install Flutter [here](https://flutter.dev/docs/get-started/install)
 - Enable the flutter linux flag with `flutter config --enable-linux-desktop`
 - To run the GUI, clone the repo and run `flutter run` or `flutter run -d linux` inside the cloned directory. 
