@@ -66,6 +66,7 @@ class StartStopButton extends StatelessWidget {
                           };
               },
               child: processState.started
+                  // TODO: Put this button in a single widget with conditions for icon, color and text.
                   ? Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
