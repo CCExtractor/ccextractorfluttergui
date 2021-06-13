@@ -14,7 +14,7 @@ class ProcessFilesSubmitted extends ProcessEvent {
 class ProcessStarted extends ProcessEvent {}
 
 /// ProcessStopped stops all the files from processing after finishing the 
-/// current one.
+/// current one. Maybe use process.kill for this?
 class ProcessStopped extends ProcessEvent {}
 
 class ProcessFileRemoved extends ProcessEvent {

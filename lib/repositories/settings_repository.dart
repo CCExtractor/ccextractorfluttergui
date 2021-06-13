@@ -14,7 +14,6 @@ class SettingsRepository {
   // final SettingsModel settingsModel;
 
   // SettingsRepository(this.settingsModel);
-  LocalStorage storage = LocalStorage('config.json');
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -58,21 +57,28 @@ class SettingsRepository {
 
   Future<SettingsModel> getSettings() async {
     final SettingsModel _settings = SettingsModel();
-    await storage.ready;
-    _settings.outputFormat = await storage.getItem('output_format');
-    _settings.outputFilename = await storage.getItem('output_file_name');
-    _settings.autoprogram = await storage.getItem('autoprogram');
-    _settings.append = await storage.getItem('append');
+    try {
+      LocalStorage storage = LocalStorage('config.json');
+      await storage.ready;
+      _settings.outputformat = await storage.getItem('output_format');
+      _settings.outputfilename = await storage.getItem('output_file_name');
+      _settings.autoprogram = await storage.getItem('autoprogram');
+      _settings.append = await storage.getItem('append');
+    } catch (e) {
+      print('--------------');
+    }
     return _settings;
   }
 
   Future clearSettings() async {
     print('deleting');
+    LocalStorage storage = LocalStorage('config.json');
     await storage.ready;
     await storage.clear();
   }
 
   Future saveDefaults(bool force) async {
+    LocalStorage storage = LocalStorage('config.json');
     await storage.ready;
     await storage.setItem('output_format', 'srt');
     await storage.setItem('output_file_name', '');
@@ -82,9 +88,10 @@ class SettingsRepository {
 
   Future saveSettings(SettingsModel settingsModel) async {
     try {
+      LocalStorage storage = LocalStorage('config.json');
       await storage.ready;
-      await storage.setItem('output_format', settingsModel.outputFormat);
-      await storage.setItem('output_file_name', settingsModel.outputFilename);
+      await storage.setItem('output_format', settingsModel.outputformat);
+      await storage.setItem('output_file_name', settingsModel.outputfilename);
       await storage.setItem('append', settingsModel.append);
       await storage.setItem('autoprogram', settingsModel.autoprogram);
     } catch (e) {

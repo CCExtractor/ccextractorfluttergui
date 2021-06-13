@@ -15,12 +15,12 @@ class CCExtractor {
   final RegExp videoDetailsRegx = RegExp(r'###VIDEOINFO#(.+)', multiLine: true);
   LocalStorage storage = LocalStorage('config.json');
   late String outputFileName;
-  late String outputFormat;
+  late String outputformat;
 
   Future getData() async {
     await storage.ready;
     outputFileName = await storage.getItem('output_file_name');
-    outputFormat = await storage.getItem('output_format');
+    outputformat = await storage.getItem('output_format');
   }
 
   Future<int> extractFile(
@@ -40,10 +40,10 @@ class CCExtractor {
         // output file name
         outputFileName.isNotEmpty ? '-o' : '',
         outputFileName.isNotEmpty
-            ? '${file.path.substring(0, file.path.lastIndexOf('/'))}/$outputFileName.$outputFormat'
+            ? '${file.path.substring(0, file.path.lastIndexOf('/'))}/$outputFileName.$outputformat'
             : '',
         // output format
-        '-out=$outputFormat',
+        '-out=$outputformat',
       ],
     );
     process.stderr.transform(latin1.decoder).listen((update) {

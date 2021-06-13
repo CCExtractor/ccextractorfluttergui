@@ -50,68 +50,54 @@ class StartStopButton extends StatelessWidget {
         return BlocBuilder<DashboardBloc, DashboardState>(
           builder: (context, dashboardState) {
             return MaterialButton(
-              onPressed: () {
-                dashboardState.files.isEmpty
-                    ? null
-                    : processState.started
-                        ? {
-                            context.read<ProcessBloc>().add(ProcessStopped()),
-                            CustomSnackBarMessage.show(
-                                context, 'Process after ongoing file stopped.')
-                          }
-                        : {
-                            context.read<ProcessBloc>().add(ProcessStarted()),
-                            CustomSnackBarMessage.show(
-                                context, 'Process started.')
-                          };
-              },
-              child: processState.started
-                  // TODO: Put this button in a single widget with conditions for icon, color and text.
-                  ? Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.stop,
-                            color: Colors.redAccent,
-                            size: 30,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            'Stop all',
-                            style: TextStyle(
-                              fontSize: 20,
+                onPressed: () {
+                  dashboardState.files.isEmpty
+                      ? null
+                      : processState.started
+                          ? {
+                              context.read<ProcessBloc>().add(
+                                    ProcessStopped(),
+                                  ),
+                              CustomSnackBarMessage.show(
+                                context,
+                                'Process after ongoing file stopped.',
+                              )
+                            }
+                          : {
+                              context.read<ProcessBloc>().add(
+                                    ProcessStarted(),
+                                  ),
+                              CustomSnackBarMessage.show(
+                                context,
+                                'Process started.',
+                              )
+                            };
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      processState.started
+                          ? Icon(Icons.stop, color: Colors.redAccent, size: 30)
+                          : Icon(
+                              Icons.play_arrow,
+                              color: dashboardState.files.isEmpty
+                                  ? Colors.grey
+                                  : Colors.greenAccent,
+                              size: 30,
                             ),
-                          ),
-                        ],
+                      SizedBox(
+                        width: 5,
                       ),
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.play_arrow,
-                            color: dashboardState.files.isEmpty
-                                ? Colors.grey
-                                : Colors.greenAccent,
-                            size: 30,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            'Start all',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        processState.started ? 'Stop all' : 'Start all',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
-            );
+                    ],
+                  ),
+                ));
           },
         );
       },
@@ -141,7 +127,7 @@ class CustomSnackBarMessage {
           right: 20,
         ),
         behavior: SnackBarBehavior.floating,
-        backgroundColor: Theme.of(context).accentColor,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),

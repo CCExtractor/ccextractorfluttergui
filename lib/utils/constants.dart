@@ -19,8 +19,8 @@ List<String> inputFormats = [
   'es   -> For Elementary Streams.',
   'asf  -> ASF container (such as DVR-MS).',
   'wtv  -> Windows Television (WTV)',
-  "bin  -> CCExtractor's own binary format.",
-  "raw  -> For McPoodle's raw files.",
+  'bin  -> CCExtractor\'s own binary format.',
+  'raw  -> For McPoodle\'s raw files.',
   'mp4  -> MP4/MOV/M4V and similar.'
 ];
 

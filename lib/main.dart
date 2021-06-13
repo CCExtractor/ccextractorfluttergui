@@ -30,6 +30,13 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  final ThemeData theme = ThemeData(
+    backgroundColor: kBgDarkColor,
+    canvasColor: kBgDarkColor,
+    brightness: Brightness.dark,
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+  );
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -46,13 +53,10 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          accentColor: Color(0xff01bcd6),
-          backgroundColor: kBgDarkColor,
-          canvasColor: kBgDarkColor,
-          brightness: Brightness.dark,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+        theme: theme.copyWith(
+          colorScheme: theme.colorScheme.copyWith(
+            secondary: Color(0xff01bcd6),
+          ),
         ),
         home: Home(),
       ),

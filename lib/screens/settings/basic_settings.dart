@@ -17,19 +17,18 @@ class BasicSettingsScreen extends StatelessWidget {
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, state) {
         if (state is SettingsErrorState) {
-          context.read<SettingsBloc>().add(GetSettingsEvent());
-          // If pasrsing local json gives error, go back to default values
+          context.read<SettingsBloc>().add(CheckSettingsEvent());
           return Center(
             child: Container(
               child: Text(
-                  'Settings file corrupted, restoring default values. \n ${state.message}'),
+                'Settings file corrupted, restoring default values. \n ${state.message}',
+              ),
             ),
           );
         }
         if (state is CurrentSettingsState) {
           TextEditingController outputFileNameController =
-              TextEditingController(text: state.settingsModel.outputFilename);
-
+              TextEditingController(text: state.settingsModel.outputfilename);
           return Scaffold(
             appBar: AppBar(
               title: Text('Basic Settings'),
@@ -37,13 +36,13 @@ class BasicSettingsScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 20, right: 20),
                   child: MaterialButton(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                       onPressed: () {
                         context
                             .read<SettingsBloc>()
                             .add(SaveSettingsEvent(state.settingsModel.copyWith(
-                              outputFormat: state.settingsModel.outputFormat,
-                              outputFilename: outputFileNameController.text,
+                              outputformat: state.settingsModel.outputformat,
+                              outputfilename: outputFileNameController.text,
                               append: state.settingsModel.append,
                               autoprogram: state.settingsModel.autoprogram,
                             )));
@@ -97,7 +96,7 @@ class BasicSettingsScreen extends StatelessWidget {
                       child: DropdownButton<String>(
                         underline: Container(),
                         isExpanded: true,
-                        value: state.settingsModel.outputFormat,
+                        value: state.settingsModel.outputformat,
                         items: outputFormats.map((String value) {
                           return DropdownMenuItem(
                             value: value,
@@ -111,7 +110,7 @@ class BasicSettingsScreen extends StatelessWidget {
                         onChanged: (String? newValue) {
                           context.read<SettingsBloc>().add(SettingsUpdatedEvent(
                                   state.settingsModel.copyWith(
-                                outputFormat: newValue,
+                                outputformat: newValue,
                               )));
                         },
                       ),
@@ -124,7 +123,7 @@ class BasicSettingsScreen extends StatelessWidget {
                     ),
                     trailing: Container(
                       child: Checkbox(
-                        activeColor: Theme.of(context).accentColor,
+                        activeColor: Theme.of(context).colorScheme.secondary,
                         value: state.settingsModel.append,
                         onChanged: (value) {
                           context.read<SettingsBloc>().add(SettingsUpdatedEvent(
@@ -142,7 +141,7 @@ class BasicSettingsScreen extends StatelessWidget {
                     ),
                     trailing: Container(
                       child: Switch(
-                        activeColor: Theme.of(context).accentColor,
+                        activeColor: Theme.of(context).colorScheme.secondary,
                         value: state.settingsModel.autoprogram,
                         onChanged: (value) {
                           context.read<SettingsBloc>().add(SettingsUpdatedEvent(
