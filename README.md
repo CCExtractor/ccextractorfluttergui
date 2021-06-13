@@ -3,12 +3,15 @@
 
 ### Build and run
 
-#### Currently only linux is supported, macOS should work too (not tested) (reason: windows has different filePaths)
 - Check out how to install Flutter [here](https://flutter.dev/docs/get-started/install)
-- Enable the flutter linux flag with `flutter config --enable-linux-desktop`
-- To run the GUI, clone the repo and run `flutter run` or `flutter run -d linux` inside the cloned directory. 
+- Enable the flutter platform specific flag with `flutter config --enable-<platform>-desktop`, more info on this [here](https://flutter.dev/desktop)
+- To run the GUI, clone the repo and run `flutter run` or `flutter run -d <platform>` inside the cloned directory. 
+- To get any output you should have ccextractor.exe/ccextractor in your user PATH. 
+
 #### For release builds: 
-- Run `flutter build linux` and you should get a executable in `./build/linux/x64/release/bundle/ccxgui`
+- Run `flutter build <platform>` and you should get a executable in `./build/linux/x64/release/bundle/ccxgui`
+
+
 ### checkValidJSON currenty supports 3 cases
 
 - Check if the .json file is a valid json file.
