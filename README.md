@@ -6,7 +6,7 @@
 - Check out how to install Flutter [here](https://flutter.dev/docs/get-started/install)
 - Enable the flutter platform specific flag with `flutter config --enable-<platform>-desktop`, more info on this [here](https://flutter.dev/desktop)
 - To run the GUI, clone the repo and run `flutter run` or `flutter run -d <platform>` inside the cloned directory. 
-- To get any output you should have ccextractor.exe/ccextractor in your user PATH. 
+- To get any output you should have `ccextractor.exe` if you are on windows or `ccextractor` if you are on linux/macOS in your PATH. 
 
 #### For release builds: 
 - Run `flutter build <platform>` and you should get a executable in `./build/linux/x64/release/bundle/ccxgui`
