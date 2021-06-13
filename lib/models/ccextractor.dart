@@ -31,7 +31,7 @@ class CCExtractor {
   }) async {
     await getData();
     process = await Process.start(
-      './assets/ccextractor',
+      'ccextractor',
       [
         file.path,
         '--gui_mode_reports',
