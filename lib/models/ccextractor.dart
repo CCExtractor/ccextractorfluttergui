@@ -24,7 +24,7 @@ class CCExtractor {
   }
 
   String get ccextractor {
-    return Platform.isWindows ? 'ccextractor.exe' : 'ccextractor';
+    return Platform.isWindows ? 'ccextractorwinfull.exe' : 'ccextractor';
   }
 
   Future<int> extractFile(
