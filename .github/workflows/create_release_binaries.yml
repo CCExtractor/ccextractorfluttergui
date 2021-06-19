@@ -27,17 +27,14 @@ jobs:
         Copy-Item (vswhere -latest -find 'VC\Redist\MSVC\*\x64\*\vcruntime140.dll') .
         Copy-Item (vswhere -latest -find 'VC\Redist\MSVC\*\x64\*\vcruntime140_1.dll') .
       working-directory: ./build/windows/runner/Release
-    - name: Create artifact
-      uses: actions/upload-artifact@v2
+    - name: Create zip
+      uses: papeloto/action-zip@v1
       with:
-        name: CCExtractor Flutter GUI Windows
-        path: |
-          ./build/windows/runner/Release/*.exe
-          ./build/windows/runner/Release/*.dll
-          ./build/windows/runner/Release/data
+        files: ./build/windows/runner/Release/
+        dest: ./Windows.zip
     - name: Upload as asset
       uses: AButler/upload-release-assets@v2.0
       with:
-        files: 'artifacts/*'
+        files: './Windows.zip'
         repo-token: ${{ secrets.GITHUB_TOKEN }}      
 
