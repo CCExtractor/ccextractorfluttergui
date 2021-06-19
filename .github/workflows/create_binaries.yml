@@ -21,6 +21,12 @@ jobs:
       run: flutter doctor
     - name: Build Windows app
       run: flutter build windows
+    - name: Copy VC redistributables
+      run: |
+        Copy-Item (vswhere -latest -find 'VC\Redist\MSVC\*\x64\*\msvcp140.dll') .
+        Copy-Item (vswhere -latest -find 'VC\Redist\MSVC\*\x64\*\vcruntime140.dll') .
+        Copy-Item (vswhere -latest -find 'VC\Redist\MSVC\*\x64\*\vcruntime140_1.dll') .
+      working-directory: ./build/windows/runner/Release
     - name: Create artifact
       uses: actions/upload-artifact@v2
       with:
