@@ -26,7 +26,7 @@ jobs:
       with:
         name: CCExtractor Flutter GUI Windows
         path: |
-          ./*.exe
-          ./*.dll
-
+          ./build/windows/runner/Release/*.exe
+          ./build/windows/runner/Release/*.dll
+          ./build/windows/runner/Release/data
 
