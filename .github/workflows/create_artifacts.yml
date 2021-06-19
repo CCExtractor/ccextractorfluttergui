@@ -2,6 +2,10 @@ name: Upload artifact
 
 on:
   push:
+    branches:
+      - '**'
+    tags-ignore: # ignore push via new tag
+      - '*.*'
   pull_request:
     types: [opened, synchronize, reopened]
 
