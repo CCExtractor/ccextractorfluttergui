@@ -1,4 +1,4 @@
-name: Create release binaries for the platforms
+name: Upload artifact
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
     - name: Install Flutter
       uses: subosito/flutter-action@v1.5.3
       with:
-        flutter-version: '2.2.2'
+        channel: 'master'
     - name: Enable desktop support
       run: flutter config --enable-windows-desktop
     - name: Build Windows app
@@ -34,3 +34,22 @@ jobs:
           ./build/windows/runner/Release/*.dll
           ./build/windows/runner/Release/data
 
+  build_linux:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Check out repository
+        uses: actions/checkout@v2.3.4
+      - name: Install Flutter
+        uses: subosito/flutter-action@v1.5.3
+        with:
+          channel: 'master'
+      - name: Enable desktop support
+        run: flutter config --enable-linux-desktop
+      - name: Build Linux app
+        run: flutter build linux
+        working-directory: ./build/linux/x64/release/bundle
+      - name: Create artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: CCExtractor Flutter GUI Linux
+          path: ./build/linux/x64/release/bundle/

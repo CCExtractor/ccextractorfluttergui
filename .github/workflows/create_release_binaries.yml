@@ -1,4 +1,4 @@
-name: Create release binaries for the platforms
+name: Upload releases
 
 on:
   release:
