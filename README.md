@@ -6,12 +6,14 @@
 - Check out how to install Flutter [here](https://flutter.dev/docs/get-started/install)
 - Enable the flutter platform specific flag with `flutter config --enable-<platform>-desktop`, more info on this [here](https://flutter.dev/desktop)
 - To run the GUI, clone the repo and run `flutter run` or `flutter run -d <platform>` inside the cloned directory. 
-- To get any output you should have `ccextractor.exe` if you are on windows or `ccextractor` if you are on linux/macOS in your PATH. 
+- To get any output you should have `ccextractorwinfull.exe` if you are on windows or `ccextractor` if you are on linux/macOS in your PATH. 
 
 #### For release builds: 
 - Run `flutter build <platform>` and you should get a executable in `./build/linux/x64/release/bundle/ccxgui`
 
-
+#### Using pre-built executables:
+- You can also just download the latest required executable from [here](https://nightly.link/CCExtractor/ccextractorfluttergui/workflows/create_artifacts/master) or manually from the github actions artifacts, keep in mind these still need `ccextractorwinfull.exe` if you are on windows or `ccextractor` if you are on linux/macOS in your PATH. 
+- For linux you need to `chmod 700 ./ccxgui`
 ### checkValidJSON currenty supports 3 cases
 
 - Check if the .json file is a valid json file.
