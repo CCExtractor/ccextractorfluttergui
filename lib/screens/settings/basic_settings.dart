@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -7,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Project imports:
 import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
-import 'package:ccxgui/screens/dashboard/dashboard.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'package:ccxgui/utils/responsive.dart';
 
@@ -36,22 +36,29 @@ class BasicSettingsScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 20, right: 20),
                   child: MaterialButton(
-                      color: Theme.of(context).colorScheme.secondary,
-                      onPressed: () {
-                        context
-                            .read<SettingsBloc>()
-                            .add(SaveSettingsEvent(state.settingsModel.copyWith(
-                              outputformat: state.settingsModel.outputformat,
-                              outputfilename: outputFileNameController.text,
-                              append: state.settingsModel.append,
-                              autoprogram: state.settingsModel.autoprogram,
-                            )));
-                        CustomSnackBarMessage.show(
-                          context,
-                          'Settings applied',
-                        );
-                      },
-                      child: Text('Apply')),
+                    minWidth: 150,
+                    color: Theme.of(context).colorScheme.secondary,
+                    onPressed: () {
+                      context
+                          .read<SettingsBloc>()
+                          .add(SaveSettingsEvent(state.settingsModel.copyWith(
+                            outputformat: state.settingsModel.outputformat,
+                            outputfilename: outputFileNameController.text,
+                            append: state.settingsModel.append,
+                            autoprogram: state.settingsModel.autoprogram,
+                          )));
+                      CustomSnackBarMessage.show(
+                        context,
+                        'Settings applied',
+                      );
+                    },
+                    child: Text(
+                      'Apply',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
                 ),
               ],
               elevation: 0,

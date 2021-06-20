@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
+import 'package:ccxgui/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -11,6 +13,7 @@ import 'package:ccxgui/screens/dashboard/components/add_files.dart';
 import 'package:ccxgui/screens/dashboard/components/process_tile.dart';
 import 'package:ccxgui/screens/dashboard/components/udp_button.dart';
 import 'package:ccxgui/utils/constants.dart';
+import 'package:localstorage/localstorage.dart';
 
 class Dashboard extends StatelessWidget {
   @override
@@ -21,21 +24,35 @@ class Dashboard extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Expanded(child: AddFilesButton()),
-              Expanded(child: ListenOnUDPButton()),
+              Expanded(
+                child: AddFilesButton(),
+              ),
+              Expanded(
+                child: ListenOnUDPButton(),
+              ),
             ],
           ),
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SelectedFilesContainer()),
-          Padding(
-            // TODO: bundle this Logs text in LogsContainer
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: Text('Logs', style: TextStyle(fontSize: 20)),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 8,
+            ),
+            child: SelectedFilesContainer(),
           ),
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: LogsContainer()),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 8,
+            ),
+            child: CurrentCommandContainer(),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 8,
+            ),
+            child: LogsContainer(),
+          ),
         ],
       ),
     );
@@ -50,88 +67,58 @@ class StartStopButton extends StatelessWidget {
         return BlocBuilder<DashboardBloc, DashboardState>(
           builder: (context, dashboardState) {
             return MaterialButton(
-                onPressed: () {
-                  dashboardState.files.isEmpty
-                      ? null
-                      : processState.started
-                          ? {
-                              context.read<ProcessBloc>().add(
-                                    ProcessStopped(),
-                                  ),
-                              CustomSnackBarMessage.show(
-                                context,
-                                'Process after ongoing file stopped.',
-                              )
-                            }
-                          : {
-                              context.read<ProcessBloc>().add(
-                                    ProcessStarted(),
-                                  ),
-                              CustomSnackBarMessage.show(
-                                context,
-                                'Process started.',
-                              )
-                            };
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      processState.started
-                          ? Icon(Icons.stop, color: Colors.redAccent, size: 30)
-                          : Icon(
-                              Icons.play_arrow,
-                              color: dashboardState.files.isEmpty
-                                  ? Colors.grey
-                                  : Colors.greenAccent,
-                              size: 30,
-                            ),
-                      SizedBox(
-                        width: 5,
+              onPressed: () {
+                dashboardState.files.isEmpty
+                    ? null
+                    : processState.started
+                        ? {
+                            context.read<ProcessBloc>().add(
+                                  ProcessStopped(),
+                                ),
+                            CustomSnackBarMessage.show(
+                              context,
+                              'Process after ongoing file stopped.',
+                            )
+                          }
+                        : {
+                            context.read<ProcessBloc>().add(
+                                  ProcessStarted(),
+                                ),
+                            CustomSnackBarMessage.show(
+                              context,
+                              'Process started.',
+                            )
+                          };
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    processState.started
+                        ? Icon(Icons.stop, color: Colors.redAccent, size: 30)
+                        : Icon(
+                            Icons.play_arrow,
+                            color: dashboardState.files.isEmpty
+                                ? Colors.grey
+                                : Colors.greenAccent,
+                            size: 30,
+                          ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      processState.started ? 'Stop all' : 'Start all',
+                      style: TextStyle(
+                        fontSize: 20,
                       ),
-                      Text(
-                        processState.started ? 'Stop all' : 'Start all',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ],
-                  ),
-                ));
+                    ),
+                  ],
+                ),
+              ),
+            );
           },
         );
       },
-    );
-  }
-}
-
-class CustomSnackBarMessage {
-  final String message;
-
-  const CustomSnackBarMessage({
-    required this.message,
-  });
-
-  // ignore: always_declare_return_types
-  static show(
-    BuildContext context,
-    String message,
-  ) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: Duration(seconds: 1),
-        content: Text(message),
-        margin: EdgeInsets.only(
-          left: MediaQuery.of(context).size.width / 1.5,
-          bottom: 20,
-          right: 20,
-        ),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
     );
   }
 }
@@ -141,12 +128,8 @@ class SelectedFilesContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: kBgLightColor,
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              10,
-            ),
-          )),
+        color: kBgLightColor,
+      ),
       height: MediaQuery.of(context).size.height / 2,
       child: BlocConsumer<DashboardBloc, DashboardState>(
         listener: (context, state) {
@@ -161,7 +144,6 @@ class SelectedFilesContainer extends StatelessWidget {
             children: [
               Container(
                 color: kBgDarkColor,
-                padding: EdgeInsets.symmetric(vertical: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -225,18 +207,20 @@ class LogsContainer extends StatelessWidget {
           },
         );
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              'Logs',
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            SizedBox(
+              height: 12,
+            ),
             Container(
               decoration: BoxDecoration(
                 color: kBgLightColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(
-                    10,
-                  ),
-                  topRight: Radius.circular(
-                    10,
-                  ),
-                ),
               ),
               child: Padding(
                 padding:
@@ -271,42 +255,100 @@ class LogsContainer extends StatelessWidget {
               ),
             ),
             Container(
-              decoration: BoxDecoration(
-                color: kBgLightColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(
-                    10,
-                  ),
-                  bottomRight: Radius.circular(
-                    10,
-                  ),
+                decoration: BoxDecoration(
+                  color: kBgLightColor,
                 ),
-              ),
-              height: MediaQuery.of(context).size.height / 4,
-              child: Scrollbar(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  controller: _scrollController,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        state.log[index],
-                        style: TextStyle(
-                          color: state.log[index]
-                                  .contains(RegExp(r'\d+:\d+-\d+:\d+'))
-                              ? Colors.amber
-                              : Colors.white,
+                height: MediaQuery.of(context).size.height / 4,
+                child: state.log.isNotEmpty
+                    ? Scrollbar(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          controller: _scrollController,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                state.log[index],
+                                style: TextStyle(
+                                  color: state.log[index]
+                                          .contains(RegExp(r'\d+:\d+-\d+:\d+'))
+                                      ? Colors.amber
+                                      : Colors.white,
+                                ),
+                              ),
+                            );
+                          },
+                          itemCount: state.log.length,
                         ),
-                      ),
-                    );
-                  },
-                  itemCount: state.log.length,
-                ),
-              ),
-            ),
+                      )
+                    : Center(
+                        child: Text(
+                            'Start processing a file to see output genrated here'),
+                      )),
           ],
         );
+      },
+    );
+  }
+}
+
+class CurrentCommandContainer extends StatelessWidget {
+  const CurrentCommandContainer({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    late String outputFileName;
+    late String outputformat;
+    late bool autoprogram;
+    late bool append;
+
+    Future getData() async {
+      LocalStorage storage = LocalStorage('config.json');
+      await storage.ready;
+      outputFileName = await storage.getItem('output_file_name');
+      outputformat = await storage.getItem('output_format');
+      autoprogram = await storage.getItem('autoprogram');
+      append = await storage.getItem('append');
+    }
+
+    return FutureBuilder(
+      future: getData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Current Command: ',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+              SizedBox(height: 12),
+              Container(
+                width: Responsive.isDesktop(context)
+                    ? MediaQuery.of(context).size.width - 270
+                    : MediaQuery.of(context).size.width -
+                        56, // remove drawer width
+                decoration: BoxDecoration(
+                  color: kBgLightColor,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SelectableText(
+                    'ccextractor --gui_mode_reports -out=$outputformat ${outputFileName.isNotEmpty ? '-o' : ''} $outputFileName ${autoprogram ? '-autoprogram' : ''} ${append ? '-append' : ''} [input files]',
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return Container();
+        }
       },
     );
   }

@@ -13,11 +13,11 @@ class CCExtractor {
   final RegExp logsRegx =
       RegExp(r'###SUBTITLE###(.+)|###TIME###(.+)', multiLine: true);
   final RegExp videoDetailsRegx = RegExp(r'###VIDEOINFO#(.+)', multiLine: true);
-  LocalStorage storage = LocalStorage('config.json');
   late String outputFileName;
   late String outputformat;
 
   Future getData() async {
+    LocalStorage storage = LocalStorage('config.json');
     await storage.ready;
     outputFileName = await storage.getItem('output_file_name');
     outputformat = await storage.getItem('output_format');
