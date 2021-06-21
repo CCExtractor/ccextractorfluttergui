@@ -12,9 +12,25 @@ import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/utils/constants.dart';
 
 class AddFilesButton extends StatelessWidget {
-  void _openImageFile(BuildContext context) async {
-    final List<XFile> files =
-        await FileSelectorPlatform.instance.openFiles(acceptedTypeGroups: []);
+  void _openVideosFileSelector(BuildContext context) async {
+    final List<XFile> files = await FileSelectorPlatform.instance.openFiles(
+      acceptedTypeGroups: [
+        XTypeGroup(
+          label: 'Video',
+          extensions: [
+            'dvr-ms',
+            'm2v',
+            'mpg',
+            'ts',
+            'wtv',
+            'mp4',
+            'mpg2',
+            'vob',
+          ],
+          mimeTypes: ['video/*'],
+        ),
+      ],
+    );
     if (files.isEmpty) {
       // Operation was canceled by the user.
       return;
@@ -33,7 +49,7 @@ class AddFilesButton extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
       child: InkWell(
         hoverColor: Colors.transparent,
-        onTap: () => _openImageFile(context),
+        onTap: () => _openVideosFileSelector(context),
         child: Container(
           decoration: BoxDecoration(
             color: kBgLightColor,
