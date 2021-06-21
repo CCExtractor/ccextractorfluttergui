@@ -66,31 +66,54 @@ class _ProcessTileState extends State<ProcessTile> {
                           child: Icon(Icons.check),
                         );
                       } else if (widget.file == state.current) {
-                        return Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: Container(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.green,
-                              strokeWidth: 4,
-                              value: int.parse(state.progress) / 100,
-                              backgroundColor: Colors.white,
+                        return Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: Container(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.green,
+                                  strokeWidth: 4,
+                                  value: int.parse(state.progress) / 100,
+                                  backgroundColor: Colors.white,
+                                ),
+                              ),
                             ),
-                          ),
+                            IconButton(
+                              onPressed: () {
+                                context.read<DashboardBloc>().add(
+                                      FileRemoved(widget.file),
+                                    );
+                                try {
+                                  context.read<ProcessBloc>().add(
+                                        ProcessKill(widget.file),
+                                      );
+                                } catch (e) {
+                                  print(
+                                      'processing for this file never started');
+                                }
+                              },
+                              icon: Icon(
+                                Icons.delete_outline,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
                         );
                       }
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: IconButton(
                           onPressed: () {
-                            context
-                                .read<DashboardBloc>()
-                                .add(FileRemoved(widget.file));
+                            context.read<DashboardBloc>().add(
+                                  FileRemoved(widget.file),
+                                );
                             try {
-                              context
-                                  .read<ProcessBloc>()
-                                  .add(ProcessFileRemoved(widget.file));
+                              context.read<ProcessBloc>().add(
+                                    ProcessFileRemoved(widget.file),
+                                  );
                             } catch (e) {
                               print('processing for this file never started');
                             }

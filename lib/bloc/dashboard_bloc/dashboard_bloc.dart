@@ -17,7 +17,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     if (event is NewFileAdded) {
       List<XFile> finalEventList = List.from(event.files);
       bool alreadyPresent = false;
-      // TODO: find a better way to do this check.
       // create your own wrapper around the third party class as use EquatableMixin
       for (var stateFile in state.files) {
         for (var eventFile in event.files) {

@@ -77,7 +77,7 @@ class StartStopButton extends StatelessWidget {
                                 ),
                             CustomSnackBarMessage.show(
                               context,
-                              'Process after ongoing file stopped.',
+                              'Cancelled process on all files.',
                             )
                           }
                         : {

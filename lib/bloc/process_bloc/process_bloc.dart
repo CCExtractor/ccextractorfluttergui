@@ -86,12 +86,22 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       );
       yield* _extractNext();
     } else if (event is ProcessStopped) {
+      _extractor.cancelRun();
       yield state.copyWith(
         current: null,
         queue: state.orignalList,
         processed: [], // We don't need ticks when we stop so discard processed files list.
         progress: '0',
         started: false,
+      );
+    } else if (event is ProcessKill) {
+      _extractor.cancelRun();
+      yield state.copyWith(
+        current: state.current,
+        orignalList: state.orignalList
+            .where((element) => element != event.file)
+            .toList(),  
+        queue: state.queue.where((element) => element != event.file).toList(),
       );
     } else if (event is ProcessFileExtractorProgress) {
       yield state.copyWith(current: state.current, progress: event.progress);

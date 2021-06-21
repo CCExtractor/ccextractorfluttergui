@@ -39,14 +39,16 @@ class BasicSettingsScreen extends StatelessWidget {
                     minWidth: 150,
                     color: Theme.of(context).colorScheme.secondary,
                     onPressed: () {
-                      context
-                          .read<SettingsBloc>()
-                          .add(SaveSettingsEvent(state.settingsModel.copyWith(
-                            outputformat: state.settingsModel.outputformat,
-                            outputfilename: outputFileNameController.text,
-                            append: state.settingsModel.append,
-                            autoprogram: state.settingsModel.autoprogram,
-                          )));
+                      context.read<SettingsBloc>().add(
+                            SaveSettingsEvent(
+                              state.settingsModel.copyWith(
+                                outputformat: state.settingsModel.outputformat,
+                                outputfilename: outputFileNameController.text,
+                                append: state.settingsModel.append,
+                                autoprogram: state.settingsModel.autoprogram,
+                              ),
+                            ),
+                          );
                       CustomSnackBarMessage.show(
                         context,
                         'Settings applied',
@@ -115,10 +117,13 @@ class BasicSettingsScreen extends StatelessWidget {
                           );
                         }).toList(),
                         onChanged: (String? newValue) {
-                          context.read<SettingsBloc>().add(SettingsUpdatedEvent(
+                          context.read<SettingsBloc>().add(
+                                SettingsUpdatedEvent(
                                   state.settingsModel.copyWith(
-                                outputformat: newValue,
-                              )));
+                                    outputformat: newValue,
+                                  ),
+                                ),
+                              );
                         },
                       ),
                     ),
@@ -133,10 +138,13 @@ class BasicSettingsScreen extends StatelessWidget {
                         activeColor: Theme.of(context).colorScheme.secondary,
                         value: state.settingsModel.append,
                         onChanged: (value) {
-                          context.read<SettingsBloc>().add(SettingsUpdatedEvent(
+                          context.read<SettingsBloc>().add(
+                                SettingsUpdatedEvent(
                                   state.settingsModel.copyWith(
-                                append: value,
-                              )));
+                                    append: value,
+                                  ),
+                                ),
+                              );
                         },
                       ),
                     ),
@@ -151,10 +159,13 @@ class BasicSettingsScreen extends StatelessWidget {
                         activeColor: Theme.of(context).colorScheme.secondary,
                         value: state.settingsModel.autoprogram,
                         onChanged: (value) {
-                          context.read<SettingsBloc>().add(SettingsUpdatedEvent(
+                          context.read<SettingsBloc>().add(
+                                SettingsUpdatedEvent(
                                   state.settingsModel.copyWith(
-                                autoprogram: value,
-                              )));
+                                    autoprogram: value,
+                                  ),
+                                ),
+                              );
                         },
                       ),
                     ),

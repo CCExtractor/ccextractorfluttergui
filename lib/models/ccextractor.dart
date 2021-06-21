@@ -50,6 +50,7 @@ class CCExtractor {
         '-out=$outputformat',
       ],
     );
+
     process.stdout.transform(latin1.decoder).listen((update) {});
 
     process.stderr.transform(latin1.decoder).listen((update) {
@@ -74,5 +75,10 @@ class CCExtractor {
       }
     });
     return process.exitCode;
+  }
+
+  /// Cancels the ongoing file process
+  void cancelRun() {
+    process.kill();
   }
 }
