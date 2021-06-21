@@ -59,6 +59,76 @@ class Dashboard extends StatelessWidget {
   }
 }
 
+class ClearFilesButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProcessBloc, ProcessState>(
+      builder: (context, processState) {
+        return BlocBuilder<DashboardBloc, DashboardState>(
+          builder: (context, dashboardState) {
+            return MaterialButton(
+              onPressed: () {
+                dashboardState.files.isEmpty
+                    ? null
+                    : showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('Warning'),
+                          content: Text(
+                            'Are you sure you want to remove all the selected\nfiles and cancel any files that is running?',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text('No'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                context.read<ProcessBloc>().add(
+                                      ProcessRemoveAll(),
+                                    );
+                                context.read<DashboardBloc>().add(
+                                      RemoveAllFiles(),
+                                    );
+                                Navigator.pop(context);
+                              },
+                              child: Text('Yes'),
+                            ),
+                          ],
+                        ),
+                      );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.clear_all,
+                      color: dashboardState.files.isEmpty
+                          ? Colors.grey
+                          : Colors.amber,
+                      size: 30,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      'Clear list',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
 class StartStopButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -153,7 +223,12 @@ class SelectedFilesContainer extends StatelessWidget {
                         fontSize: 20,
                       ),
                     ),
-                    StartStopButton(),
+                    Row(
+                      children: [
+                        ClearFilesButton(),
+                        StartStopButton(),
+                      ],
+                    ),
                   ],
                 ),
               ),

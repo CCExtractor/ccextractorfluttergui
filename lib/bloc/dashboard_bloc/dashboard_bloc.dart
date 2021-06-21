@@ -36,6 +36,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       }
     } else if (event is FileRemoved) {
       yield state.copyWith(files: List.from(state.files)..remove(event.file));
+    } else if (event is RemoveAllFiles) {
+      yield state.copyWith(files: []);
     }
   }
 }

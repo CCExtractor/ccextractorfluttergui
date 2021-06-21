@@ -100,8 +100,18 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         current: state.current,
         orignalList: state.orignalList
             .where((element) => element != event.file)
-            .toList(),  
+            .toList(),
         queue: state.queue.where((element) => element != event.file).toList(),
+      );
+    } else if (event is ProcessRemoveAll) {
+      _extractor.cancelRun();
+      yield state.copyWith(
+        current: null,
+        progress: '0',
+        processed: [],
+        queue: [],
+        orignalList: [],
+        started: false,
       );
     } else if (event is ProcessFileExtractorProgress) {
       yield state.copyWith(current: state.current, progress: event.progress);

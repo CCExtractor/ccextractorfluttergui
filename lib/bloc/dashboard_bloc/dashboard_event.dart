@@ -23,3 +23,5 @@ class FileRemoved extends DashboardEvent {
   @override
   List<Object> get props => [file];
 }
+
+class RemoveAllFiles extends DashboardEvent {}

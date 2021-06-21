@@ -29,6 +29,8 @@ class ProcessKill extends ProcessEvent {
   const ProcessKill(this.file);
 }
 
+class ProcessRemoveAll extends ProcessEvent {}
+
 class ProcessFileExtractorOutput extends ProcessEvent {
   final String log;
 
