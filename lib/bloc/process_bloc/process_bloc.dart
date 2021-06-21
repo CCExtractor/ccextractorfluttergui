@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pedantic/pedantic.dart';
 
 // Project imports:
-import 'package:ccxgui/models/ccextractor.dart';
+import 'package:ccxgui/repositories/ccextractor.dart';
 
 part 'process_event.dart';
 part 'process_state.dart';
