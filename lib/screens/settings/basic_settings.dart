@@ -33,35 +33,28 @@ class BasicSettingsScreen extends StatelessWidget {
             appBar: AppBar(
               title: Text('Basic Settings'),
               actions: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, right: 20),
-                  child: MaterialButton(
-                    minWidth: 150,
-                    color: Theme.of(context).colorScheme.secondary,
-                    onPressed: () {
-                      context.read<SettingsBloc>().add(
-                            SaveSettingsEvent(
-                              state.settingsModel.copyWith(
-                                outputformat: state.settingsModel.outputformat,
-                                outputfilename: outputFileNameController.text,
-                                append: state.settingsModel.append,
-                                autoprogram: state.settingsModel.autoprogram,
-                              ),
-                            ),
-                          );
-                      CustomSnackBarMessage.show(
-                        context,
-                        'Settings applied',
-                      );
-                    },
-                    child: Text(
-                      'Apply',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 20, right: 20),
+                //   child: MaterialButton(
+                //     minWidth: 150,
+                //     color: Theme.of(context).colorScheme.secondary,
+                //     onPressed: () {
+                // context.read<SettingsBloc>().add(
+                //       SaveSettingsEvent(state.settingsModel),
+                //     );
+                //       CustomSnackBarMessage.show(
+                //         context,
+                //         'Settings applied',
+                //       );
+                //     },
+                //     child: Text(
+                //       'Apply',
+                //       style: TextStyle(
+                //         fontSize: 20,
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
               elevation: 0,
               backgroundColor: Colors.transparent,
@@ -70,30 +63,66 @@ class BasicSettingsScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ListView(
                 children: [
-                  ListTile(
-                    title: Text('Output file name'),
-                    subtitle: Text(
-                      "This will define the output filename if you don't like the default ones, each file will be appeded with a _1, _2 when needed",
-                    ),
-                    trailing: Container(
-                      color: kBgLightColor,
-                      width: Responsive.isDesktop(context) ? 300 : 100,
-                      child: TextFormField(
-                        controller: outputFileNameController,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 12,
-                            horizontal: 6,
-                          ),
-                          isDense: true,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Output file name (press enter to save)',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(
+                              "This will define the output filename if you don't like the default ones,\nEach file will be appeded with a _1, _2 when needed",
+                              style: TextStyle(
+                                color: Colors.grey.shade400,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
                         ),
-                        cursorColor: Colors.transparent,
-                      ),
+                        Container(
+                          color: kBgLightColor,
+                          width: Responsive.isDesktop(context) ? 300 : 100,
+                          child: TextFormField(
+                            onEditingComplete: () =>
+                                context.read<SettingsBloc>().add(
+                                      SaveSettingsEvent(
+                                        state.settingsModel.copyWith(
+                                          outputfilename:
+                                              outputFileNameController.text,
+                                        ),
+                                      ),
+                                    ),
+                            controller: outputFileNameController,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: 12,
+                                horizontal: 6,
+                              ),
+                              isDense: true,
+                            ),
+                            cursorColor: Colors.transparent,
+                          ),
+                        ),
+                      ],
+                      // title:
+                      // subtitle: Text(
+                      //   "This will define the output filename if you don't like the default ones, each file will be appeded with a _1, _2 when needed",
+                      // ),
+                      // trailing:
                     ),
                   ),
                   ListTile(

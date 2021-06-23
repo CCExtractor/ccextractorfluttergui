@@ -1,4 +1,3 @@
-// Dart imports:
 import 'dart:convert';
 import 'dart:io';
 
@@ -65,7 +64,7 @@ class SettingsRepository {
       _settings.autoprogram = await storage.getItem('autoprogram');
       _settings.append = await storage.getItem('append');
     } catch (e) {
-      print(e);
+      print('GetSettings Error $e');
     }
     return _settings;
   }

@@ -39,6 +39,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
     if (event is SettingsUpdatedEvent) {
       yield CurrentSettingsState(event.settingsModel);
+      add(SaveSettingsEvent(event.settingsModel));
     }
     if (event is SaveSettingsEvent) {
       if (await _settingsRepository.checkValidJSON()) {
