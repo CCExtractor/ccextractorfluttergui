@@ -41,12 +41,19 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       yield CurrentSettingsState(event.settingsModel);
     }
     if (event is SaveSettingsEvent) {
-      try {
-        await _settingsRepository.saveSettings(event.settingsModel);
+      if (await _settingsRepository.checkValidJSON()) {
+        try {
+          await _settingsRepository.saveSettings(event.settingsModel);
+          final _settings = await _settingsRepository.getSettings();
+          yield CurrentSettingsState(_settings);
+        } catch (e) {
+          yield SettingsErrorState('Error saving settings.');
+        }
+      } else {
+        // only possible when app is open and use manually messes up config.json.
+        yield SettingsErrorState('Corrupted config.json detected, rewriting.');
         final _settings = await _settingsRepository.getSettings();
         yield CurrentSettingsState(_settings);
-      } catch (e) {
-        yield SettingsErrorState('Error saving settings.');
       }
     }
   }

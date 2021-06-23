@@ -19,8 +19,8 @@ class CCExtractor {
   Future getData() async {
     LocalStorage storage = LocalStorage('config.json');
     await storage.ready;
-    outputFileName = await storage.getItem('output_file_name');
-    outputformat = await storage.getItem('output_format');
+    outputFileName = await storage.getItem('outputfilename');
+    outputformat = await storage.getItem('outputformat');
   }
 
   String get ccextractor {

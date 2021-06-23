@@ -40,8 +40,8 @@ class SettingsRepository {
         }
       }
       // This checks if all the values are of the intended datatype.
-      if (outputFormats.contains(data['output_format']) &&
-          data['output_file_name'] is String &&
+      if (outputFormats.contains(data['outputformat']) &&
+          data['outputfilename'] is String &&
           data['append'] is bool &&
           data['autoprogram'] is bool) {
       } else {
@@ -60,12 +60,12 @@ class SettingsRepository {
     try {
       LocalStorage storage = LocalStorage('config.json');
       await storage.ready;
-      _settings.outputformat = await storage.getItem('output_format');
-      _settings.outputfilename = await storage.getItem('output_file_name');
+      _settings.outputformat = await storage.getItem('outputformat');
+      _settings.outputfilename = await storage.getItem('outputfilename');
       _settings.autoprogram = await storage.getItem('autoprogram');
       _settings.append = await storage.getItem('append');
     } catch (e) {
-      print('--------------');
+      print(e);
     }
     return _settings;
   }
@@ -77,21 +77,12 @@ class SettingsRepository {
     await storage.clear();
   }
 
-  Future saveDefaults(bool force) async {
-    LocalStorage storage = LocalStorage('config.json');
-    await storage.ready;
-    await storage.setItem('output_format', 'srt');
-    await storage.setItem('output_file_name', '');
-    await storage.setItem('append', false);
-    await storage.setItem('autoprogram', true);
-  }
-
   Future saveSettings(SettingsModel settingsModel) async {
     try {
       LocalStorage storage = LocalStorage('config.json');
       await storage.ready;
-      await storage.setItem('output_format', settingsModel.outputformat);
-      await storage.setItem('output_file_name', settingsModel.outputfilename);
+      await storage.setItem('outputformat', settingsModel.outputformat);
+      await storage.setItem('outputfilename', settingsModel.outputfilename);
       await storage.setItem('append', settingsModel.append);
       await storage.setItem('autoprogram', settingsModel.autoprogram);
     } catch (e) {

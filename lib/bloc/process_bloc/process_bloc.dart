@@ -27,7 +27,6 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
 
   Stream<ProcessState> _extractNext() async* {
     if (!state.started || state.current != null || state.queue.isEmpty) {
-      // TODO: Add clear List button, show only latest 1000 lines of logs to prevent lag.
       if (state.queue.isEmpty) {
         // We need to show user that all files have finished processing
         // but also keep the queue ready with the orignal list incase

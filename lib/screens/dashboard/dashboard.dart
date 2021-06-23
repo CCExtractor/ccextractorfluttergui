@@ -1,4 +1,7 @@
 // Flutter imports:
+import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
+import 'package:ccxgui/models/settings_model.dart';
+import 'package:ccxgui/repositories/settings_repository.dart';
 import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
 import 'package:ccxgui/utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -372,24 +375,10 @@ class CurrentCommandContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late String outputFileName;
-    late String outputformat;
-    late bool autoprogram;
-    late bool append;
-
-    Future getData() async {
-      LocalStorage storage = LocalStorage('config.json');
-      await storage.ready;
-      outputFileName = await storage.getItem('output_file_name');
-      outputformat = await storage.getItem('output_format');
-      autoprogram = await storage.getItem('autoprogram');
-      append = await storage.getItem('append');
-    }
-
-    return FutureBuilder(
-      future: getData(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
+    return BlocBuilder<SettingsBloc, SettingsState>(
+      builder: (context, state) {
+        if (state is CurrentSettingsState) {
+          SettingsModel settings = state.settingsModel;
           return Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -412,7 +401,7 @@ class CurrentCommandContainer extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SelectableText(
-                    'ccextractor --gui_mode_reports -out=$outputformat ${outputFileName.isNotEmpty ? '-o' : ''} $outputFileName ${autoprogram ? '-autoprogram' : ''} ${append ? '-append' : ''} [input files]',
+                    'ccextractor --gui_mode_reports -out=${settings.outputformat}${settings.outputfilename.isNotEmpty ? '-o' : ''}${settings.outputfilename}${settings.autoprogram ? '-autoprogram' : ''}${settings.append ? '-append' : ''} +[input files]',
                     style: TextStyle(
                       fontSize: 15,
                     ),
@@ -421,9 +410,8 @@ class CurrentCommandContainer extends StatelessWidget {
               ),
             ],
           );
-        } else {
-          return Container();
         }
+        return Container();
       },
     );
   }

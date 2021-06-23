@@ -6,8 +6,8 @@ const kBgDarkColor = Color(0xFF181818);
 const kDefaultPadding = 20.0;
 
 List<String> settingsList = [
-  'output_format',
-  'output_file_name',
+  'outputformat',
+  'outputfilename',
   'autoprogram',
   'append'
 ];
@@ -22,6 +22,19 @@ List<String> inputFormats = [
   'bin  -> CCExtractor\'s own binary format.',
   'raw  -> For McPoodle\'s raw files.',
   'mp4  -> MP4/MOV/M4V and similar.'
+];
+
+List<String> quantMode = [
+  'Don\'t quantize at all.',
+  'Use CCExtractor\'s internal function (default).',
+  'Reduce distinct color count in image for faster results.',
+];
+
+List<String> oem = [
+  '',
+  'OEM_TESSERACT_ONLY - the fastest mode.',
+  'OEM_LSTM_ONLY - use LSTM algorithm for recognition.',
+  'OEM_TESSERACT_LSTM_COMBINED - both algorithms.',
 ];
 
 /// Output formats
