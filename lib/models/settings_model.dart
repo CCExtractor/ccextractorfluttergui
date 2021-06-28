@@ -1,13 +1,15 @@
-import 'dart:convert';
-
+// WARNING: Be sure to add any new parameters to get and save settings func.
 class SettingsModel {
   String outputformat;
   String inputformat;
   String outputfilename;
   bool fixptsjumps;
-  String outStringerval;
-  bool segmentonkeyonly;
   bool append;
+
+  // output file segmentation
+  String outInterval;
+  bool segmentonkeyonly;
+
   // Options that affect how input files will be processed.
   bool goptime;
   bool nogoptime;
@@ -15,7 +17,8 @@ class SettingsModel {
 
   /// -90090
   bool freqEs15;
-  String stream;
+  bool stream;
+  String streamBuffer;
   bool videoedited;
   bool usepicorder;
   bool myth;
@@ -40,6 +43,7 @@ class SettingsModel {
   String maxlevdist;
 
   // Options that affect what kind of output will be produced:
+  bool chapters;
   bool bom;
   bool nobom;
 
@@ -88,14 +92,15 @@ class SettingsModel {
     this.inputformat = '',
     this.outputfilename = '',
     this.fixptsjumps = false,
-    this.outStringerval = '',
-    this.segmentonkeyonly = false,
     this.append = false,
+    this.outInterval = '',
+    this.segmentonkeyonly = false,
     this.goptime = false,
     this.nogoptime = false,
     this.fixpadding = false,
     this.freqEs15 = false,
-    this.stream = '',
+    this.stream = false,
+    this.streamBuffer = '',
     this.videoedited = false,
     this.usepicorder = false,
     this.myth = false,
@@ -116,6 +121,7 @@ class SettingsModel {
     this.nolevdist = false,
     this.minlevdist = '',
     this.maxlevdist = '',
+    this.chapters = false,
     this.bom = false,
     this.nobom = false,
     this.encoder = 'latin1',
@@ -156,14 +162,15 @@ class SettingsModel {
     String? inputformat,
     String? outputfilename,
     bool? fixptsjumps,
-    String? outStringerval,
-    bool? segmentonkeyonly,
     bool? append,
+    String? outInterval,
+    bool? segmentonkeyonly,
     bool? goptime,
     bool? nogoptime,
     bool? fixpadding,
     bool? freqEs15,
-    String? stream,
+    bool? stream,
+    String? streamBuffer,
     bool? videoedited,
     bool? usepicorder,
     bool? myth,
@@ -184,6 +191,7 @@ class SettingsModel {
     bool? nolevdist,
     String? minlevdist,
     String? maxlevdist,
+    bool? chapters,
     bool? bom,
     bool? nobom,
     String? encoder,
@@ -223,14 +231,15 @@ class SettingsModel {
       inputformat: inputformat ?? this.inputformat,
       outputfilename: outputfilename ?? this.outputfilename,
       fixptsjumps: fixptsjumps ?? this.fixptsjumps,
-      outStringerval: outStringerval ?? this.outStringerval,
-      segmentonkeyonly: segmentonkeyonly ?? this.segmentonkeyonly,
       append: append ?? this.append,
+      outInterval: outInterval ?? this.outInterval,
+      segmentonkeyonly: segmentonkeyonly ?? this.segmentonkeyonly,
       goptime: goptime ?? this.goptime,
       nogoptime: nogoptime ?? this.nogoptime,
       fixpadding: fixpadding ?? this.fixpadding,
       freqEs15: freqEs15 ?? this.freqEs15,
       stream: stream ?? this.stream,
+      streamBuffer: streamBuffer ?? this.streamBuffer,
       videoedited: videoedited ?? this.videoedited,
       usepicorder: usepicorder ?? this.usepicorder,
       myth: myth ?? this.myth,
@@ -251,6 +260,7 @@ class SettingsModel {
       nolevdist: nolevdist ?? this.nolevdist,
       minlevdist: minlevdist ?? this.minlevdist,
       maxlevdist: maxlevdist ?? this.maxlevdist,
+      chapters: chapters ?? this.chapters,
       bom: bom ?? this.bom,
       nobom: nobom ?? this.nobom,
       encoder: encoder ?? this.encoder,
@@ -293,14 +303,15 @@ class SettingsModel {
       'inputformat': inputformat,
       'outputfilename': outputfilename,
       'fixptsjumps': fixptsjumps,
-      'outStringerval': outStringerval,
-      'segmentonkeyonly': segmentonkeyonly,
       'append': append,
+      'outInterval': outInterval,
+      'segmentonkeyonly': segmentonkeyonly,
       'goptime': goptime,
       'nogoptime': nogoptime,
       'fixpadding': fixpadding,
       'freqEs15': freqEs15,
       'stream': stream,
+      'streamBuffer': streamBuffer,
       'videoedited': videoedited,
       'usepicorder': usepicorder,
       'myth': myth,
@@ -321,6 +332,7 @@ class SettingsModel {
       'nolevdist': nolevdist,
       'minlevdist': minlevdist,
       'maxlevdist': maxlevdist,
+      'chapters': chapters,
       'bom': bom,
       'nobom': nobom,
       'encoder': encoder,
@@ -363,14 +375,15 @@ class SettingsModel {
       inputformat: map['inputformat'],
       outputfilename: map['outputfilename'],
       fixptsjumps: map['fixptsjumps'],
-      outStringerval: map['outStringerval'],
-      segmentonkeyonly: map['segmentonkeyonly'],
       append: map['append'],
+      outInterval: map['outInterval'],
+      segmentonkeyonly: map['segmentonkeyonly'],
       goptime: map['goptime'],
       nogoptime: map['nogoptime'],
       fixpadding: map['fixpadding'],
       freqEs15: map['freqEs15'],
       stream: map['stream'],
+      streamBuffer: map['streamBuffer'],
       videoedited: map['videoedited'],
       usepicorder: map['usepicorder'],
       myth: map['myth'],
@@ -391,6 +404,7 @@ class SettingsModel {
       nolevdist: map['nolevdist'],
       minlevdist: map['minlevdist'],
       maxlevdist: map['maxlevdist'],
+      chapters: map['chapters'],
       bom: map['bom'],
       nobom: map['nobom'],
       encoder: map['encoder'],
@@ -429,7 +443,7 @@ class SettingsModel {
 
   @override
   String toString() {
-    return 'SettingsModel(outputformat: $outputformat, inputformat: $inputformat, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, outStringerval: $outStringerval, segmentonkeyonly: $segmentonkeyonly, append: $append, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, datapid: $datapid, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, kf: $kf, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, sem: $sem, quantmode: $quantmode, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, delay: $delay, startat: $startat, endat: $endat, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
+    return 'SettingsModel(outputformat: $outputformat, inputformat: $inputformat, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, streamBuffer: $streamBuffer, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, datapid: $datapid, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, kf: $kf, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, sem: $sem, quantmode: $quantmode, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, delay: $delay, startat: $startat, endat: $endat, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
   }
 
   @override
@@ -441,14 +455,15 @@ class SettingsModel {
         other.inputformat == inputformat &&
         other.outputfilename == outputfilename &&
         other.fixptsjumps == fixptsjumps &&
-        other.outStringerval == outStringerval &&
-        other.segmentonkeyonly == segmentonkeyonly &&
         other.append == append &&
+        other.outInterval == outInterval &&
+        other.segmentonkeyonly == segmentonkeyonly &&
         other.goptime == goptime &&
         other.nogoptime == nogoptime &&
         other.fixpadding == fixpadding &&
         other.freqEs15 == freqEs15 &&
         other.stream == stream &&
+        other.streamBuffer == streamBuffer &&
         other.videoedited == videoedited &&
         other.usepicorder == usepicorder &&
         other.myth == myth &&
@@ -469,6 +484,7 @@ class SettingsModel {
         other.nolevdist == nolevdist &&
         other.minlevdist == minlevdist &&
         other.maxlevdist == maxlevdist &&
+        other.chapters == chapters &&
         other.bom == bom &&
         other.nobom == nobom &&
         other.encoder == encoder &&

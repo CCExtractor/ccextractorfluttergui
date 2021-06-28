@@ -5,23 +5,23 @@ const kBgLightColor = Color(0xFF303030);
 const kBgDarkColor = Color(0xFF181818);
 const kDefaultPadding = 20.0;
 
-List<String> settingsList = [
-  'outputformat',
-  'outputfilename',
-  'autoprogram',
-  'append'
+List<String> encoder = [
+  'utf8',
+  'unicode',
+  'latin1',
 ];
 
 /// Input formats
 List<String> inputFormats = [
-  'ts   -> For Transport Streams.',
-  'ps   -> For Program Streams.',
-  'es   -> For Elementary Streams.',
-  'asf  -> ASF container (such as DVR-MS).',
-  'wtv  -> Windows Television (WTV)',
-  'bin  -> CCExtractor\'s own binary format.',
-  'raw  -> For McPoodle\'s raw files.',
-  'mp4  -> MP4/MOV/M4V and similar.'
+  '',
+  'ts',
+  'ps',
+  'es',
+  'asf',
+  'wtv',
+  'bin',
+  'raw',
+  'mp4'
 ];
 
 List<String> quantMode = [

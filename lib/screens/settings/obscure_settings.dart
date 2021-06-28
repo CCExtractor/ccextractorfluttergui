@@ -1,0 +1,190 @@
+// Flutter imports:
+import 'package:ccxgui/screens/settings/components/custom_divider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+
+// Package imports:
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+// Project imports:
+import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
+import 'components/custom_swtich_listTile.dart';
+
+class ObscureSettingsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingsBloc, SettingsState>(
+      builder: (context, state) {
+        if (state is SettingsErrorState) {
+          context.read<SettingsBloc>().add(CheckSettingsEvent());
+          return Center(
+            child: Container(
+              child: Text(
+                'Settings file corrupted, restoring default values. \n ${state.message}',
+              ),
+            ),
+          );
+        }
+        if (state is CurrentSettingsState) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'Obscure settings',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView(
+                children: [
+                  CustomSwitchListTile(
+                    title: 'Panasonic DMR-ES15',
+                    subtitle:
+                        'Use 90090 (instead of 90000) as MPEG clock frequency. (reported to be needed at least by Panasonic DMR-ES15 DVD Recorder)',
+                    value: state.settingsModel.freqEs15,
+                    onTap: (value) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                freqEs15: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  CustomSwitchListTile(
+                    title: 'Use Picorder',
+                    subtitle:
+                        'Use the pic_order_cnt_lsb in AVC/H.264 data streams to order the CC information. The default way is to  the PTS information. Use this switch only when needed.',
+                    value: state.settingsModel.usepicorder,
+                    onTap: (value) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                usepicorder: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  CustomSwitchListTile(
+                    title: 'WTV convert fix',
+                    subtitle:
+                        "This switch works around a bug in Windows 7's built in software to convert *.wtv to *.dvr-ms. For analog NTSC recordings the CC information is marked as digital captions. Use this switch only when needed.",
+                    value: state.settingsModel.wtvconvertfix,
+                    onTap: (value) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                wtvconvertfix: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  CustomSwitchListTile(
+                    title: 'Hauppage',
+                    subtitle:
+                        'If the video was recorder using a Hauppauge card, it might need special processing. This parameter will force the special treatment.',
+                    value: state.settingsModel.hauppauge,
+                    onTap: (value) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                hauppauge: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  //TODO: add program-number?
+                  CustomSwitchListTile(
+                    title: 'Multiprogram',
+                    subtitle:
+                        'Uses multiple programs from the same input stream.',
+                    value: state.settingsModel.multiprogram,
+                    onTap: (value) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                multiprogram: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  CustomDivider(title: 'Myth TV'),
+                  CustomSwitchListTile(
+                    title: 'Use Myth TV ',
+                    subtitle: 'Force MythTV code branch.',
+                    value: state.settingsModel.myth,
+                    onTap: (bool value) {
+                      value == true
+                          ? context.read<SettingsBloc>().add(
+                                SettingsUpdatedEvent(
+                                  state.settingsModel.copyWith(
+                                    myth: value,
+                                    nomyth: false,
+                                  ),
+                                ),
+                              )
+                          : context.read<SettingsBloc>().add(
+                                SettingsUpdatedEvent(
+                                  state.settingsModel.copyWith(
+                                    myth: value,
+                                  ),
+                                ),
+                              );
+                    },
+                  ),
+                  CustomSwitchListTile(
+                    title: 'Disable MythTV code branch.',
+                    subtitle:
+                        'The MythTV branch is needed for analog captures where the closed caption data is stored in the VBI, such as those with bttv cards (Hauppage 250 for example).',
+                    value: state.settingsModel.nomyth,
+                    onTap: (bool value) {
+                      value == true
+                          ? context.read<SettingsBloc>().add(
+                                SettingsUpdatedEvent(
+                                  state.settingsModel.copyWith(
+                                    nomyth: value,
+                                    myth: false,
+                                  ),
+                                ),
+                              )
+                          : context.read<SettingsBloc>().add(
+                                SettingsUpdatedEvent(
+                                  state.settingsModel.copyWith(
+                                    nomyth: value,
+                                  ),
+                                ),
+                              );
+                    },
+                  ),
+                  CustomSwitchListTile(
+                    title: 'Chapters',
+                    subtitle:
+                        '(Experimental) Produces a chapter file from MP4 files.',
+                    value: state.settingsModel.chapters,
+                    onTap: (value) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                chapters: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        return Container();
+      },
+    );
+  }
+}

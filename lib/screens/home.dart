@@ -1,4 +1,7 @@
 // Flutter imports:
+import 'package:ccxgui/screens/settings/input_settings.dart';
+import 'package:ccxgui/screens/settings/obscure_settings.dart';
+import 'package:ccxgui/screens/settings/output_settings.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -48,8 +51,9 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           Dashboard(),
           BasicSettingsScreen(),
-          Container(color: Colors.purple[300]),
-          Container(color: Colors.grey[300]),
+          InputSettingsScreen(),
+          OutputSettingsScreen(),
+          ObscureSettingsScreen(),
         ],
       ),
       tabs: <BottomNavigationBarItem>[
@@ -62,12 +66,16 @@ class _HomeState extends State<Home> {
           icon: Icon(Icons.settings),
         ),
         BottomNavigationBarItem(
-          label: 'Advanced Settings',
-          icon: Icon(Icons.folder),
+          label: 'Input Settings',
+          icon: Icon(Icons.input),
+        ),
+        BottomNavigationBarItem(
+          label: 'Output Settings',
+          icon: Icon(Icons.dvr_outlined),
         ),
         BottomNavigationBarItem(
           label: 'Obscure Settings',
-          icon: Icon(Icons.camera),
+          icon: Icon(Icons.do_disturb_alt_rounded),
         ),
       ],
     );
