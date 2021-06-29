@@ -106,10 +106,16 @@ class SettingsRepository {
       _settings.splitbysentence = await storage.getItem('splitbysentence');
       _settings.datets = await storage.getItem('datets');
       _settings.sects = await storage.getItem('sects');
+      _settings.latrusmap = await storage.getItem('latrusmap');
       _settings.xds = await storage.getItem('xds');
       _settings.lf = await storage.getItem('lf');
       _settings.df = await storage.getItem('df');
       _settings.autodash = await storage.getItem('autodash');
+      _settings.xmltv = await storage.getItem('xmltv');
+      _settings.xmltvliveinterval = await storage.getItem('xmltvliveinterval');
+      _settings.xmltvoutputinterval =
+          await storage.getItem('xmltvoutputinterval');
+      _settings.xmltvonlycurrent = await storage.getItem('xmltvonlycurrent');
       _settings.sem = await storage.getItem('sem');
       _settings.quantmode = await storage.getItem('quantmode');
       _settings.oem = await storage.getItem('oem');
@@ -189,11 +195,17 @@ class SettingsRepository {
       await storage.setItem('splitbysentence', settingsModel.splitbysentence);
       await storage.setItem('datets', settingsModel.datets);
       await storage.setItem('sects', settingsModel.sects);
+      await storage.setItem('latrusmap', settingsModel.latrusmap);
       await storage.setItem('xds', settingsModel.xds);
       await storage.setItem('lf', settingsModel.lf);
       await storage.setItem('df', settingsModel.df);
       await storage.setItem('autodash', settingsModel.autodash);
       await storage.setItem('xmltv', settingsModel.xmltv);
+      await storage.setItem(
+          'xmltvliveinterval', settingsModel.xmltvliveinterval);
+      await storage.setItem(
+          'xmltvoutputinterval', settingsModel.xmltvoutputinterval);
+      await storage.setItem('xmltvonlycurrent', settingsModel.xmltvonlycurrent);
       await storage.setItem('sem', settingsModel.sem);
       await storage.setItem('quantmode', settingsModel.quantmode);
       await storage.setItem('oem', settingsModel.oem);

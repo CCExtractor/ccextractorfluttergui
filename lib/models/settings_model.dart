@@ -59,6 +59,7 @@ class SettingsModel {
   bool splitbysentence;
   bool datets;
   bool sects;
+  bool latrusmap;
   bool xds;
   bool lf;
   bool df;
@@ -66,6 +67,9 @@ class SettingsModel {
 
   /// dropdown with xmltv modes
   String xmltv;
+  String xmltvliveinterval;
+  String xmltvoutputinterval;
+  bool xmltvonlycurrent;
   bool sem;
   String quantmode;
   String oem;
@@ -83,7 +87,7 @@ class SettingsModel {
   String startat;
   String endat;
 
-  // Teletext related options:
+  // Teletext related options: TODO
   String tpage;
   bool teletext;
   bool noteletext;
@@ -135,11 +139,15 @@ class SettingsModel {
     this.splitbysentence = false,
     this.datets = false,
     this.sects = false,
+    this.latrusmap = false,
     this.xds = false,
     this.lf = false,
     this.df = false,
     this.autodash = false,
-    this.xmltv = 'both',
+    this.xmltv = 'Both',
+    this.xmltvliveinterval = '',
+    this.xmltvoutputinterval = '',
+    this.xmltvonlycurrent = false,
     this.sem = false,
     this.quantmode = 'Use CCExtractor\'s internal function (default).',
     this.oem = '',
@@ -205,11 +213,15 @@ class SettingsModel {
     bool? splitbysentence,
     bool? datets,
     bool? sects,
+    bool? latrusmap,
     bool? xds,
     bool? lf,
     bool? df,
     bool? autodash,
     String? xmltv,
+    String? xmltvliveinterval,
+    String? xmltvoutputinterval,
+    bool? xmltvonlycurrent,
     bool? sem,
     String? quantmode,
     String? oem,
@@ -274,11 +286,15 @@ class SettingsModel {
       splitbysentence: splitbysentence ?? this.splitbysentence,
       datets: datets ?? this.datets,
       sects: sects ?? this.sects,
+      latrusmap: latrusmap ?? this.latrusmap,
       xds: xds ?? this.xds,
       lf: lf ?? this.lf,
       df: df ?? this.df,
       autodash: autodash ?? this.autodash,
       xmltv: xmltv ?? this.xmltv,
+      xmltvliveinterval: xmltvliveinterval ?? this.xmltvliveinterval,
+      xmltvoutputinterval: xmltvoutputinterval ?? this.xmltvoutputinterval,
+      xmltvonlycurrent: xmltvonlycurrent ?? this.xmltvonlycurrent,
       sem: sem ?? this.sem,
       quantmode: quantmode ?? this.quantmode,
       oem: oem ?? this.oem,
@@ -346,11 +362,15 @@ class SettingsModel {
       'splitbysentence': splitbysentence,
       'datets': datets,
       'sects': sects,
+      'latrusmap': latrusmap,
       'xds': xds,
       'lf': lf,
       'df': df,
       'autodash': autodash,
       'xmltv': xmltv,
+      'xmltvliveinterval': xmltvliveinterval,
+      'xmltvoutputinterval': xmltvoutputinterval,
+      'xmltvonlycurrent': xmltvonlycurrent,
       'sem': sem,
       'quantmode': quantmode,
       'oem': oem,
@@ -418,11 +438,15 @@ class SettingsModel {
       splitbysentence: map['splitbysentence'],
       datets: map['datets'],
       sects: map['sects'],
+      latrusmap: map['latrusmap'],
       xds: map['xds'],
       lf: map['lf'],
       df: map['df'],
       autodash: map['autodash'],
       xmltv: map['xmltv'],
+      xmltvliveinterval: map['xmltvliveinterval'],
+      xmltvoutputinterval: map['xmltvoutputinterval'],
+      xmltvonlycurrent: map['xmltvonlycurrent'],
       sem: map['sem'],
       quantmode: map['quantmode'],
       oem: map['oem'],
@@ -443,7 +467,7 @@ class SettingsModel {
 
   @override
   String toString() {
-    return 'SettingsModel(outputformat: $outputformat, inputformat: $inputformat, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, streamBuffer: $streamBuffer, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, datapid: $datapid, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, kf: $kf, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, sem: $sem, quantmode: $quantmode, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, delay: $delay, startat: $startat, endat: $endat, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
+    return 'SettingsModel(outputformat: $outputformat, inputformat: $inputformat, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, streamBuffer: $streamBuffer, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, datapid: $datapid, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, kf: $kf, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, quantmode: $quantmode, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, delay: $delay, startat: $startat, endat: $endat, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
   }
 
   @override
@@ -498,11 +522,15 @@ class SettingsModel {
         other.splitbysentence == splitbysentence &&
         other.datets == datets &&
         other.sects == sects &&
+        other.latrusmap == latrusmap &&
         other.xds == xds &&
         other.lf == lf &&
         other.df == df &&
         other.autodash == autodash &&
         other.xmltv == xmltv &&
+        other.xmltvliveinterval == xmltvliveinterval &&
+        other.xmltvoutputinterval == xmltvoutputinterval &&
+        other.xmltvonlycurrent == xmltvonlycurrent &&
         other.sem == sem &&
         other.quantmode == quantmode &&
         other.oem == oem &&
@@ -518,5 +546,80 @@ class SettingsModel {
         other.tpage == tpage &&
         other.teletext == teletext &&
         other.noteletext == noteletext;
+  }
+
+  @override
+  int get hashCode {
+    return outputformat.hashCode ^
+        inputformat.hashCode ^
+        outputfilename.hashCode ^
+        fixptsjumps.hashCode ^
+        append.hashCode ^
+        outInterval.hashCode ^
+        segmentonkeyonly.hashCode ^
+        goptime.hashCode ^
+        nogoptime.hashCode ^
+        fixpadding.hashCode ^
+        freqEs15.hashCode ^
+        stream.hashCode ^
+        streamBuffer.hashCode ^
+        videoedited.hashCode ^
+        usepicorder.hashCode ^
+        myth.hashCode ^
+        nomyth.hashCode ^
+        wtvconvertfix.hashCode ^
+        wtvmpeg2.hashCode ^
+        program_number.hashCode ^
+        autoprogram.hashCode ^
+        multiprogram.hashCode ^
+        datapid.hashCode ^
+        hauppauge.hashCode ^
+        mp4vidtrack.hashCode ^
+        noautotimeref.hashCode ^
+        noscte20.hashCode ^
+        webvttcss.hashCode ^
+        analyzevideo.hashCode ^
+        notimestamp.hashCode ^
+        nolevdist.hashCode ^
+        minlevdist.hashCode ^
+        maxlevdist.hashCode ^
+        chapters.hashCode ^
+        bom.hashCode ^
+        nobom.hashCode ^
+        encoder.hashCode ^
+        nofontcolor.hashCode ^
+        nohtmlescape.hashCode ^
+        notypesetting.hashCode ^
+        trim.hashCode ^
+        defaultcolor.hashCode ^
+        sentencecap.hashCode ^
+        kf.hashCode ^
+        splitbysentence.hashCode ^
+        datets.hashCode ^
+        sects.hashCode ^
+        latrusmap.hashCode ^
+        xds.hashCode ^
+        lf.hashCode ^
+        df.hashCode ^
+        autodash.hashCode ^
+        xmltv.hashCode ^
+        xmltvliveinterval.hashCode ^
+        xmltvoutputinterval.hashCode ^
+        xmltvonlycurrent.hashCode ^
+        sem.hashCode ^
+        quantmode.hashCode ^
+        oem.hashCode ^
+        bufferinput.hashCode ^
+        nobufferinput.hashCode ^
+        buffersize.hashCode ^
+        koc.hashCode ^
+        dru.hashCode ^
+        norollup.hashCode ^
+        delay.hashCode ^
+        startat.hashCode ^
+        endat.hashCode ^
+        tpage.hashCode ^
+        teletext.hashCode ^
+        noteletext.hashCode;
   }
 }

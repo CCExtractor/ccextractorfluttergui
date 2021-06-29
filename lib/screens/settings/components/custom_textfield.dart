@@ -25,7 +25,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -52,6 +52,7 @@ class CustomTextField extends StatelessWidget {
             color: kBgLightColor,
             width: Responsive.isDesktop(context) ? 300 : 100,
             child: TextFormField(
+              cursorHeight: 25,
               enabled: enabled,
               inputFormatters:
                   intOnly ? [FilteringTextInputFormatter.digitsOnly] : [],
@@ -64,7 +65,7 @@ class CustomTextField extends StatelessWidget {
                 errorBorder: InputBorder.none,
                 disabledBorder: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(
-                  vertical: 12,
+                  vertical: 18,
                   horizontal: 6,
                 ),
                 isDense: true,

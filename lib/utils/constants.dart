@@ -11,6 +11,11 @@ List<String> encoder = [
   'latin1',
 ];
 
+List<String> xmltv = [
+  'Full output',
+  'Live output',
+  'Both',
+];
 /// Input formats
 List<String> inputFormats = [
   '',

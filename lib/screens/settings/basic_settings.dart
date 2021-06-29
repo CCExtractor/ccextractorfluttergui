@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -8,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // Project imports:
 import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
 import 'package:ccxgui/utils/constants.dart';
+import 'components/custom_divider.dart';
 import 'components/custom_dropdown.dart';
 import 'components/custom_swtich_listTile.dart';
 import 'components/custom_textfield.dart';
@@ -30,6 +32,12 @@ class BasicSettingsScreen extends StatelessWidget {
         if (state is CurrentSettingsState) {
           TextEditingController outputFileNameController =
               TextEditingController(text: state.settingsModel.outputfilename);
+          TextEditingController delay =
+              TextEditingController(text: state.settingsModel.delay);
+          TextEditingController startat =
+              TextEditingController(text: state.settingsModel.startat);
+          TextEditingController endat =
+              TextEditingController(text: state.settingsModel.endat);
           return Scaffold(
             appBar: AppBar(
               title: Text(
@@ -115,6 +123,60 @@ class BasicSettingsScreen extends StatelessWidget {
                             ),
                           );
                     },
+                  ),
+                  CustomDivider(title: 'Timing settings'),
+                  CustomTextField(
+                    title: 'Delay (ms)',
+                    subtitle:
+                        'For srt/sami/webvtt, add this number of milliseconds to all times.\nYou can also use negative numbers to make subs appear early.',
+                    onEditingComplete: () => context.read<SettingsBloc>().add(
+                          SaveSettingsEvent(
+                            state.settingsModel.copyWith(
+                              delay: delay.text,
+                            ),
+                          ),
+                        ),
+                    controller: delay,
+                  ),
+                  CustomTextField(
+                    title: 'Start at',
+                    subtitle:
+                        'Only write caption information that starts after the given time. Format: MM:SS',
+                    onEditingComplete: () {
+                      RegExp(r'^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$')
+                                  .hasMatch(startat.text) ||
+                              startat.text.isEmpty
+                          ? context.read<SettingsBloc>().add(
+                                SaveSettingsEvent(
+                                  state.settingsModel.copyWith(
+                                    startat: startat.text,
+                                  ),
+                                ),
+                              )
+                          : CustomSnackBarMessage.show(
+                              context, 'Invalid time format');
+                    },
+                    controller: startat,
+                  ),
+                  CustomTextField(
+                    title: 'End at',
+                    subtitle:
+                        'Stop processing after the given time (same format as start at).',
+                    onEditingComplete: () {
+                      RegExp(r'^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$')
+                                  .hasMatch(endat.text) ||
+                              endat.text.isEmpty
+                          ? context.read<SettingsBloc>().add(
+                                SaveSettingsEvent(
+                                  state.settingsModel.copyWith(
+                                    endat: endat.text,
+                                  ),
+                                ),
+                              )
+                          : CustomSnackBarMessage.show(
+                              context, 'Invalid time format');
+                    },
+                    controller: endat,
                   ),
                 ],
               ),
