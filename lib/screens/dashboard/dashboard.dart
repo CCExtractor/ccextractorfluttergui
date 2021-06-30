@@ -369,7 +369,7 @@ class LogsContainer extends StatelessWidget {
 }
 
 class CurrentCommandContainer extends StatelessWidget {
-  const CurrentCommandContainer({Key? key}) : super(key: key);
+  CurrentCommandContainer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -377,6 +377,7 @@ class CurrentCommandContainer extends StatelessWidget {
       builder: (context, state) {
         if (state is CurrentSettingsState) {
           SettingsModel settings = state.settingsModel;
+          List enabledSettings = settings.enabledSettings;
           return Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -399,7 +400,7 @@ class CurrentCommandContainer extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SelectableText(
-                    'ccextractor --gui_mode_reports -out=${settings.outputformat}${settings.outputfilename.isNotEmpty ? '-o' : ''}${settings.outputfilename}${settings.autoprogram ? '-autoprogram' : ''}${settings.append ? '-append' : ''} +[input files]',
+                    'ccextractor --gui_mode_reports ${enabledSettings.map((param) => '--' + param).join(' ')} +[input files]',
                     style: TextStyle(
                       fontSize: 15,
                     ),

@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 
 // Package imports:
+import 'package:ccxgui/models/settings_model.dart';
+import 'package:ccxgui/repositories/settings_repository.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:localstorage/localstorage.dart';
 
@@ -13,16 +15,9 @@ class CCExtractor {
   final RegExp logsRegx =
       RegExp(r'###SUBTITLE###(.+)|###TIME###(.+)', multiLine: true);
   final RegExp videoDetailsRegx = RegExp(r'###VIDEOINFO#(.+)', multiLine: true);
-  late String outputFileName;
-  late String outputformat;
 
-  Future getData() async {
-    LocalStorage storage = LocalStorage('config.json');
-    await storage.ready;
-    outputFileName = await storage.getItem('outputfilename');
-    outputformat = await storage.getItem('outputformat');
-  }
-
+  SettingsRepository settingsRepository = SettingsRepository();
+  SettingsModel settings = SettingsModel();
   String get ccextractor {
     return Platform.isWindows ? 'ccextractorwinfull.exe' : 'ccextractor';
   }
@@ -33,27 +28,30 @@ class CCExtractor {
     required Function(String) listenOutput,
     required Function(List<String>) listenVideoDetails,
   }) async {
-    await getData();
+    settings = await settingsRepository.getSettings();
     process = await Process.start(
       ccextractor,
       [
         file.path,
         '--gui_mode_reports',
         // encoder
-        '-latin1',
+        ...settings.enabledSettings.map((param) => '--' + param).toList()
         // output file name
-        outputFileName.isNotEmpty ? '-o' : '',
-        outputFileName.isNotEmpty
-            ? '${file.path.substring(0, file.path.lastIndexOf(RegExp(r'(\\|\/)')))}/$outputFileName.$outputformat'
-            : '',
-        // output format
-        '-out=$outputformat',
+        // outputFileName.isNotEmpty ? '-o' : '',
+        // outputFileName.isNotEmpty
+        //     ? '${file.path.substring(0, file.path.lastIndexOf(RegExp(r'(\\|\/)')))}/$outputFileName.$outputformat'
+        //     : '',
+        // // output format
+        // '-out=$outputformat',
       ],
     );
 
-    process.stdout.transform(latin1.decoder).listen((update) {});
+    process.stdout.transform(latin1.decoder).listen((update) {
+      print(update);
+    });
 
     process.stderr.transform(latin1.decoder).listen((update) {
+      print(update);
       if (progressRegx.hasMatch(update)) {
         for (RegExpMatch i in progressRegx.allMatches(update)) {
           listenProgress(i[1]!);

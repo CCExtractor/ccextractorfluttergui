@@ -53,7 +53,16 @@ class SettingsRepository {
       return false;
     }
   }
+  List<String> getEnabledSettings(SettingsModel settings) {
+       List<String> enabledSettings = [];
 
+    settings.toJson().forEach((key, value) {
+      if (value) {
+        enabledSettings.add(key);
+      }
+    });
+    return enabledSettings;
+  }
   Future<SettingsModel> getSettings() async {
     final SettingsModel _settings = SettingsModel();
     try {

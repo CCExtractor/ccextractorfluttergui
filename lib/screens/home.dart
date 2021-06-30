@@ -40,7 +40,7 @@ class _HomeState extends State<Home> {
       },
       currentIndex: _currentIndex,
       onTap: (val) {
-        if (mounted) {
+        if (mounted && _currentIndex != val) {
           setState(() {
             _currentIndex = val;
           });

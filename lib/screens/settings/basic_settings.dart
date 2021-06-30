@@ -113,7 +113,7 @@ class BasicSettingsScreen extends StatelessWidget {
                     title: 'Autoprogram',
                     subtitle:
                         "If there's more than one program in the stream, this will the first one we find that contains a suitable stream.",
-                    value: state.settingsModel.autoprogram,
+                  value: state.settingsModel.autoprogram,
                     onTap: (value) {
                       context.read<SettingsBloc>().add(
                             SettingsUpdatedEvent(
