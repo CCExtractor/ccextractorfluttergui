@@ -34,7 +34,6 @@ class CustomDropDown extends StatelessWidget {
             elevation: 0,
             items: items.map((String value) {
               return DropdownMenuItem(
-                
                 value: value,
                 child: Padding(
                   padding:

@@ -369,7 +369,7 @@ class LogsContainer extends StatelessWidget {
 }
 
 class CurrentCommandContainer extends StatelessWidget {
-  CurrentCommandContainer({Key? key}) : super(key: key);
+  const CurrentCommandContainer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

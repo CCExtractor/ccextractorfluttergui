@@ -13,5 +13,6 @@ class Video {
   final String aspectRatio;
   final String frameRate;
 
-  Video(this.resolution, this.aspectRatio, this.frameRate, this.encoding, this.targetFormat);
+  Video(this.resolution, this.aspectRatio, this.frameRate, this.encoding,
+      this.targetFormat);
 }

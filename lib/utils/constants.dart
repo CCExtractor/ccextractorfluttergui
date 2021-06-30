@@ -16,6 +16,7 @@ List<String> xmltv = [
   'Live output',
   'Both',
 ];
+
 /// Input formats
 List<String> inputFormats = [
   '',

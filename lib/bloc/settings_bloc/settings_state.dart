@@ -23,4 +23,3 @@ class SettingsErrorState extends SettingsState {
   @override
   List<Object> get props => [message];
 }
-
