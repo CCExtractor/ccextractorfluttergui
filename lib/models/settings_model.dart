@@ -1,7 +1,9 @@
 // WARNING: Be sure to add any new parameters to get and save settings func.
 class SettingsModel {
-  String outputformat;
-  String inputformat;
+  //DROPDOWN BROKEN
+  String out;
+  //DROPDOWN BROKEN
+  String inp;
   String outputfilename;
   bool fixptsjumps;
   bool append;
@@ -18,6 +20,8 @@ class SettingsModel {
   /// -90090
   bool freqEs15;
   bool stream;
+
+  // EXCEPTION
   String streamBuffer;
   bool videoedited;
   bool usepicorder;
@@ -46,8 +50,7 @@ class SettingsModel {
   bool chapters;
   bool bom;
   bool nobom;
-
-  /// dropdown menu with unicode utf8 and latin as options
+  //DROPDOWN EXCEPTION
   String encoder;
   bool nofontcolor;
   bool nohtmlescape;
@@ -64,13 +67,13 @@ class SettingsModel {
   bool lf;
   bool df;
   bool autodash;
-
-  /// dropdown with xmltv modes
+  //DROPDOWN
   String xmltv;
   String xmltvliveinterval;
   String xmltvoutputinterval;
   bool xmltvonlycurrent;
   bool sem;
+  //DROPDOWN
   String quantmode;
   String oem;
 
@@ -92,8 +95,8 @@ class SettingsModel {
   bool teletext;
   bool noteletext;
   SettingsModel({
-    this.outputformat = 'srt',
-    this.inputformat = '',
+    this.out = 'auto/default',
+    this.inp = 'auto/default',
     this.outputfilename = '',
     this.fixptsjumps = false,
     this.append = false,
@@ -128,12 +131,12 @@ class SettingsModel {
     this.chapters = false,
     this.bom = false,
     this.nobom = false,
-    this.encoder = 'latin1',
+    this.encoder = 'auto/default',
     this.nofontcolor = false,
     this.nohtmlescape = false,
     this.notypesetting = false,
     this.trim = false,
-    this.defaultcolor = '#FFFFFF',
+    this.defaultcolor = '',
     this.sentencecap = false,
     this.kf = false,
     this.splitbysentence = false,
@@ -144,12 +147,12 @@ class SettingsModel {
     this.lf = false,
     this.df = false,
     this.autodash = false,
-    this.xmltv = 'Both',
+    this.xmltv = 'auto/default',
     this.xmltvliveinterval = '',
     this.xmltvoutputinterval = '',
     this.xmltvonlycurrent = false,
     this.sem = false,
-    this.quantmode = 'Use CCExtractor\'s internal function (default).',
+    this.quantmode = 'auto/default',
     this.oem = '',
     this.bufferinput = false,
     this.nobufferinput = false,
@@ -166,8 +169,8 @@ class SettingsModel {
   });
 
   SettingsModel copyWith({
-    String? outputformat,
-    String? inputformat,
+    String? out,
+    String? inp,
     String? outputfilename,
     bool? fixptsjumps,
     bool? append,
@@ -239,8 +242,8 @@ class SettingsModel {
     bool? noteletext,
   }) {
     return SettingsModel(
-      outputformat: outputformat ?? this.outputformat,
-      inputformat: inputformat ?? this.inputformat,
+      out: out ?? this.out,
+      inp: inp ?? this.inp,
       outputfilename: outputfilename ?? this.outputfilename,
       fixptsjumps: fixptsjumps ?? this.fixptsjumps,
       append: append ?? this.append,
@@ -315,8 +318,8 @@ class SettingsModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'outputformat': outputformat,
-      'inputformat': inputformat,
+      'out': out,
+      'inp': inp,
       'outputfilename': outputfilename,
       'fixptsjumps': fixptsjumps,
       'append': append,
@@ -391,8 +394,8 @@ class SettingsModel {
 
   factory SettingsModel.fromJson(Map<String, dynamic> map) {
     return SettingsModel(
-      outputformat: map['outputformat'],
-      inputformat: map['inputformat'],
+      out: map['out'],
+      inp: map['inp'],
       outputfilename: map['outputfilename'],
       fixptsjumps: map['fixptsjumps'],
       append: map['append'],
@@ -467,7 +470,7 @@ class SettingsModel {
 
   @override
   String toString() {
-    return 'SettingsModel(outputformat: $outputformat, inputformat: $inputformat, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, streamBuffer: $streamBuffer, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, datapid: $datapid, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, kf: $kf, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, quantmode: $quantmode, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, delay: $delay, startat: $startat, endat: $endat, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
+    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, streamBuffer: $streamBuffer, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, datapid: $datapid, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, kf: $kf, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, quantmode: $quantmode, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, delay: $delay, startat: $startat, endat: $endat, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
   }
 
   List<String> get enabledSettings {
@@ -480,13 +483,27 @@ class SettingsModel {
     return enabledSettings;
   }
 
+  List<Map<String, String>> get enabledtextfields {
+    List<Map<String, String>> enabledtextfields = [];
+    toJson().forEach(
+      (key, value) {
+        Map<String, String> textfield = {};
+        if (value is String && value.isNotEmpty && value != 'auto/default') {
+          textfield[key] = value;
+          enabledtextfields.add(textfield);
+        }
+      },
+    );
+    return enabledtextfields;
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
     return other is SettingsModel &&
-        other.outputformat == outputformat &&
-        other.inputformat == inputformat &&
+        other.out == out &&
+        other.inp == inp &&
         other.outputfilename == outputfilename &&
         other.fixptsjumps == fixptsjumps &&
         other.append == append &&
@@ -560,8 +577,8 @@ class SettingsModel {
 
   @override
   int get hashCode {
-    return outputformat.hashCode ^
-        inputformat.hashCode ^
+    return out.hashCode ^
+        inp.hashCode ^
         outputfilename.hashCode ^
         fixptsjumps.hashCode ^
         append.hashCode ^

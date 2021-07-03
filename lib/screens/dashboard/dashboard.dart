@@ -1,6 +1,7 @@
 // Flutter imports:
 import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
 import 'package:ccxgui/models/settings_model.dart';
+import 'package:ccxgui/repositories/settings_repository.dart';
 import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
 import 'package:ccxgui/utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -369,7 +370,9 @@ class LogsContainer extends StatelessWidget {
 }
 
 class CurrentCommandContainer extends StatelessWidget {
-  const CurrentCommandContainer({Key? key}) : super(key: key);
+  final SettingsRepository settingsRepository = SettingsRepository();
+
+  CurrentCommandContainer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -377,7 +380,7 @@ class CurrentCommandContainer extends StatelessWidget {
       builder: (context, state) {
         if (state is CurrentSettingsState) {
           SettingsModel settings = state.settingsModel;
-          List enabledSettings = settings.enabledSettings;
+          List<String> paramsList = settingsRepository.getParamsList(settings);
           return Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -400,7 +403,7 @@ class CurrentCommandContainer extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SelectableText(
-                    'ccextractor --gui_mode_reports ${enabledSettings.map((param) => '--' + param).join(' ')} +[input files]',
+                    'ccextractor --gui_mode_reports ${paramsList.reduce((value, element) => value + ' ' + element)} +[input files]',
                     style: TextStyle(
                       fontSize: 15,
                     ),

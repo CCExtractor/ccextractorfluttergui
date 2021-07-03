@@ -38,8 +38,8 @@ class SettingsRepository {
           throw Exception('Setting key not found');
         }
       }
-      // This checks if all the values are of the intended datatype.
-      if (outputFormats.contains(data['outputformat']) &&
+      // This checks if all the values are of the intended datatype. TODO
+      if (outputFormats.contains(data['out']) &&
           data['outputfilename'] is String &&
           data['append'] is bool &&
           data['autoprogram'] is bool) {
@@ -54,13 +54,31 @@ class SettingsRepository {
     }
   }
 
+  List<String> getParamsList(SettingsModel settings, {String filePath = ''}) {
+    List<String> paramsList = [];
+    paramsList.addAll(
+      settings.enabledSettings.map((param) => '--' + param).toList(),
+    );
+    settings.enabledtextfields.forEach((param) {
+      paramsList.add('--' + param.keys.first);
+      if (param.keys.first == 'outputfilename' && filePath.isNotEmpty) {
+        paramsList.add(
+            '${filePath.substring(0, filePath.lastIndexOf(RegExp(r'(\\|\/)')))}/${param.values.first}');
+      } else {
+        paramsList.add(param.values.first);
+      }
+    });
+    // print(paramsList); [--autoprogram, --outputfilename, ewf, --defaultcolor, #FFFFFF, --delay, 22]
+    return paramsList;
+  }
+
   Future<SettingsModel> getSettings() async {
     final SettingsModel _settings = SettingsModel();
     try {
       LocalStorage storage = LocalStorage('config.json');
       await storage.ready;
-      _settings.outputformat = await storage.getItem('outputformat');
-      _settings.inputformat = await storage.getItem('inputformat');
+      _settings.out = await storage.getItem('out');
+      _settings.inp = await storage.getItem('inp');
       _settings.outputfilename = await storage.getItem('outputfilename');
       _settings.fixptsjumps = await storage.getItem('fixptsjumps');
       _settings.outInterval = await storage.getItem('outInterval');
@@ -148,8 +166,8 @@ class SettingsRepository {
     try {
       LocalStorage storage = LocalStorage('config.json');
       await storage.ready;
-      await storage.setItem('outputformat', settingsModel.outputformat);
-      await storage.setItem('inputformat', settingsModel.inputformat);
+      await storage.setItem('out', settingsModel.out);
+      await storage.setItem('inp', settingsModel.inp);
       await storage.setItem('outputfilename', settingsModel.outputfilename);
       await storage.setItem('fixptsjumps', settingsModel.fixptsjumps);
       await storage.setItem('outInterval', settingsModel.outInterval);

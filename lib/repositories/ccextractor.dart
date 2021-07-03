@@ -29,20 +29,14 @@ class CCExtractor {
     required Function(List<String>) listenVideoDetails,
   }) async {
     settings = await settingsRepository.getSettings();
+    List<String> paramsList =
+        settingsRepository.getParamsList(settings, filePath: file.path);
     process = await Process.start(
       ccextractor,
       [
         file.path,
         '--gui_mode_reports',
-        // encoder
-        ...settings.enabledSettings.map((param) => '--' + param).toList()
-        // output file name
-        // outputFileName.isNotEmpty ? '-o' : '',
-        // outputFileName.isNotEmpty
-        //     ? '${file.path.substring(0, file.path.lastIndexOf(RegExp(r'(\\|\/)')))}/$outputFileName.$outputformat'
-        //     : '',
-        // // output format
-        // '-out=$outputformat',
+        ...paramsList,
       ],
     );
 

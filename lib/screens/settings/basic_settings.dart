@@ -68,13 +68,13 @@ class BasicSettingsScreen extends StatelessWidget {
                     title: 'Input file format',
                     subtitle:
                         'Force the file with a specific input format, leave blank to auto-detect',
-                    value: state.settingsModel.inputformat,
+                    value: state.settingsModel.inp,
                     items: inputFormats,
                     onChanged: (String newValue) =>
                         context.read<SettingsBloc>().add(
                               SettingsUpdatedEvent(
                                 state.settingsModel.copyWith(
-                                  inputformat: newValue,
+                                  inp: newValue,
                                 ),
                               ),
                             ),
@@ -83,13 +83,13 @@ class BasicSettingsScreen extends StatelessWidget {
                     title: 'Output file format',
                     subtitle:
                         'This will generate the output in the selected format.',
-                    value: state.settingsModel.outputformat,
+                    value: state.settingsModel.out,
                     items: outputFormats,
                     onChanged: (String newValue) =>
                         context.read<SettingsBloc>().add(
                               SettingsUpdatedEvent(
                                 state.settingsModel.copyWith(
-                                  outputformat: newValue,
+                                  out: newValue,
                                 ),
                               ),
                             ),
@@ -127,6 +127,7 @@ class BasicSettingsScreen extends StatelessWidget {
                   CustomDivider(title: 'Timing settings'),
                   CustomTextField(
                     title: 'Delay (ms)',
+                    intOnly: true,
                     subtitle:
                         'For srt/sami/webvtt, add this number of milliseconds to all times.\nYou can also use negative numbers to make subs appear early.',
                     onEditingComplete: () => context.read<SettingsBloc>().add(

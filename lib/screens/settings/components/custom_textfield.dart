@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 //TODO: warp lines properly
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final String title;
   final String subtitle;
   final Function onEditingComplete;
@@ -23,6 +23,11 @@ class CustomTextField extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _CustomTextFieldState createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
@@ -33,14 +38,14 @@ class CustomTextField extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                title,
+                widget.title,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
                 ),
               ),
               Text(
-                subtitle,
+                widget.subtitle,
                 style: TextStyle(
                   color: Colors.grey.shade400,
                   fontSize: 13,
@@ -53,11 +58,15 @@ class CustomTextField extends StatelessWidget {
             width: Responsive.isDesktop(context) ? 300 : 100,
             child: TextFormField(
               cursorHeight: 25,
-              enabled: enabled,
-              inputFormatters:
-                  intOnly ? [FilteringTextInputFormatter.digitsOnly] : [],
-              onEditingComplete: () => onEditingComplete(),
-              controller: controller,
+              enabled: widget.enabled,
+              inputFormatters: widget.intOnly
+                  ? [FilteringTextInputFormatter.digitsOnly]
+                  : [],
+              onEditingComplete: () {
+                widget.onEditingComplete();
+                setState(() {});
+              },
+              controller: widget.controller,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 focusedBorder: InputBorder.none,
