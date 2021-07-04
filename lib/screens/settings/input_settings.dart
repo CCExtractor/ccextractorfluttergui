@@ -29,8 +29,8 @@ class InputSettingsScreen extends StatelessWidget {
         if (state is CurrentSettingsState) {
           TextEditingController outIntervalController =
               TextEditingController(text: state.settingsModel.outInterval);
-          TextEditingController streamBufferController =
-              TextEditingController(text: state.settingsModel.streamBuffer);
+          TextEditingController streamController =
+              TextEditingController(text: state.settingsModel.stream);
           TextEditingController minlevdist =
               TextEditingController(text: state.settingsModel.minlevdist);
           TextEditingController maxlevdist =
@@ -98,35 +98,19 @@ class InputSettingsScreen extends StatelessWidget {
                   CustomDivider(
                     title: 'Stream',
                   ),
-                  CustomSwitchListTile(
+                  CustomTextField(
                     title: 'Continuous stream',
                     subtitle:
-                        "Consider the file as a continuous stream that is growing as ccextractor processes it, so don't try to figure out its size and don't terminate processing when reaching the current end",
-                    value: state.settingsModel.stream,
-                    onTap: (value) {
-                      context.read<SettingsBloc>().add(
-                            SettingsUpdatedEvent(
-                              state.settingsModel.copyWith(
-                                stream: value,
-                              ),
-                            ),
-                          );
-                    },
-                  ),
-                  CustomTextField(
-                    title: 'Stream buffer before kill',
-                    subtitle:
-                        'The number of seconds without any new data after which ccextractor should exit. \nUse this parameter if you want to process a live stream but not kill ccextractor externally.',
+                        "Consider the file as a continuous stream that is growing as ccextractor processes it\nso don't try to figure out its size and don't terminate processing when reaching the current end",
                     intOnly: true,
-                    enabled: state.settingsModel.stream,
                     onEditingComplete: () => context.read<SettingsBloc>().add(
                           SaveSettingsEvent(
                             state.settingsModel.copyWith(
-                              streamBuffer: streamBufferController.text,
+                              stream: streamController.text,
                             ),
                           ),
                         ),
-                    controller: streamBufferController,
+                    controller: streamController,
                   ),
                   CustomDivider(
                     title: 'Input file processing',

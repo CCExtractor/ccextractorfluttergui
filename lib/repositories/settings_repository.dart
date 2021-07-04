@@ -60,10 +60,15 @@ class SettingsRepository {
       settings.enabledSettings.map((param) => '--' + param).toList(),
     );
     settings.enabledtextfields.forEach((param) {
-      paramsList.add('--' + param.keys.first);
+      if (param.keys.first != 'encoder') {
+        // no --encoder direct -latin1 or -utf8
+        paramsList.add('--' + param.keys.first);
+      }
       if (param.keys.first == 'outputfilename' && filePath.isNotEmpty) {
         paramsList.add(
             '${filePath.substring(0, filePath.lastIndexOf(RegExp(r'(\\|\/)')))}/${param.values.first}');
+      } else if (param.keys.first == 'encoder') {
+        paramsList.add('--' + param.values.first);
       } else {
         paramsList.add(param.values.first);
       }
@@ -89,7 +94,6 @@ class SettingsRepository {
       _settings.fixpadding = await storage.getItem('fixpadding');
       _settings.freqEs15 = await storage.getItem('freqEs15');
       _settings.stream = await storage.getItem('stream');
-      _settings.streamBuffer = await storage.getItem('streamBuffer');
       _settings.videoedited = await storage.getItem('videoedited');
       _settings.usepicorder = await storage.getItem('usepicorder');
       _settings.myth = await storage.getItem('myth');
@@ -178,7 +182,6 @@ class SettingsRepository {
       await storage.setItem('fixpadding', settingsModel.fixpadding);
       await storage.setItem('freqEs15', settingsModel.freqEs15);
       await storage.setItem('stream', settingsModel.stream);
-      await storage.setItem('streamBuffer', settingsModel.streamBuffer);
       await storage.setItem('videoedited', settingsModel.videoedited);
       await storage.setItem('usepicorder', settingsModel.usepicorder);
       await storage.setItem('myth', settingsModel.myth);

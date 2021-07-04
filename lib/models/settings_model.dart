@@ -1,8 +1,8 @@
 // WARNING: Be sure to add any new parameters to get and save settings func.
 class SettingsModel {
-  //DROPDOWN BROKEN
+  //DROPDOWN
   String out;
-  //DROPDOWN BROKEN
+  //DROPDOWN
   String inp;
   String outputfilename;
   bool fixptsjumps;
@@ -19,10 +19,9 @@ class SettingsModel {
 
   /// -90090
   bool freqEs15;
-  bool stream;
+  String stream;
 
   // EXCEPTION
-  String streamBuffer;
   bool videoedited;
   bool usepicorder;
   bool myth;
@@ -106,8 +105,7 @@ class SettingsModel {
     this.nogoptime = false,
     this.fixpadding = false,
     this.freqEs15 = false,
-    this.stream = false,
-    this.streamBuffer = '',
+    this.stream = '',
     this.videoedited = false,
     this.usepicorder = false,
     this.myth = false,
@@ -180,8 +178,7 @@ class SettingsModel {
     bool? nogoptime,
     bool? fixpadding,
     bool? freqEs15,
-    bool? stream,
-    String? streamBuffer,
+    String? stream,
     bool? videoedited,
     bool? usepicorder,
     bool? myth,
@@ -254,7 +251,6 @@ class SettingsModel {
       fixpadding: fixpadding ?? this.fixpadding,
       freqEs15: freqEs15 ?? this.freqEs15,
       stream: stream ?? this.stream,
-      streamBuffer: streamBuffer ?? this.streamBuffer,
       videoedited: videoedited ?? this.videoedited,
       usepicorder: usepicorder ?? this.usepicorder,
       myth: myth ?? this.myth,
@@ -330,7 +326,6 @@ class SettingsModel {
       'fixpadding': fixpadding,
       'freqEs15': freqEs15,
       'stream': stream,
-      'streamBuffer': streamBuffer,
       'videoedited': videoedited,
       'usepicorder': usepicorder,
       'myth': myth,
@@ -406,7 +401,6 @@ class SettingsModel {
       fixpadding: map['fixpadding'],
       freqEs15: map['freqEs15'],
       stream: map['stream'],
-      streamBuffer: map['streamBuffer'],
       videoedited: map['videoedited'],
       usepicorder: map['usepicorder'],
       myth: map['myth'],
@@ -470,7 +464,7 @@ class SettingsModel {
 
   @override
   String toString() {
-    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, streamBuffer: $streamBuffer, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, datapid: $datapid, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, kf: $kf, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, quantmode: $quantmode, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, delay: $delay, startat: $startat, endat: $endat, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
+    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, datapid: $datapid, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, kf: $kf, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, quantmode: $quantmode, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, delay: $delay, startat: $startat, endat: $endat, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
   }
 
   List<String> get enabledSettings {
@@ -514,7 +508,6 @@ class SettingsModel {
         other.fixpadding == fixpadding &&
         other.freqEs15 == freqEs15 &&
         other.stream == stream &&
-        other.streamBuffer == streamBuffer &&
         other.videoedited == videoedited &&
         other.usepicorder == usepicorder &&
         other.myth == myth &&
@@ -589,7 +582,6 @@ class SettingsModel {
         fixpadding.hashCode ^
         freqEs15.hashCode ^
         stream.hashCode ^
-        streamBuffer.hashCode ^
         videoedited.hashCode ^
         usepicorder.hashCode ^
         myth.hashCode ^
