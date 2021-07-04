@@ -14,6 +14,8 @@
 #### Using pre-built executables:
 - You can also just download the latest required executable from [here](https://nightly.link/CCExtractor/ccextractorfluttergui/workflows/create_artifacts/master) or manually from the github actions artifacts, keep in mind these still need `ccextractorwinfull.exe` if you are on windows or `ccextractor` if you are on linux/macOS in your PATH. 
 - For linux you need to `chmod 700 ./ccxgui`
+- Until the parameter names are more consistent in main ccx repo, please use [this](https://github.com/Techno-Disaster/ccextractor/tree/td/consistent-param-names) branch to build ccx.
+
 ### checkValidJSON currenty supports 3 cases
 
 - Check if the .json file is a valid json file.
