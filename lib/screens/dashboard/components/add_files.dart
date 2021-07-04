@@ -26,6 +26,7 @@ class AddFilesButton extends StatelessWidget {
             'mp4',
             'mpg2',
             'vob',
+            'mkv',
           ],
           mimeTypes: ['video/*'],
         ),
