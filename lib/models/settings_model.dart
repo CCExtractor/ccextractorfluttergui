@@ -311,6 +311,80 @@ class SettingsModel {
     );
   }
 
+  static Map<String, String> get paramsLookUpMap {
+    return {
+      'out': '-out=',
+      'in': '-in=',
+      'outputfilename': '-o',
+      'fixptsjumps': '-fixptsjumps',
+      'append': '--append',
+      'outInterval': '--outinterval',
+      'segmentonkeyonly': '--segmentonkeyonly',
+      'goptime': '--goptime',
+      'nogoptime': '--nogoptime',
+      'fixpadding': '--fixpadding',
+      'freqEs15': '-90090',
+      'stream': '--stream',
+      'videoedited': '--videoedited',
+      'usepicorder': '--usepicorder',
+      'myth': '-myth',
+      'nomyth': '-nomyth',
+      'wtvconvertfix': '-wtvconvertfix',
+      'wtvmpeg2': '-wtvmpeg2',
+      'program_number': '--program-number',
+      'autoprogram': '-autoprogram',
+      'multiprogram': '-multiprogram',
+      'datapid': '-datapid',
+      'hauppauge': '--hauppauge',
+      'mp4vidtrack': '-mp4vidtrack',
+      'noautotimeref': '-noautotimeref',
+      'noscte20': '--noscte20',
+      'webvttcss': '--webvtt-create-css',
+      'analyzevideo': '--analyzevideo',
+      'notimestamp': '--no-timestamp-map',
+      'nolevdist': '-nolevdist',
+      'minlevdist': '-levdistmincnt',
+      'maxlevdist': '-levdistmaxpct',
+      'chapters': '-chapters',
+      'bom': '-bom',
+      'nobom': '-nobom',
+      'nofontcolor': '--nofontcolor',
+      'nohtmlescape': '--nohtmlescape',
+      'notypesetting': '--notypesetting',
+      'trim': '-trim',
+      'defaultcolor': '--defaultcolor',
+      'sentencecap': '--sentencecap',
+      'kf': '--kf',
+      'splitbysentence': '--splitbysentence',
+      'datets': '-datets',
+      'sects': '-sects',
+      'latrusmap': '-latrusmap',
+      'xds': '=xds',
+      'lf': '-lf',
+      'df': '-df',
+      'autodash': '-  autodash',
+      'xmltv': '-xmltv',
+      'xmltvliveinterval': '-xmltvliveinterval',
+      'xmltvoutputinterval': '-xmltvoutputinterval',
+      'xmltvonlycurrent': '-xmltvonlycurrent',
+      'sem': '-sem',
+      'quantmode': '-quant',
+      'oem': '-oem',
+      'bufferinput': '--bufferinput',
+      'nobufferinput': '-nobufferinput',
+      'buffersize': '--buffersize',
+      'koc': '-koc',
+      'dru': '-dru',
+      'norollup': '--norollup',
+      'delay': '-delay',
+      'startat': '-startat',
+      'endat': '-endat',
+      'tpage': '-tpage',
+      'teletext': '-teletext',
+      'noteletext': '-noteletext',
+    };
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'out': out,
@@ -466,6 +540,7 @@ class SettingsModel {
     return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, datapid: $datapid, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, kf: $kf, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, quantmode: $quantmode, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, delay: $delay, startat: $startat, endat: $endat, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
   }
 
+  /// returns all toggeles which are enabled (excluding textfields)
   List<String> get enabledSettings {
     List<String> enabledSettings = [];
     toJson().forEach((key, value) {
@@ -476,6 +551,7 @@ class SettingsModel {
     return enabledSettings;
   }
 
+  /// return all textfields and dropdowns which are not empty or not set to default
   List<Map<String, String>> get enabledtextfields {
     List<Map<String, String>> enabledtextfields = [];
     toJson().forEach(

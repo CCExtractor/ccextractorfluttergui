@@ -56,24 +56,33 @@ class SettingsRepository {
 
   List<String> getParamsList(SettingsModel settings, {String filePath = ''}) {
     List<String> paramsList = [];
+
     paramsList.addAll(
-      settings.enabledSettings.map((param) => '--' + param).toList(),
+      settings.enabledSettings
+          .map((param) => SettingsModel.paramsLookUpMap[param]!),
     );
+
     settings.enabledtextfields.forEach((param) {
-      if (param.keys.first != 'encoder') {
+      if (param.keys.first != 'encoder' &&
+          param.keys.first != 'out' &&
+          param.keys.first != 'inp') {
         // no --encoder direct -latin1 or -utf8
-        paramsList.add('  --' + param.keys.first);
+        // -out=format
+        paramsList.add(SettingsModel.paramsLookUpMap[param.keys.first]!);
       }
       if (param.keys.first == 'outputfilename' && filePath.isNotEmpty) {
         paramsList.add(
             '${filePath.substring(0, filePath.lastIndexOf(RegExp(r'(\\|\/)')))}/${param.values.first}');
       } else if (param.keys.first == 'encoder') {
-        paramsList.add('--' + param.values.first);
+        paramsList.add('-' + param.values.first);
+      } else if (param.keys.first == 'out' || param.keys.first == 'inp') {
+        paramsList.add('-' + param.keys.first + '=' + param.values.first);
       } else {
         paramsList.add(param.values.first);
       }
     });
-    // print(paramsList); [--autoprogram, --outputfilename, ewf, --defaultcolor, #FFFFFF, --delay, 22]
+    //  print(paramsList);
+    //  [--append, -autoprogram, -out=webvtt, -utf8]
     return paramsList;
   }
 
