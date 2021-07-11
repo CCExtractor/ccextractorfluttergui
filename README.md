@@ -37,19 +37,51 @@ sample files for testing are stored in sample/ (.gitignored)
 
 ### Project structure
 ```
-lib
+lib/
 ├── bloc
-│   ├── dashboard_bloc
-│   ├── process_bloc
-│   └── settings_bloc
+│   ├── dashboard_bloc
+│   │   ├── dashboard_bloc.dart
+│   │   ├── dashboard_event.dart
+│   │   └── dashboard_state.dart
+│   ├── process_bloc
+│   │   ├── process_bloc.dart
+│   │   ├── process_event.dart
+│   │   └── process_state.dart
+│   └── settings_bloc
+│       ├── settings_bloc.dart
+│       ├── settings_event.dart
+│       └── settings_state.dart
+├── generated_plugin_registrant.dart
+├── main.dart
 ├── models
+│   ├── settings_model.dart
+│   └── video.dart
 ├── repositories
+│   ├── ccextractor.dart
+│   └── settings_repository.dart
 ├── screens
-│   ├── dashboard
-│   │   └── components
-│   └── settings
+│   ├── dashboard
+│   │   ├── components
+│   │   │   ├── add_files.dart
+│   │   │   ├── custom_snackbar.dart
+│   │   │   ├── process_tile.dart
+│   │   │   └── udp_button.dart
+│   │   └── dashboard.dart
+│   ├── home.dart
+│   └── settings
+│       ├── basic_settings.dart
+│       ├── components
+│       │   ├── custom_divider.dart
+│       │   ├── custom_dropdown.dart
+│       │   ├── custom_swtich_listTile.dart
+│       │   └── custom_textfield.dart
+│       ├── input_settings.dart
+│       ├── obscure_settings.dart
+│       └── output_settings.dart
 └── utils
-
-11 directories
+    ├── constants.dart
+    └── responsive.dart
+    
+12 directories, 31 files
 
 ```
