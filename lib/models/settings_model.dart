@@ -1,4 +1,3 @@
-// WARNING: Be sure to add any new parameters to get and save settings func.
 class SettingsModel {
   //DROPDOWN
   String out;
@@ -387,7 +386,7 @@ class SettingsModel {
     };
   }
 
-  factory SettingsModel.fromJson(Map<String, dynamic> map) {
+  static SettingsModel fromJson(Map<String, dynamic> map) {
     return SettingsModel(
       out: map['out'],
       inp: map['inp'],

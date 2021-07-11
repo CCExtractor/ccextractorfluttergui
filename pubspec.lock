@@ -28,7 +28,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.7.0"
+    version: "2.6.1"
   bloc:
     dependency: "direct main"
     description:
@@ -112,7 +112,7 @@ packages:
       name: charcode
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.1"
+    version: "1.2.0"
   checked_yaml:
     dependency: transitive
     description:
@@ -383,9 +383,11 @@ packages:
   localstorage:
     dependency: "direct main"
     description:
-      name: localstorage
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "08a12e657de9ee43159f01abb79135e54ad82546"
+      url: "git://github.com/Techno-Disaster/flutter_localstorage.git"
+    source: git
     version: "4.0.0+1"
   logging:
     dependency: transitive
@@ -407,7 +409,7 @@ packages:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.0"
+    version: "1.3.0"
   mime:
     dependency: transitive
     description:
@@ -645,7 +647,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.1"
+    version: "0.3.0"
   timing:
     dependency: transitive
     description:
@@ -698,7 +700,7 @@ packages:
   window_size:
     dependency: "direct main"
     description:
-      path: "plugins\\window_size"
+      path: "plugins/window_size"
       ref: HEAD
       resolved-ref: e48abe7c3e9ebfe0b81622167c5201d4e783bb81
       url: "git://github.com/google/flutter-desktop-embedding.git"

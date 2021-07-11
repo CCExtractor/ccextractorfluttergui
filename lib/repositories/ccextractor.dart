@@ -6,7 +6,6 @@ import 'dart:io';
 import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/repositories/settings_repository.dart';
 import 'package:file_selector/file_selector.dart';
-import 'package:localstorage/localstorage.dart';
 
 class CCExtractor {
   late Process process;
