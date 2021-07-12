@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
           create: (context) => DashboardBloc(),
         ),
         BlocProvider<ProcessBloc>(
-          create: (context) => ProcessBloc(),
+          create: (context) => ProcessBloc()..add(GetCCExtractorVersion()),
         ),
         BlocProvider<SettingsBloc>(
           create: (context) =>

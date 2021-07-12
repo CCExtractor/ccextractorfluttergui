@@ -1,8 +1,10 @@
 // Flutter imports:
+import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/screens/settings/input_settings.dart';
 import 'package:ccxgui/screens/settings/obscure_settings.dart';
 import 'package:ccxgui/screens/settings/output_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Package imports:
 import 'package:flutter_svg/flutter_svg.dart';
@@ -34,6 +36,18 @@ class _HomeState extends State<Home> {
                 logo,
                 semanticsLabel: 'CCExtractor Logo',
               ),
+            ),
+            BlocBuilder<ProcessBloc, ProcessState>(
+              builder: (context, state) {
+                return Text(
+                  state.version!.trim(),
+                  style: TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context)
+                          .bottomNavigationBarTheme
+                          .backgroundColor),
+                );
+              },
             ),
           ],
         );

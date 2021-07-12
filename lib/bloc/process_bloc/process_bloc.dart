@@ -23,6 +23,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
           started: false,
           progress: '0',
           current: null,
+          version: '0',
         ));
 
   Stream<ProcessState> _extractNext() async* {
@@ -158,6 +159,13 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
             .where((element) => element != event.file)
             .toList(),
         queue: state.queue.where((element) => element != event.file).toList(),
+      );
+    } else if (event is GetCCExtractorVersion) {
+      String ccxVersion = await _extractor.getCCExtractorVersion;
+      print(ccxVersion);
+      yield state.copyWith(
+        current: state.current,
+        version: ccxVersion,
       );
     }
   }

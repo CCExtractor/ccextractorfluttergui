@@ -72,4 +72,12 @@ class CCExtractor {
   void cancelRun() {
     process.kill();
   }
+
+  Future<String> get getCCExtractorVersion async {
+    String ccxStdOut = '0';
+    await Process.run('./ccextractorwinfull.exe', ['--version']).then((value) {
+      ccxStdOut = value.stdout.toString().substring(224, 240);
+    });
+    return ccxStdOut;
+  }
 }

@@ -9,7 +9,7 @@ class ProcessState extends Equatable {
   final List<String> videoDetails;
   final XFile? current;
   final bool started;
-
+  final String? version;
   const ProcessState({
     required this.orignalList,
     required this.queue,
@@ -19,6 +19,7 @@ class ProcessState extends Equatable {
     required this.started,
     required this.progress,
     required this.current,
+    required this.version,
   });
 
   ProcessState copyWith({
@@ -29,6 +30,7 @@ class ProcessState extends Equatable {
     List<String>? videoDetails,
     bool? started,
     String? progress,
+    String? version,
     required XFile? current,
   }) =>
       ProcessState(
@@ -39,6 +41,7 @@ class ProcessState extends Equatable {
         started: started ?? this.started,
         progress: progress ?? this.progress,
         videoDetails: videoDetails ?? this.videoDetails,
+        version: version ?? this.version,
         current: current,
       );
 
@@ -51,6 +54,7 @@ class ProcessState extends Equatable {
         started,
         progress,
         videoDetails,
-        orignalList
+        orignalList,
+        version,
       ];
 }
