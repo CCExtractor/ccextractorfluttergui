@@ -18,7 +18,7 @@ class CCExtractor {
   SettingsRepository settingsRepository = SettingsRepository();
   SettingsModel settings = SettingsModel();
   String get ccextractor {
-    return Platform.isWindows ? 'ccextractorwinfull.exe' : 'ccextractor';
+    return Platform.isWindows ? './ccextractorwinfull.exe' : 'ccextractor';
   }
 
   Future<int> extractFile(
