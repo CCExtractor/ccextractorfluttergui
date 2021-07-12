@@ -54,7 +54,7 @@ class BasicSettingsScreen extends StatelessWidget {
                   CustomTextField(
                     title: 'Output file name (press enter to save)',
                     subtitle:
-                        "This will define the output filename if you don't like the default ones,\nEach file will be appeded with a _1, _2 when needed",
+                        "This will define the output filename if you don't like the default ones. Each file will be appeded with a _1, _2 when needed",
                     onEditingComplete: () => context.read<SettingsBloc>().add(
                           SaveSettingsEvent(
                             state.settingsModel.copyWith(
@@ -129,7 +129,7 @@ class BasicSettingsScreen extends StatelessWidget {
                     title: 'Delay (ms)',
                     intOnly: true,
                     subtitle:
-                        'For srt/sami/webvtt, add this number of milliseconds to all times.\nYou can also use negative numbers to make subs appear early.',
+                        'For srt/sami/webvtt, add this number of milliseconds to all times.You can also use negative numbers to make subs appear early.',
                     onEditingComplete: () => context.read<SettingsBloc>().add(
                           SaveSettingsEvent(
                             state.settingsModel.copyWith(

@@ -101,7 +101,7 @@ class InputSettingsScreen extends StatelessWidget {
                   CustomTextField(
                     title: 'Continuous stream',
                     subtitle:
-                        "Consider the file as a continuous stream that is growing as ccextractor processes it\nso don't try to figure out its size and don't terminate processing when reaching the current end",
+                        "Consider the file as a continuous stream that is growing as ccextractor processes it so don't try to figure out its size and don't terminate processing when reaching the current end",
                     intOnly: true,
                     onEditingComplete: () => context.read<SettingsBloc>().add(
                           SaveSettingsEvent(

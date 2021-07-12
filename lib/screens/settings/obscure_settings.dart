@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:ccxgui/screens/settings/components/custom_divider.dart';
+import 'package:ccxgui/screens/settings/components/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -26,6 +27,8 @@ class ObscureSettingsScreen extends StatelessWidget {
           );
         }
         if (state is CurrentSettingsState) {
+          TextEditingController programNumberController =
+              TextEditingController(text: state.settingsModel.program_number);
           return Scaffold(
             appBar: AppBar(
               title: Text(
@@ -99,7 +102,20 @@ class ObscureSettingsScreen extends StatelessWidget {
                           );
                     },
                   ),
-                  //TODO: add program-number?
+                  CustomTextField(
+                    title: 'Program number',
+                    subtitle:
+                        'In TS mode, specifically select a program to process.',
+                    intOnly: true,
+                    onEditingComplete: () => context.read<SettingsBloc>().add(
+                          SaveSettingsEvent(
+                            state.settingsModel.copyWith(
+                              program_number: programNumberController.text,
+                            ),
+                          ),
+                        ),
+                    controller: programNumberController,
+                  ),
                   CustomSwitchListTile(
                     title: 'Multiprogram',
                     subtitle:

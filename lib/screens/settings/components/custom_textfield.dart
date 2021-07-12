@@ -3,7 +3,6 @@ import 'package:ccxgui/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-//TODO: warp lines properly
 class CustomTextField extends StatefulWidget {
   final String title;
   final String subtitle;
@@ -32,26 +31,29 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.title,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.title,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
                 ),
-              ),
-              Text(
-                widget.subtitle,
-                style: TextStyle(
-                  color: Colors.grey.shade400,
-                  fontSize: 13,
+                Text(
+                  widget.subtitle,
+                  style: TextStyle(
+                    color: Colors.grey.shade400,
+                    fontSize: 13,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Container(
             color: kBgLightColor,
