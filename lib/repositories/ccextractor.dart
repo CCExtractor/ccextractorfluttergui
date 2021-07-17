@@ -1,11 +1,10 @@
-// Dart imports:
 import 'dart:convert';
 import 'dart:io';
 
-// Package imports:
+import 'package:file_selector/file_selector.dart';
+
 import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/repositories/settings_repository.dart';
-import 'package:file_selector/file_selector.dart';
 
 class CCExtractor {
   late Process process;
@@ -75,8 +74,12 @@ class CCExtractor {
 
   Future<String> get getCCExtractorVersion async {
     String ccxStdOut = '0';
-    await Process.run('./ccextractorwinfull.exe', ['--version']).then((value) {
-      ccxStdOut = value.stdout.toString().substring(224, 240);
+    await Process.run(ccextractor, ['--version']).then((value) {
+      ccxStdOut = value.stdout
+          .toString()
+          .substring(value.stdout.toString().indexOf('Version:'),
+              value.stdout.toString().indexOf('Version:') + 15)
+          .trim();
     });
     return ccxStdOut;
   }

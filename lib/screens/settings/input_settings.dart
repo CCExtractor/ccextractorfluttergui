@@ -1,12 +1,10 @@
-// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-// Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// Project imports:
 import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
+import 'package:ccxgui/screens/settings/components/current_command.dart';
 import 'components/custom_divider.dart';
 import 'components/custom_swtich_listTile.dart';
 import 'components/custom_textfield.dart';
@@ -37,11 +35,9 @@ class InputSettingsScreen extends StatelessWidget {
               TextEditingController(text: state.settingsModel.maxlevdist);
           return Scaffold(
             appBar: AppBar(
-              title: Text(
-                'Input settings',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+              title: CurrentCommandContainer(),
               elevation: 0,
+              toolbarHeight: 100,
               backgroundColor: Colors.transparent,
             ),
             body: Padding(

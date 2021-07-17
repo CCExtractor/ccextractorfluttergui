@@ -1,18 +1,11 @@
-// Flutter imports:
-import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
-import 'package:ccxgui/models/settings_model.dart';
-import 'package:ccxgui/repositories/settings_repository.dart';
-import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
-import 'package:ccxgui/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
-// Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// Project imports:
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/screens/dashboard/components/add_files.dart';
+import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
 import 'package:ccxgui/screens/dashboard/components/process_tile.dart';
 import 'package:ccxgui/screens/dashboard/components/udp_button.dart';
 import 'package:ccxgui/utils/constants.dart';
@@ -40,13 +33,6 @@ class Dashboard extends StatelessWidget {
               vertical: 8,
             ),
             child: SelectedFilesContainer(),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 8,
-            ),
-            child: CurrentCommandContainer(),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -364,56 +350,6 @@ class LogsContainer extends StatelessWidget {
                       )),
           ],
         );
-      },
-    );
-  }
-}
-
-class CurrentCommandContainer extends StatelessWidget {
-  final SettingsRepository settingsRepository = SettingsRepository();
-
-  CurrentCommandContainer({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SettingsBloc, SettingsState>(
-      builder: (context, state) {
-        if (state is CurrentSettingsState) {
-          SettingsModel settings = state.settingsModel;
-          List<String> paramsList = settingsRepository.getParamsList(settings);
-          return Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Current Command: ',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              SizedBox(height: 12),
-              Container(
-                width: Responsive.isDesktop(context)
-                    ? MediaQuery.of(context).size.width - 270
-                    : MediaQuery.of(context).size.width -
-                        56, // remove drawer width
-                decoration: BoxDecoration(
-                  color: kBgLightColor,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SelectableText(
-                    'ccextractor --gui_mode_reports ${paramsList.reduce((value, element) => value + ' ' + element)} +[input files]',
-                    style: TextStyle(
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        }
-        return Container();
       },
     );
   }

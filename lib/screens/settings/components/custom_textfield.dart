@@ -1,7 +1,8 @@
-import 'package:ccxgui/utils/constants.dart';
-import 'package:ccxgui/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:ccxgui/utils/constants.dart';
+import 'package:ccxgui/utils/responsive.dart';
 
 class CustomTextField extends StatefulWidget {
   final String title;

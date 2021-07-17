@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-// Package imports:
 import 'package:localstorage/localstorage.dart';
 import 'package:path_provider/path_provider.dart';
 
-// Project imports:
 import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/utils/constants.dart';
 
@@ -98,11 +96,12 @@ class SettingsRepository {
     return _settings;
   }
 
-  Future clearSettings() async {
-    print('deleting');
+  Future resetSettings() async {
+    final file = await _localFile;
     LocalStorage storage = LocalStorage('config.json');
     await storage.ready;
-    await storage.clear();
+    await storage.clear(); // just works
+    await file.writeAsString(jsonEncode(SettingsModel()));
   }
 
   Future saveSettings(SettingsModel settingsModel) async {

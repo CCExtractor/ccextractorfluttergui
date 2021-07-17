@@ -1,18 +1,15 @@
-// Flutter imports:
-import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
-import 'package:ccxgui/screens/settings/input_settings.dart';
-import 'package:ccxgui/screens/settings/obscure_settings.dart';
-import 'package:ccxgui/screens/settings/output_settings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-// Package imports:
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:navigation_rail/navigation_rail.dart';
 
-// Project imports:
+import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/screens/dashboard/dashboard.dart';
 import 'package:ccxgui/screens/settings/basic_settings.dart';
+import 'package:ccxgui/screens/settings/input_settings.dart';
+import 'package:ccxgui/screens/settings/obscure_settings.dart';
+import 'package:ccxgui/screens/settings/output_settings.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -50,6 +47,30 @@ class _HomeState extends State<Home> {
               },
             ),
           ],
+        );
+      },
+      drawerFooterBuilder: (context) {
+        return Padding(
+          padding: const EdgeInsets.only(left: 20.0, bottom: 16),
+          child: MaterialButton(
+            hoverColor: Colors.transparent,
+            onPressed: () {}, // TODO: implement check for updates
+            child: Row(
+              children: [
+                Icon(
+                  Icons.update,
+                  color: Colors.white54,
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  'Check for updates',
+                  style: TextStyle(color: Colors.white60, fontSize: 14),
+                ),
+              ],
+            ),
+          ),
         );
       },
       currentIndex: _currentIndex,

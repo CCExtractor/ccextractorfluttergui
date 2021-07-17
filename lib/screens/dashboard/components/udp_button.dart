@@ -1,7 +1,5 @@
-// Flutter imports:
 import 'package:flutter/material.dart';
 
-// Project imports:
 import 'package:ccxgui/utils/constants.dart';
 
 class ListenOnUDPButton extends StatelessWidget {

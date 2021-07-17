@@ -1,11 +1,8 @@
-// Dart imports:
 import 'dart:async';
 
-// Package imports:
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-// Project imports:
 import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/repositories/settings_repository.dart';
 
@@ -27,21 +24,23 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       } else {
         yield SettingsErrorState("Couldn't parse json file");
       }
-    }
-    if (event is GetSettingsEvent) {
+    } else if (event is GetSettingsEvent) {
       try {
         final _settings = await _settingsRepository.getSettings();
         yield CurrentSettingsState(_settings);
       } catch (e) {
         yield SettingsErrorState('Error getting settings.');
       }
-    }
+    } else if (event is ResetSettingsEvent) {
+      await _settingsRepository.resetSettings();
+      final _settings = await _settingsRepository.getSettings();
 
-    if (event is SettingsUpdatedEvent) {
+      yield CurrentSettingsState(_settings);
+    } else if (event is SettingsUpdatedEvent) {
       yield CurrentSettingsState(event.settingsModel);
       add(SaveSettingsEvent(event.settingsModel));
-    }
-    if (event is SaveSettingsEvent) {
+      // improve
+    } else if (event is SaveSettingsEvent) {
       if (await _settingsRepository.checkValidJSON()) {
         try {
           await _settingsRepository.saveSettings(event.settingsModel);
