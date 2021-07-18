@@ -1,20 +1,20 @@
 import 'dart:io';
 
-import 'package:ccxgui/bloc/updater_bloc/updater_bloc.dart';
-import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:navigation_rail/navigation_rail.dart';
 
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
+import 'package:ccxgui/bloc/updater_bloc/updater_bloc.dart';
+import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
 import 'package:ccxgui/screens/dashboard/dashboard.dart';
 import 'package:ccxgui/screens/settings/basic_settings.dart';
 import 'package:ccxgui/screens/settings/input_settings.dart';
 import 'package:ccxgui/screens/settings/obscure_settings.dart';
 import 'package:ccxgui/screens/settings/output_settings.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 
 class Home extends StatefulWidget {
   @override

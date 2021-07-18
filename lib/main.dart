@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:ccxgui/bloc/updater_bloc/updater_bloc.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +8,7 @@ import 'package:window_size/window_size.dart';
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
+import 'package:ccxgui/bloc/updater_bloc/updater_bloc.dart';
 import 'package:ccxgui/repositories/settings_repository.dart';
 import 'package:ccxgui/screens/home.dart';
 import 'package:ccxgui/utils/constants.dart';
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               SettingsBloc(SettingsRepository())..add(CheckSettingsEvent()),
         ),
-         BlocProvider<UpdaterBloc>(
+        BlocProvider<UpdaterBloc>(
           create: (context) => UpdaterBloc(),
         ),
       ],
