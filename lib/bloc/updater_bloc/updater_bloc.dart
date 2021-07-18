@@ -19,14 +19,25 @@ class UpdaterBloc extends Bloc<UpdaterEvent, UpdaterState> {
   ) async* {
     if (event is CheckForUpdates) {
       var url = Uri.parse(URL);
+      String changelog = '';
+      int currentVersionIndex = 0;
       http.Response response = await http.get(url, headers: {
         'Authorization': String.fromEnvironment('TOKEN'),
       });
       var data = jsonDecode(response.body);
+      for (var i = 0; i < data.length; i++) {
+        if (event.currentVersion ==
+            data[i]['tag_name'].toString().substring(1)) {
+          currentVersionIndex = i;
+        }
+      }
+      for (var i = 0; i < currentVersionIndex; i++) {
+        changelog += '\n' + data[i]['body'].toString();
+      }
       String latestVersion = data[0]['tag_name'].toString().substring(1);
       String downloadURL =
           data[0]['assets'][0]['browser_download_url'].toString();
-      String changelog = data[0]['body'].toString();
+
       bool updateAvailable =
           double.parse(latestVersion) > double.parse(event.currentVersion);
       print(latestVersion);
