@@ -77,7 +77,7 @@ class CCExtractor {
     await Process.run(ccextractor, ['--version']).then((value) {
       ccxStdOut = value.stdout
           .toString()
-          .substring(value.stdout.toString().indexOf('Version:'),
+          .substring(value.stdout.toString().indexOf('Version:') + 8,
               value.stdout.toString().indexOf('Version:') + 15)
           .trim();
     });

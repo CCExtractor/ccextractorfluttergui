@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ccxgui/bloc/updater_bloc/updater_bloc.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,6 +47,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<SettingsBloc>(
           create: (context) =>
               SettingsBloc(SettingsRepository())..add(CheckSettingsEvent()),
+        ),
+         BlocProvider<UpdaterBloc>(
+          create: (context) => UpdaterBloc(),
         ),
       ],
       child: MaterialApp(

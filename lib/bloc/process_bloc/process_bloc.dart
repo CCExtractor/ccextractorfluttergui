@@ -160,7 +160,6 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       );
     } else if (event is GetCCExtractorVersion) {
       String ccxVersion = await _extractor.getCCExtractorVersion;
-      print(ccxVersion);
       yield state.copyWith(
         current: state.current,
         version: ccxVersion,
