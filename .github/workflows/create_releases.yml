@@ -18,9 +18,7 @@ jobs:
     - name: Enable desktop support
       run: flutter config --enable-windows-desktop
     - name: Build Windows app
-      env:
-        TOKEN: ${{ secrets.TOKEN }}
-      run: flutter build windows --dart-define="TOKEN="$TOKEN""
+      run: flutter build windows
     - name: Copy VC redistributables
       run: |
         Copy-Item (vswhere -latest -find 'VC\Redist\MSVC\*\x64\*\msvcp140.dll') .
@@ -52,9 +50,7 @@ jobs:
         flutter config --enable-linux-desktop
         sudo apt-get install clang cmake ninja-build pkg-config libgtk-3-dev
     - name: Build Linux app
-      env:
-        TOKEN: ${{ secrets.TOKEN }}
-      run: flutter build linux --dart-define="TOKEN="$TOKEN""
+      run: flutter build linux
     - name: Create zip
       uses: papeloto/action-zip@v1
       with:

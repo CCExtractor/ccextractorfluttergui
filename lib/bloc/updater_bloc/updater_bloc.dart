@@ -21,9 +21,7 @@ class UpdaterBloc extends Bloc<UpdaterEvent, UpdaterState> {
       var url = Uri.parse(URL);
       String changelog = '';
       int currentVersionIndex = 0;
-      http.Response response = await http.get(url, headers: {
-        'Authorization': String.fromEnvironment('TOKEN'),
-      });
+      http.Response response = await http.get(url);
       var data = jsonDecode(response.body);
       for (var i = 0; i < data.length; i++) {
         if (event.currentVersion ==
