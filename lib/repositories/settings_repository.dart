@@ -75,6 +75,16 @@ class SettingsRepository {
         paramsList.add('-' + param.values.first);
       } else if (param.keys.first == 'out' || param.keys.first == 'inp') {
         paramsList.add('-' + param.keys.first + '=' + param.values.first);
+      } else if (dropdownListMap.keys.contains(param.keys.first)) {
+        /// this part handles the dropdown menus, ccx takes in arg xmltv 3 ,
+        /// which is the same as "Both" option in the GUI, if the enabled setting
+        /// is in dropdownListMap we search for the particular setting, xmltv in
+        /// this case, then we get a map with the corresponding settings and the
+        /// int ccx takes for eg: "Both": 3, then we pass this value to paramsList
+        /// auto/default can take in anyvalue because that is filtered out during
+        /// [settings.enabledtextfields]
+        paramsList.add(
+            dropdownListMap[param.keys.first]![param.values.first].toString());
       } else {
         paramsList.add(param.values.first);
       }

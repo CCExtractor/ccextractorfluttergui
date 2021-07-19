@@ -1,3 +1,16 @@
+/// TODO:
+/// streamType
+/// dvblang
+/// ocrlang
+/// mkvlang
+/// quant in UI
+/// oem in UI
+/// -ru1/ru2/ru3
+/// codec/nocodec
+/// start/end credit stuff
+/// teletextstuff in UI
+/// hardsubx settings
+
 class SettingsModel {
   //DROPDOWN
   String out;
@@ -72,7 +85,7 @@ class SettingsModel {
   bool xmltvonlycurrent;
   bool sem;
   //DROPDOWN
-  String quantmode;
+  String quant;
   String oem;
 
   // Options that affect how ccextractor reads and writes (buffering):
@@ -88,7 +101,7 @@ class SettingsModel {
   String startat;
   String endat;
 
-  // Teletext related options: TODO
+  // Teletext related options:
   String tpage;
   bool teletext;
   bool noteletext;
@@ -149,7 +162,7 @@ class SettingsModel {
     this.xmltvoutputinterval = '',
     this.xmltvonlycurrent = false,
     this.sem = false,
-    this.quantmode = 'auto/default',
+    this.quant = 'auto/default',
     this.oem = '',
     this.bufferinput = false,
     this.nobufferinput = false,
@@ -222,7 +235,7 @@ class SettingsModel {
     String? xmltvoutputinterval,
     bool? xmltvonlycurrent,
     bool? sem,
-    String? quantmode,
+    String? quant,
     String? oem,
     bool? bufferinput,
     bool? nobufferinput,
@@ -294,7 +307,7 @@ class SettingsModel {
       xmltvoutputinterval: xmltvoutputinterval ?? this.xmltvoutputinterval,
       xmltvonlycurrent: xmltvonlycurrent ?? this.xmltvonlycurrent,
       sem: sem ?? this.sem,
-      quantmode: quantmode ?? this.quantmode,
+      quant: quant ?? this.quant,
       oem: oem ?? this.oem,
       bufferinput: bufferinput ?? this.bufferinput,
       nobufferinput: nobufferinput ?? this.nobufferinput,
@@ -368,7 +381,7 @@ class SettingsModel {
       'xmltvoutputinterval': '-xmltvoutputinterval',
       'xmltvonlycurrent': '-xmltvonlycurrent',
       'sem': '-sem',
-      'quantmode': '-quant',
+      'quant': '-quant',
       'oem': '-oem',
       'bufferinput': '--bufferinput',
       'nobufferinput': '-nobufferinput',
@@ -443,7 +456,7 @@ class SettingsModel {
       'xmltvoutputinterval': xmltvoutputinterval,
       'xmltvonlycurrent': xmltvonlycurrent,
       'sem': sem,
-      'quantmode': quantmode,
+      'quant': quant,
       'oem': oem,
       'bufferinput': bufferinput,
       'nobufferinput': nobufferinput,
@@ -518,7 +531,7 @@ class SettingsModel {
       xmltvoutputinterval: map['xmltvoutputinterval'],
       xmltvonlycurrent: map['xmltvonlycurrent'],
       sem: map['sem'],
-      quantmode: map['quantmode'],
+      quant: map['quant'],
       oem: map['oem'],
       bufferinput: map['bufferinput'],
       nobufferinput: map['nobufferinput'],
@@ -537,7 +550,7 @@ class SettingsModel {
 
   @override
   String toString() {
-    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, datapid: $datapid, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, kf: $kf, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, quantmode: $quantmode, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, delay: $delay, startat: $startat, endat: $endat, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
+    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, datapid: $datapid, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, kf: $kf, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, quant: $quant, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, delay: $delay, startat: $startat, endat: $endat, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
   }
 
   /// returns all toggeles which are enabled (excluding textfields)
@@ -627,7 +640,7 @@ class SettingsModel {
         other.xmltvoutputinterval == xmltvoutputinterval &&
         other.xmltvonlycurrent == xmltvonlycurrent &&
         other.sem == sem &&
-        other.quantmode == quantmode &&
+        other.quant == quant &&
         other.oem == oem &&
         other.bufferinput == bufferinput &&
         other.nobufferinput == nobufferinput &&
@@ -701,7 +714,7 @@ class SettingsModel {
         xmltvoutputinterval.hashCode ^
         xmltvonlycurrent.hashCode ^
         sem.hashCode ^
-        quantmode.hashCode ^
+        quant.hashCode ^
         oem.hashCode ^
         bufferinput.hashCode ^
         nobufferinput.hashCode ^

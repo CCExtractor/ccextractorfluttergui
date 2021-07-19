@@ -355,7 +355,7 @@ class OutputSettingsScreen extends StatelessWidget {
                     subtitle:
                         'Produce an XMLTV file containing the EPG data from the source TS file',
                     value: state.settingsModel.xmltv,
-                    items: xmltv,
+                    items: dropdownListMap['xmltv']!.keys.toList(),
                     onChanged: (value) => context.read<SettingsBloc>().add(
                           SettingsUpdatedEvent(
                             state.settingsModel.copyWith(
