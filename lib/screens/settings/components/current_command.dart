@@ -22,6 +22,7 @@ class CurrentCommandContainer extends StatelessWidget {
           List<String> paramsList = settingsRepository.getParamsList(settings);
           return Column(
             mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -58,20 +59,24 @@ class CurrentCommandContainer extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 12),
-              Container(
-                width: Responsive.isDesktop(context)
-                    ? MediaQuery.of(context).size.width - 270
-                    : MediaQuery.of(context).size.width -
-                        56, // remove drawer width
-                decoration: BoxDecoration(
-                  color: kBgLightColor,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SelectableText(
-                    'ccextractor --gui_mode_reports ${paramsList.reduce((value, element) => value + ' ' + element)} +[input files]',
-                    style: TextStyle(
-                      fontSize: 15,
+              SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Container(
+                  width: Responsive.isDesktop(context)
+                      ? MediaQuery.of(context).size.width - 270
+                      : MediaQuery.of(context).size.width -
+                          56, // remove drawer width
+                  decoration: BoxDecoration(
+                    color: kBgLightColor,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SelectableText(
+                      'ccextractor --gui_mode_reports ${paramsList.reduce((value, element) => value + ' ' + element)} +[input files]',
+                      maxLines: 2,
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
                     ),
                   ),
                 ),

@@ -37,9 +37,13 @@ class InputSettingsScreen extends StatelessWidget {
               TextEditingController(text: state.settingsModel.maxlevdist);
           return Scaffold(
             appBar: AppBar(
-              title: CurrentCommandContainer(),
+              flexibleSpace: FlexibleSpaceBar(
+                title: CurrentCommandContainer(),
+                titlePadding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+              ),
               elevation: 0,
-              toolbarHeight: 100,
+              toolbarHeight: 150,
               backgroundColor: Colors.transparent,
             ),
             body: Padding(

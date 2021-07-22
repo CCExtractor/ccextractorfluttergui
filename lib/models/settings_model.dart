@@ -1,5 +1,4 @@
 /// TODO:
-/// profanity and cap files browse mode
 /// quant , oem, dvb/mkv/ocrlang, teletextstuff in UI this is also in hardsubx
 /// hardsubx settings
 
@@ -61,7 +60,9 @@ class SettingsModel {
   bool trim;
   String defaultcolor;
   bool sentencecap;
+  String capFile;
   bool kf;
+  String profanityFile;
   bool splitbysentence;
   bool datets;
   bool sects;
@@ -156,7 +157,9 @@ class SettingsModel {
     this.trim = false,
     this.defaultcolor = '',
     this.sentencecap = false,
+    this.capFile = '',
     this.kf = false,
+    this.profanityFile = '',
     this.splitbysentence = false,
     this.datets = false,
     this.sects = false,
@@ -243,7 +246,9 @@ class SettingsModel {
     bool? trim,
     String? defaultcolor,
     bool? sentencecap,
+    String? capFile,
     bool? kf,
+    String? profanityFile,
     bool? splitbysentence,
     bool? datets,
     bool? sects,
@@ -329,7 +334,9 @@ class SettingsModel {
       trim: trim ?? this.trim,
       defaultcolor: defaultcolor ?? this.defaultcolor,
       sentencecap: sentencecap ?? this.sentencecap,
+      capFile: capFile ?? this.capFile,
       kf: kf ?? this.kf,
+      profanityFile: profanityFile ?? this.profanityFile,
       splitbysentence: splitbysentence ?? this.splitbysentence,
       datets: datets ?? this.datets,
       sects: sects ?? this.sects,
@@ -420,7 +427,9 @@ class SettingsModel {
       'trim': '-trim',
       'defaultcolor': '--defaultcolor',
       'sentencecap': '--sentencecap',
+      'capFile': '--capfile',
       'kf': '--kf',
+      'profanityFile': '--profanity-file',
       'splitbysentence': '--splitbysentence',
       'datets': '-datets',
       'sects': '-sects',
@@ -534,7 +543,9 @@ class SettingsModel {
       'trim': trim,
       'defaultcolor': defaultcolor,
       'sentencecap': sentencecap,
+      'capFile': capFile,
       'kf': kf,
+      'profanityFile': profanityFile,
       'splitbysentence': splitbysentence,
       'datets': datets,
       'sects': sects,
@@ -623,7 +634,9 @@ class SettingsModel {
       trim: map['trim'],
       defaultcolor: map['defaultcolor'],
       sentencecap: map['sentencecap'],
+      capFile: map['capFile'],
       kf: map['kf'],
+      profanityFile: map['profanityFile'],
       splitbysentence: map['splitbysentence'],
       datets: map['datets'],
       sects: map['sects'],
@@ -670,7 +683,7 @@ class SettingsModel {
 
   @override
   String toString() {
-    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, streamtype: $streamtype, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, kf: $kf, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, dvblang: $dvblang, mkvlang: $mkvlang, ocrlang: $ocrlang, quant: $quant, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, rollUp: $rollUp, delay: $delay, startat: $startat, endat: $endat, codec: $codec, nocodec: $nocodec, startcreditstext: $startcreditstext, startcreditsnotbefore: $startcreditsnotbefore, startcreditsnotafter: $startcreditsnotafter, startcreditsforatleast: $startcreditsforatleast, startcreditsforatmost: $startcreditsforatmost, endcreditstext: $endcreditstext, endcreditsforatleast: $endcreditsforatleast, endcreditsforatmost: $endcreditsforatmost, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
+    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, streamtype: $streamtype, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, capFile: $capFile, kf: $kf, profanityFile: $profanityFile, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, dvblang: $dvblang, mkvlang: $mkvlang, ocrlang: $ocrlang, quant: $quant, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, rollUp: $rollUp, delay: $delay, startat: $startat, endat: $endat, codec: $codec, nocodec: $nocodec, startcreditstext: $startcreditstext, startcreditsnotbefore: $startcreditsnotbefore, startcreditsnotafter: $startcreditsnotafter, startcreditsforatleast: $startcreditsforatleast, startcreditsforatmost: $startcreditsforatmost, endcreditstext: $endcreditstext, endcreditsforatleast: $endcreditsforatleast, endcreditsforatmost: $endcreditsforatmost, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
   }
 
   @override
@@ -720,7 +733,9 @@ class SettingsModel {
         other.trim == trim &&
         other.defaultcolor == defaultcolor &&
         other.sentencecap == sentencecap &&
+        other.capFile == capFile &&
         other.kf == kf &&
+        other.profanityFile == profanityFile &&
         other.splitbysentence == splitbysentence &&
         other.datets == datets &&
         other.sects == sects &&
@@ -808,7 +823,9 @@ class SettingsModel {
         trim.hashCode ^
         defaultcolor.hashCode ^
         sentencecap.hashCode ^
+        capFile.hashCode ^
         kf.hashCode ^
+        profanityFile.hashCode ^
         splitbysentence.hashCode ^
         datets.hashCode ^
         sects.hashCode ^

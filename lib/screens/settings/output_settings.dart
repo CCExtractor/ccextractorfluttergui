@@ -9,6 +9,7 @@ import 'package:ccxgui/screens/settings/components/current_command.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'components/custom_divider.dart';
 import 'components/custom_dropdown.dart';
+import 'components/custom_path_button.dart';
 import 'components/custom_swtich_listTile.dart';
 import 'components/custom_textfield.dart';
 
@@ -38,9 +39,13 @@ class OutputSettingsScreen extends StatelessWidget {
               TextEditingController(text: state.settingsModel.buffersize);
           return Scaffold(
             appBar: AppBar(
-              title: CurrentCommandContainer(),
+              flexibleSpace: FlexibleSpaceBar(
+                title: CurrentCommandContainer(),
+                titlePadding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+              ),
               elevation: 0,
-              toolbarHeight: 100,
+              toolbarHeight: 150,
               backgroundColor: Colors.transparent,
             ),
             body: Padding(
@@ -231,6 +236,30 @@ class OutputSettingsScreen extends StatelessWidget {
                           );
                     },
                   ),
+                  CustomGetFilePathButton(
+                    title: 'Profanity file',
+                    subtitle:
+                        "Add the contents of 'file' to the list of words, that must be censored",
+                    currentPath: state.settingsModel.profanityFile,
+                    clearField: () {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                profanityFile: '',
+                              ),
+                            ),
+                          );
+                    },
+                    saveToConfig: (String filePath) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                profanityFile: filePath,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
                   CustomSwitchListTile(
                     title: 'Split by sentence',
                     subtitle:
@@ -241,6 +270,30 @@ class OutputSettingsScreen extends StatelessWidget {
                             SettingsUpdatedEvent(
                               state.settingsModel.copyWith(
                                 splitbysentence: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  CustomGetFilePathButton(
+                    title: 'Sentence cap file',
+                    subtitle:
+                        "Add the contents of 'file' to the list of words, that must be capitalized.",
+                    currentPath: state.settingsModel.capFile,
+                    clearField: () {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                capFile: '',
+                              ),
+                            ),
+                          );
+                    },
+                    saveToConfig: (String filePath) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                capFile: filePath,
                               ),
                             ),
                           );
