@@ -36,6 +36,22 @@ class BasicSettingsScreen extends StatelessWidget {
               TextEditingController(text: state.settingsModel.startat);
           TextEditingController endat =
               TextEditingController(text: state.settingsModel.endat);
+          TextEditingController startcreditstext =
+              TextEditingController(text: state.settingsModel.startcreditstext);
+          TextEditingController startcreditsnotbefore = TextEditingController(
+              text: state.settingsModel.startcreditsnotbefore);
+          TextEditingController startcreditsnotafter = TextEditingController(
+              text: state.settingsModel.startcreditsnotafter);
+          TextEditingController startcreditsforatleast = TextEditingController(
+              text: state.settingsModel.startcreditsforatleast);
+          TextEditingController startcreditsforatmost = TextEditingController(
+              text: state.settingsModel.startcreditsforatmost);
+          TextEditingController endcreditstext =
+              TextEditingController(text: state.settingsModel.endcreditstext);
+          TextEditingController endcreditsforatleast = TextEditingController(
+              text: state.settingsModel.endcreditsforatleast);
+          TextEditingController endcreditsforatmost = TextEditingController(
+              text: state.settingsModel.endcreditsforatmost);
           return Scaffold(
             appBar: AppBar(
               title: CurrentCommandContainer(),
@@ -138,7 +154,7 @@ class BasicSettingsScreen extends StatelessWidget {
                   CustomTextField(
                     title: 'Start at',
                     subtitle:
-                        'Only write caption information that starts after the given time. Format: MM:SS',
+                        'Only write caption information that starts after the given time. Format: S or  MM:SS',
                     onEditingComplete: () {
                       RegExp(r'^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$')
                                   .hasMatch(startat.text) ||
@@ -174,6 +190,163 @@ class BasicSettingsScreen extends StatelessWidget {
                               context, 'Invalid time format');
                     },
                     controller: endat,
+                  ),
+                  CustomDivider(title: 'Add credits options'),
+                  CustomTextField(
+                    title: 'Start credits',
+                    subtitle:
+                        'Write this text as start credits. Can be separated with \\n',
+                    onEditingComplete: () {
+                      context.read<SettingsBloc>().add(
+                            SaveSettingsEvent(
+                              state.settingsModel.copyWith(
+                                startcreditstext: startcreditstext.text,
+                              ),
+                            ),
+                          );
+                    },
+                    controller: startcreditstext,
+                  ),
+                  CustomTextField(
+                    title: "Don't start credits before",
+                    subtitle:
+                        "Don't display the start credits before this time (S, or MM:SS).",
+                    onEditingComplete: () {
+                      RegExp(r'^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$')
+                                  .hasMatch(startcreditsnotbefore.text) ||
+                              startcreditsnotbefore.text.isEmpty
+                          ? context.read<SettingsBloc>().add(
+                                SaveSettingsEvent(
+                                  state.settingsModel.copyWith(
+                                    startcreditsnotbefore:
+                                        startcreditsnotbefore.text,
+                                  ),
+                                ),
+                              )
+                          : CustomSnackBarMessage.show(
+                              context, 'Invalid time format');
+                    },
+                    controller: startcreditsnotbefore,
+                  ),
+                  CustomTextField(
+                    title: "Don't start credits after",
+                    subtitle:
+                        "Don't display the start credits after this time (S, or MM:SS).",
+                    onEditingComplete: () {
+                      RegExp(r'^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$')
+                                  .hasMatch(startcreditsnotafter.text) ||
+                              startcreditsnotafter.text.isEmpty
+                          ? context.read<SettingsBloc>().add(
+                                SaveSettingsEvent(
+                                  state.settingsModel.copyWith(
+                                    startcreditsnotafter:
+                                        startcreditsnotafter.text,
+                                  ),
+                                ),
+                              )
+                          : CustomSnackBarMessage.show(
+                              context, 'Invalid time format');
+                    },
+                    controller: startcreditsnotafter,
+                  ),
+                  CustomTextField(
+                    title: 'Display start credits for atleast',
+                    subtitle:
+                        'Start credits need to be displayed for at least this much time (S, or MM:SS).',
+                    onEditingComplete: () {
+                      RegExp(r'^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$')
+                                  .hasMatch(startcreditsforatleast.text) ||
+                              startcreditsforatleast.text.isEmpty
+                          ? context.read<SettingsBloc>().add(
+                                SaveSettingsEvent(
+                                  state.settingsModel.copyWith(
+                                    startcreditsforatleast:
+                                        startcreditsforatleast.text,
+                                  ),
+                                ),
+                              )
+                          : CustomSnackBarMessage.show(
+                              context, 'Invalid time format');
+                    },
+                    controller: startcreditsforatleast,
+                  ),
+                  CustomTextField(
+                    title: 'Display start credits for atmost',
+                    subtitle:
+                        'Start credits need to be displayed for at atmost this much time (S, or MM:SS).',
+                    onEditingComplete: () {
+                      RegExp(r'^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$')
+                                  .hasMatch(startcreditsforatmost.text) ||
+                              startcreditsforatmost.text.isEmpty
+                          ? context.read<SettingsBloc>().add(
+                                SaveSettingsEvent(
+                                  state.settingsModel.copyWith(
+                                    startcreditsforatmost:
+                                        startcreditsforatmost.text,
+                                  ),
+                                ),
+                              )
+                          : CustomSnackBarMessage.show(
+                              context, 'Invalid time format');
+                    },
+                    controller: startcreditsforatmost,
+                  ),
+                  CustomTextField(
+                    title: 'End credits',
+                    subtitle:
+                        'Write this text as end credits. Can be separated with \\n',
+                    onEditingComplete: () {
+                      context.read<SettingsBloc>().add(
+                            SaveSettingsEvent(
+                              state.settingsModel.copyWith(
+                                endcreditstext: endcreditstext.text,
+                              ),
+                            ),
+                          );
+                    },
+                    controller: endcreditstext,
+                  ),
+                  CustomTextField(
+                    title: 'Display end credits for atleast',
+                    subtitle:
+                        'End credits need to be displayed for at atleast this much time (S, or MM:SS).',
+                    onEditingComplete: () {
+                      RegExp(r'^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$')
+                                  .hasMatch(endcreditsforatleast.text) ||
+                              endcreditsforatleast.text.isEmpty
+                          ? context.read<SettingsBloc>().add(
+                                SaveSettingsEvent(
+                                  state.settingsModel.copyWith(
+                                    endcreditsforatleast:
+                                        endcreditsforatleast.text,
+                                  ),
+                                ),
+                              )
+                          : CustomSnackBarMessage.show(
+                              context, 'Invalid time format');
+                    },
+                    controller: endcreditsforatleast,
+                  ),
+                  CustomTextField(
+                    title: 'Display end credits for atmost',
+                    subtitle:
+                        'End credits need to be displayed for at atmost this much time (S, or MM:SS).',
+                    onEditingComplete: () {
+                      RegExp(r'^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$')
+                                  .hasMatch(endcreditsforatmost.text) ||
+                              endcreditsforatmost.text.isEmpty
+                          ? context.read<SettingsBloc>().add(
+                                SaveSettingsEvent(
+                                  state.settingsModel.copyWith(
+                                    endcreditsforatmost:
+                                        endcreditsforatmost.text,
+                                  ),
+                                ),
+                              )
+                          : CustomSnackBarMessage.show(
+                              context, 'Invalid time format');
+                    },
+                    controller: endcreditsforatmost,
                   ),
                 ],
               ),

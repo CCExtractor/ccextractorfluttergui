@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
 import 'package:ccxgui/screens/settings/components/current_command.dart';
+import 'package:ccxgui/utils/constants.dart';
 import 'components/custom_divider.dart';
+import 'components/custom_dropdown.dart';
 import 'components/custom_swtich_listTile.dart';
 import 'components/custom_textfield.dart';
 
@@ -321,7 +323,39 @@ class InputSettingsScreen extends StatelessWidget {
                           ),
                         ),
                     controller: maxlevdist,
-                  )
+                  ),
+                  CustomDivider(title: 'Codec settings'),
+                  CustomDropDown(
+                    title: 'Codec',
+                    subtitle:
+                        'Select the following codec from elementary stream',
+                    value: state.settingsModel.codec,
+                    items: codec,
+                    onChanged: (String newValue) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                codec: newValue,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  CustomDropDown(
+                      title: 'No codec',
+                      subtitle:
+                          'Ignore the following codec from elementary stream',
+                      value: state.settingsModel.nocodec,
+                      items: codec,
+                      onChanged: (String newValue) {
+                        context.read<SettingsBloc>().add(
+                              SettingsUpdatedEvent(
+                                state.settingsModel.copyWith(
+                                  nocodec: newValue,
+                                ),
+                              ),
+                            );
+                      }),
                 ],
               ),
             ),

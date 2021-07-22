@@ -61,9 +61,7 @@ class SettingsRepository {
     );
 
     settings.enabledtextfields.forEach((param) {
-      if (param.keys.first != 'encoder' &&
-          param.keys.first != 'out' &&
-          param.keys.first != 'inp') {
+      if (!{'encoder', 'rollUp', 'out', 'inp'}.contains(param.keys.first)) {
         // no --encoder direct -latin1 or -utf8
         // -out=format
         paramsList.add(SettingsModel.paramsLookUpMap[param.keys.first]!);
@@ -71,7 +69,7 @@ class SettingsRepository {
       if (param.keys.first == 'outputfilename' && filePath.isNotEmpty) {
         paramsList.add(
             '${filePath.substring(0, filePath.lastIndexOf(RegExp(r'(\\|\/)')))}/${param.values.first}');
-      } else if (param.keys.first == 'encoder') {
+      } else if ({'encoder', 'rollUp'}.contains(param.keys.first)) {
         paramsList.add('-' + param.values.first);
       } else if (param.keys.first == 'out' || param.keys.first == 'inp') {
         paramsList.add('-' + param.keys.first + '=' + param.values.first);

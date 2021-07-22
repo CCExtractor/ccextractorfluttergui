@@ -1,14 +1,6 @@
 /// TODO:
-/// streamType
-/// dvblang
-/// ocrlang
-/// mkvlang
-/// quant in UI
-/// oem in UI
-/// -ru1/ru2/ru3
-/// codec/nocodec
-/// start/end credit stuff
-/// teletextstuff in UI
+/// profanity and cap files browse mode
+/// quant , oem, dvb/mkv/ocrlang, teletextstuff in UI this is also in hardsubx
 /// hardsubx settings
 
 class SettingsModel {
@@ -43,7 +35,7 @@ class SettingsModel {
   String program_number;
   bool autoprogram;
   bool multiprogram;
-  String datapid;
+  String streamtype;
   bool hauppauge;
   bool mp4vidtrack;
   bool noautotimeref;
@@ -84,6 +76,9 @@ class SettingsModel {
   String xmltvoutputinterval;
   bool xmltvonlycurrent;
   bool sem;
+  String dvblang;
+  String mkvlang;
+  String ocrlang;
   //DROPDOWN
   String quant;
   String oem;
@@ -95,11 +90,24 @@ class SettingsModel {
   bool koc;
   bool dru;
   bool norollup;
+  String rollUp;
 
   // Options that affect timing:
   String delay;
   String startat;
   String endat;
+  String codec;
+  String nocodec;
+
+  // start end credits
+  String startcreditstext;
+  String startcreditsnotbefore;
+  String startcreditsnotafter;
+  String startcreditsforatleast;
+  String startcreditsforatmost;
+  String endcreditstext;
+  String endcreditsforatleast;
+  String endcreditsforatmost;
 
   // Teletext related options:
   String tpage;
@@ -127,7 +135,7 @@ class SettingsModel {
     this.program_number = '',
     this.autoprogram = true,
     this.multiprogram = false,
-    this.datapid = '',
+    this.streamtype = 'auto/default',
     this.hauppauge = false,
     this.mp4vidtrack = false,
     this.noautotimeref = false,
@@ -162,6 +170,9 @@ class SettingsModel {
     this.xmltvoutputinterval = '',
     this.xmltvonlycurrent = false,
     this.sem = false,
+    this.dvblang = '',
+    this.mkvlang = '',
+    this.ocrlang = '',
     this.quant = 'auto/default',
     this.oem = '',
     this.bufferinput = false,
@@ -170,9 +181,20 @@ class SettingsModel {
     this.koc = false,
     this.dru = false,
     this.norollup = false,
+    this.rollUp = 'auto/default',
     this.delay = '',
     this.startat = '',
     this.endat = '',
+    this.codec = 'auto/default',
+    this.nocodec = 'auto/default',
+    this.startcreditstext = '',
+    this.startcreditsnotbefore = '',
+    this.startcreditsnotafter = '',
+    this.startcreditsforatleast = '',
+    this.startcreditsforatmost = '',
+    this.endcreditstext = '',
+    this.endcreditsforatleast = '',
+    this.endcreditsforatmost = '',
     this.tpage = '',
     this.teletext = false,
     this.noteletext = false,
@@ -200,7 +222,7 @@ class SettingsModel {
     String? program_number,
     bool? autoprogram,
     bool? multiprogram,
-    String? datapid,
+    String? streamtype,
     bool? hauppauge,
     bool? mp4vidtrack,
     bool? noautotimeref,
@@ -235,6 +257,9 @@ class SettingsModel {
     String? xmltvoutputinterval,
     bool? xmltvonlycurrent,
     bool? sem,
+    String? dvblang,
+    String? mkvlang,
+    String? ocrlang,
     String? quant,
     String? oem,
     bool? bufferinput,
@@ -243,9 +268,20 @@ class SettingsModel {
     bool? koc,
     bool? dru,
     bool? norollup,
+    String? rollUp,
     String? delay,
     String? startat,
     String? endat,
+    String? codec,
+    String? nocodec,
+    String? startcreditstext,
+    String? startcreditsnotbefore,
+    String? startcreditsnotafter,
+    String? startcreditsforatleast,
+    String? startcreditsforatmost,
+    String? endcreditstext,
+    String? endcreditsforatleast,
+    String? endcreditsforatmost,
     String? tpage,
     bool? teletext,
     bool? noteletext,
@@ -272,7 +308,7 @@ class SettingsModel {
       program_number: program_number ?? this.program_number,
       autoprogram: autoprogram ?? this.autoprogram,
       multiprogram: multiprogram ?? this.multiprogram,
-      datapid: datapid ?? this.datapid,
+      streamtype: streamtype ?? this.streamtype,
       hauppauge: hauppauge ?? this.hauppauge,
       mp4vidtrack: mp4vidtrack ?? this.mp4vidtrack,
       noautotimeref: noautotimeref ?? this.noautotimeref,
@@ -307,6 +343,9 @@ class SettingsModel {
       xmltvoutputinterval: xmltvoutputinterval ?? this.xmltvoutputinterval,
       xmltvonlycurrent: xmltvonlycurrent ?? this.xmltvonlycurrent,
       sem: sem ?? this.sem,
+      dvblang: dvblang ?? this.dvblang,
+      mkvlang: mkvlang ?? this.mkvlang,
+      ocrlang: ocrlang ?? this.ocrlang,
       quant: quant ?? this.quant,
       oem: oem ?? this.oem,
       bufferinput: bufferinput ?? this.bufferinput,
@@ -315,9 +354,23 @@ class SettingsModel {
       koc: koc ?? this.koc,
       dru: dru ?? this.dru,
       norollup: norollup ?? this.norollup,
+      rollUp: rollUp ?? this.rollUp,
       delay: delay ?? this.delay,
       startat: startat ?? this.startat,
       endat: endat ?? this.endat,
+      codec: codec ?? this.codec,
+      nocodec: nocodec ?? this.nocodec,
+      startcreditstext: startcreditstext ?? this.startcreditstext,
+      startcreditsnotbefore:
+          startcreditsnotbefore ?? this.startcreditsnotbefore,
+      startcreditsnotafter: startcreditsnotafter ?? this.startcreditsnotafter,
+      startcreditsforatleast:
+          startcreditsforatleast ?? this.startcreditsforatleast,
+      startcreditsforatmost:
+          startcreditsforatmost ?? this.startcreditsforatmost,
+      endcreditstext: endcreditstext ?? this.endcreditstext,
+      endcreditsforatleast: endcreditsforatleast ?? this.endcreditsforatleast,
+      endcreditsforatmost: endcreditsforatmost ?? this.endcreditsforatmost,
       tpage: tpage ?? this.tpage,
       teletext: teletext ?? this.teletext,
       noteletext: noteletext ?? this.noteletext,
@@ -347,7 +400,7 @@ class SettingsModel {
       'program_number': '--program-number',
       'autoprogram': '-autoprogram',
       'multiprogram': '-multiprogram',
-      'datapid': '-datapid',
+      'streamtype': '-streamtype',
       'hauppauge': '--hauppauge',
       'mp4vidtrack': '-mp4vidtrack',
       'noautotimeref': '-noautotimeref',
@@ -381,6 +434,9 @@ class SettingsModel {
       'xmltvoutputinterval': '-xmltvoutputinterval',
       'xmltvonlycurrent': '-xmltvonlycurrent',
       'sem': '-sem',
+      'dvblang': '-dvblang',
+      'ocrlang': '-ocrlang',
+      'mkvlang': '-mkvlang',
       'quant': '-quant',
       'oem': '-oem',
       'bufferinput': '--bufferinput',
@@ -392,10 +448,46 @@ class SettingsModel {
       'delay': '-delay',
       'startat': '-startat',
       'endat': '-endat',
+      'codec': '-codec',
+      'nocodec': 'nocodec',
+      'startcreditstext': '--startcreditstext',
+      'startcreditsnotbefore': '--startcreditsnotbefore',
+      'startcreditsnotafter': '--startcreditsnotafter',
+      'startcreditsforatleast': '--startcreditsforatleast',
+      'startcreditsforatmost': '--startcreditsforatmost',
+      'endcreditstext': '--endcreditstext',
+      'endcreditsforatleast': '--endcreditsforatleast',
+      'endcreditsforatmost': '--endcreditsforatmost',
       'tpage': '-tpage',
       'teletext': '-teletext',
       'noteletext': '-noteletext',
     };
+  }
+
+  /// returns all toggeles which are enabled (excluding textfields)
+  List<String> get enabledSettings {
+    List<String> enabledSettings = [];
+    toJson().forEach((key, value) {
+      if (value == true) {
+        enabledSettings.add(key);
+      }
+    });
+    return enabledSettings;
+  }
+
+  /// return all textfields and dropdowns which are not empty or not set to default
+  List<Map<String, String>> get enabledtextfields {
+    List<Map<String, String>> enabledtextfields = [];
+    toJson().forEach(
+      (key, value) {
+        Map<String, String> textfield = {};
+        if (value is String && value.isNotEmpty && value != 'auto/default') {
+          textfield[key] = value;
+          enabledtextfields.add(textfield);
+        }
+      },
+    );
+    return enabledtextfields;
   }
 
   Map<String, dynamic> toJson() {
@@ -421,7 +513,7 @@ class SettingsModel {
       'program_number': program_number,
       'autoprogram': autoprogram,
       'multiprogram': multiprogram,
-      'datapid': datapid,
+      'streamtype': streamtype,
       'hauppauge': hauppauge,
       'mp4vidtrack': mp4vidtrack,
       'noautotimeref': noautotimeref,
@@ -456,6 +548,9 @@ class SettingsModel {
       'xmltvoutputinterval': xmltvoutputinterval,
       'xmltvonlycurrent': xmltvonlycurrent,
       'sem': sem,
+      'dvblang': dvblang,
+      'mkvlang': mkvlang,
+      'ocrlang': ocrlang,
       'quant': quant,
       'oem': oem,
       'bufferinput': bufferinput,
@@ -464,9 +559,20 @@ class SettingsModel {
       'koc': koc,
       'dru': dru,
       'norollup': norollup,
+      'rollUp': rollUp,
       'delay': delay,
       'startat': startat,
       'endat': endat,
+      'codec': codec,
+      'nocodec': nocodec,
+      'startcreditstext': startcreditstext,
+      'startcreditsnotbefore': startcreditsnotbefore,
+      'startcreditsnotafter': startcreditsnotafter,
+      'startcreditsforatleast': startcreditsforatleast,
+      'startcreditsforatmost': startcreditsforatmost,
+      'endcreditstext': endcreditstext,
+      'endcreditsforatleast': endcreditsforatleast,
+      'endcreditsforatmost': endcreditsforatmost,
       'tpage': tpage,
       'teletext': teletext,
       'noteletext': noteletext,
@@ -496,7 +602,7 @@ class SettingsModel {
       program_number: map['program_number'],
       autoprogram: map['autoprogram'],
       multiprogram: map['multiprogram'],
-      datapid: map['datapid'],
+      streamtype: map['streamtype'],
       hauppauge: map['hauppauge'],
       mp4vidtrack: map['mp4vidtrack'],
       noautotimeref: map['noautotimeref'],
@@ -531,6 +637,9 @@ class SettingsModel {
       xmltvoutputinterval: map['xmltvoutputinterval'],
       xmltvonlycurrent: map['xmltvonlycurrent'],
       sem: map['sem'],
+      dvblang: map['dvblang'],
+      mkvlang: map['mkvlang'],
+      ocrlang: map['ocrlang'],
       quant: map['quant'],
       oem: map['oem'],
       bufferinput: map['bufferinput'],
@@ -539,9 +648,20 @@ class SettingsModel {
       koc: map['koc'],
       dru: map['dru'],
       norollup: map['norollup'],
+      rollUp: map['rollUp'],
       delay: map['delay'],
       startat: map['startat'],
       endat: map['endat'],
+      codec: map['codec'],
+      nocodec: map['nocodec'],
+      startcreditstext: map['startcreditstext'],
+      startcreditsnotbefore: map['startcreditsnotbefore'],
+      startcreditsnotafter: map['startcreditsnotafter'],
+      startcreditsforatleast: map['startcreditsforatleast'],
+      startcreditsforatmost: map['startcreditsforatmost'],
+      endcreditstext: map['endcreditstext'],
+      endcreditsforatleast: map['endcreditsforatleast'],
+      endcreditsforatmost: map['endcreditsforatmost'],
       tpage: map['tpage'],
       teletext: map['teletext'],
       noteletext: map['noteletext'],
@@ -550,33 +670,7 @@ class SettingsModel {
 
   @override
   String toString() {
-    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, datapid: $datapid, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, kf: $kf, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, quant: $quant, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, delay: $delay, startat: $startat, endat: $endat, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
-  }
-
-  /// returns all toggeles which are enabled (excluding textfields)
-  List<String> get enabledSettings {
-    List<String> enabledSettings = [];
-    toJson().forEach((key, value) {
-      if (value == true) {
-        enabledSettings.add(key);
-      }
-    });
-    return enabledSettings;
-  }
-
-  /// return all textfields and dropdowns which are not empty or not set to default
-  List<Map<String, String>> get enabledtextfields {
-    List<Map<String, String>> enabledtextfields = [];
-    toJson().forEach(
-      (key, value) {
-        Map<String, String> textfield = {};
-        if (value is String && value.isNotEmpty && value != 'auto/default') {
-          textfield[key] = value;
-          enabledtextfields.add(textfield);
-        }
-      },
-    );
-    return enabledtextfields;
+    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, streamtype: $streamtype, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, kf: $kf, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, dvblang: $dvblang, mkvlang: $mkvlang, ocrlang: $ocrlang, quant: $quant, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, rollUp: $rollUp, delay: $delay, startat: $startat, endat: $endat, codec: $codec, nocodec: $nocodec, startcreditstext: $startcreditstext, startcreditsnotbefore: $startcreditsnotbefore, startcreditsnotafter: $startcreditsnotafter, startcreditsforatleast: $startcreditsforatleast, startcreditsforatmost: $startcreditsforatmost, endcreditstext: $endcreditstext, endcreditsforatleast: $endcreditsforatleast, endcreditsforatmost: $endcreditsforatmost, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
   }
 
   @override
@@ -605,7 +699,7 @@ class SettingsModel {
         other.program_number == program_number &&
         other.autoprogram == autoprogram &&
         other.multiprogram == multiprogram &&
-        other.datapid == datapid &&
+        other.streamtype == streamtype &&
         other.hauppauge == hauppauge &&
         other.mp4vidtrack == mp4vidtrack &&
         other.noautotimeref == noautotimeref &&
@@ -640,6 +734,9 @@ class SettingsModel {
         other.xmltvoutputinterval == xmltvoutputinterval &&
         other.xmltvonlycurrent == xmltvonlycurrent &&
         other.sem == sem &&
+        other.dvblang == dvblang &&
+        other.mkvlang == mkvlang &&
+        other.ocrlang == ocrlang &&
         other.quant == quant &&
         other.oem == oem &&
         other.bufferinput == bufferinput &&
@@ -648,9 +745,20 @@ class SettingsModel {
         other.koc == koc &&
         other.dru == dru &&
         other.norollup == norollup &&
+        other.rollUp == rollUp &&
         other.delay == delay &&
         other.startat == startat &&
         other.endat == endat &&
+        other.codec == codec &&
+        other.nocodec == nocodec &&
+        other.startcreditstext == startcreditstext &&
+        other.startcreditsnotbefore == startcreditsnotbefore &&
+        other.startcreditsnotafter == startcreditsnotafter &&
+        other.startcreditsforatleast == startcreditsforatleast &&
+        other.startcreditsforatmost == startcreditsforatmost &&
+        other.endcreditstext == endcreditstext &&
+        other.endcreditsforatleast == endcreditsforatleast &&
+        other.endcreditsforatmost == endcreditsforatmost &&
         other.tpage == tpage &&
         other.teletext == teletext &&
         other.noteletext == noteletext;
@@ -679,7 +787,7 @@ class SettingsModel {
         program_number.hashCode ^
         autoprogram.hashCode ^
         multiprogram.hashCode ^
-        datapid.hashCode ^
+        streamtype.hashCode ^
         hauppauge.hashCode ^
         mp4vidtrack.hashCode ^
         noautotimeref.hashCode ^
@@ -714,6 +822,9 @@ class SettingsModel {
         xmltvoutputinterval.hashCode ^
         xmltvonlycurrent.hashCode ^
         sem.hashCode ^
+        dvblang.hashCode ^
+        mkvlang.hashCode ^
+        ocrlang.hashCode ^
         quant.hashCode ^
         oem.hashCode ^
         bufferinput.hashCode ^
@@ -722,9 +833,20 @@ class SettingsModel {
         koc.hashCode ^
         dru.hashCode ^
         norollup.hashCode ^
+        rollUp.hashCode ^
         delay.hashCode ^
         startat.hashCode ^
         endat.hashCode ^
+        codec.hashCode ^
+        nocodec.hashCode ^
+        startcreditstext.hashCode ^
+        startcreditsnotbefore.hashCode ^
+        startcreditsnotafter.hashCode ^
+        startcreditsforatleast.hashCode ^
+        startcreditsforatmost.hashCode ^
+        endcreditstext.hashCode ^
+        endcreditsforatleast.hashCode ^
+        endcreditsforatmost.hashCode ^
         tpage.hashCode ^
         teletext.hashCode ^
         noteletext.hashCode;
