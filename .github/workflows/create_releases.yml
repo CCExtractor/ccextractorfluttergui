@@ -60,4 +60,4 @@ jobs:
       uses: AButler/upload-release-assets@v2.0
       with:
         files: './linux.zip'
-        repo-token:        
+        repo-token: ${{ secrets.GITHUB_TOKEN }}      
