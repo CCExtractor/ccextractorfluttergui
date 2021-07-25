@@ -78,8 +78,10 @@ lib/
 │       │   ├── current_command.dart
 │       │   ├── custom_divider.dart
 │       │   ├── custom_dropdown.dart
+│       │   ├── custom_path_button.dart
 │       │   ├── custom_swtich_listTile.dart
 │       │   └── custom_textfield.dart
+│       ├── hardsubx_settings.dart
 │       ├── input_settings.dart
 │       ├── obscure_settings.dart
 │       └── output_settings.dart
@@ -87,5 +89,5 @@ lib/
     ├── constants.dart
     └── responsive.dart
 
-13 directories, 35 files
+13 directories, 37 files
 ```
