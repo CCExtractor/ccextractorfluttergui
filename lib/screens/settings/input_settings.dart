@@ -43,7 +43,7 @@ class InputSettingsScreen extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               ),
               elevation: 0,
-              toolbarHeight: 150,
+              toolbarHeight: 120,
               backgroundColor: Colors.transparent,
             ),
             body: Padding(
@@ -346,20 +346,21 @@ class InputSettingsScreen extends StatelessWidget {
                     },
                   ),
                   CustomDropDown(
-                      title: 'No codec',
-                      subtitle:
-                          'Ignore the following codec from elementary stream',
-                      value: state.settingsModel.nocodec,
-                      items: codec,
-                      onChanged: (String newValue) {
-                        context.read<SettingsBloc>().add(
-                              SettingsUpdatedEvent(
-                                state.settingsModel.copyWith(
-                                  nocodec: newValue,
-                                ),
+                    title: 'No codec',
+                    subtitle:
+                        'Ignore the following codec from elementary stream',
+                    value: state.settingsModel.nocodec,
+                    items: codec,
+                    onChanged: (String newValue) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                nocodec: newValue,
                               ),
-                            );
-                      }),
+                            ),
+                          );
+                    },
+                  ),
                 ],
               ),
             ),

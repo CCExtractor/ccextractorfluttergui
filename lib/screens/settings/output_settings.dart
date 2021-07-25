@@ -45,7 +45,7 @@ class OutputSettingsScreen extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               ),
               elevation: 0,
-              toolbarHeight: 150,
+              toolbarHeight: 120,
               backgroundColor: Colors.transparent,
             ),
             body: Padding(

@@ -1,7 +1,3 @@
-/// TODO:
-/// quant , oem, dvb/mkv/ocrlang, teletextstuff in UI this is also in hardsubx
-/// hardsubx settings
-
 class SettingsModel {
   //DROPDOWN
   String out;
@@ -114,6 +110,17 @@ class SettingsModel {
   String tpage;
   bool teletext;
   bool noteletext;
+
+  // Hardsubx
+  bool hardsubx;
+  bool tickertext;
+  String ocrMode;
+  String subcolor;
+  String minSubDuration;
+  bool detectItalics;
+  String confThresh;
+  String whiteThresh;
+
   SettingsModel({
     this.out = 'auto/default',
     this.inp = 'auto/default',
@@ -177,7 +184,7 @@ class SettingsModel {
     this.mkvlang = '',
     this.ocrlang = '',
     this.quant = 'auto/default',
-    this.oem = '',
+    this.oem = 'auto/default',
     this.bufferinput = false,
     this.nobufferinput = false,
     this.buffersize = '',
@@ -201,7 +208,138 @@ class SettingsModel {
     this.tpage = '',
     this.teletext = false,
     this.noteletext = false,
+    this.hardsubx = false,
+    this.tickertext = false,
+    this.ocrMode = 'auto/default',
+    this.subcolor = '',
+    this.minSubDuration = '',
+    this.detectItalics = false,
+    this.confThresh = '',
+    this.whiteThresh = '',
   });
+
+  static Map<String, String> get paramsLookUpMap {
+    return {
+      'out': '-out=',
+      'in': '-in=',
+      'outputfilename': '-o',
+      'fixptsjumps': '-fixptsjumps',
+      'append': '--append',
+      'outInterval': '--outinterval',
+      'segmentonkeyonly': '--segmentonkeyonly',
+      'goptime': '--goptime',
+      'nogoptime': '--nogoptime',
+      'fixpadding': '--fixpadding',
+      'freqEs15': '-90090',
+      'stream': '--stream',
+      'videoedited': '--videoedited',
+      'usepicorder': '--usepicorder',
+      'myth': '-myth',
+      'nomyth': '-nomyth',
+      'wtvconvertfix': '-wtvconvertfix',
+      'wtvmpeg2': '-wtvmpeg2',
+      'program_number': '--program-number',
+      'autoprogram': '-autoprogram',
+      'multiprogram': '-multiprogram',
+      'streamtype': '-streamtype',
+      'hauppauge': '--hauppauge',
+      'mp4vidtrack': '-mp4vidtrack',
+      'noautotimeref': '-noautotimeref',
+      'noscte20': '--noscte20',
+      'webvttcss': '--webvtt-create-css',
+      'analyzevideo': '--analyzevideo',
+      'notimestamp': '--no-timestamp-map',
+      'nolevdist': '-nolevdist',
+      'minlevdist': '-levdistmincnt',
+      'maxlevdist': '-levdistmaxpct',
+      'chapters': '-chapters',
+      'bom': '-bom',
+      'nobom': '-nobom',
+      'nofontcolor': '--nofontcolor',
+      'nohtmlescape': '--nohtmlescape',
+      'notypesetting': '--notypesetting',
+      'trim': '-trim',
+      'defaultcolor': '--defaultcolor',
+      'sentencecap': '--sentencecap',
+      'capFile': '--capfile',
+      'kf': '--kf',
+      'profanityFile': '--profanity-file',
+      'splitbysentence': '--splitbysentence',
+      'datets': '-datets',
+      'sects': '-sects',
+      'latrusmap': '-latrusmap',
+      'xds': '=xds',
+      'lf': '-lf',
+      'df': '-df',
+      'autodash': '-  autodash',
+      'xmltv': '-xmltv',
+      'xmltvliveinterval': '-xmltvliveinterval',
+      'xmltvoutputinterval': '-xmltvoutputinterval',
+      'xmltvonlycurrent': '-xmltvonlycurrent',
+      'sem': '-sem',
+      'dvblang': '-dvblang',
+      'ocrlang': '-ocrlang',
+      'mkvlang': '-mkvlang',
+      'quant': '-quant',
+      'oem': '-oem',
+      'bufferinput': '--bufferinput',
+      'nobufferinput': '-nobufferinput',
+      'buffersize': '--buffersize',
+      'koc': '-koc',
+      'dru': '-dru',
+      'norollup': '--norollup',
+      'delay': '-delay',
+      'startat': '-startat',
+      'endat': '-endat',
+      'codec': '-codec',
+      'nocodec': 'nocodec',
+      'startcreditstext': '--startcreditstext',
+      'startcreditsnotbefore': '--startcreditsnotbefore',
+      'startcreditsnotafter': '--startcreditsnotafter',
+      'startcreditsforatleast': '--startcreditsforatleast',
+      'startcreditsforatmost': '--startcreditsforatmost',
+      'endcreditstext': '--endcreditstext',
+      'endcreditsforatleast': '--endcreditsforatleast',
+      'endcreditsforatmost': '--endcreditsforatmost',
+      'tpage': '-tpage',
+      'teletext': '-teletext',
+      'noteletext': '-noteletext',
+      'hardsubx': '-hardsubx',
+      'tickertext': '-tickertext',
+      'ocrMode': '-ocr_mode',
+      'subcolor': '-subcolor',
+      'minSubDuration': '-min_sub_duration',
+      'detectItalics': '-detect_italics',
+      'confThresh': '-conf_thresh',
+      'whiteThresh': '-whiteness_thresh',
+    };
+  }
+
+  /// returns all toggeles which are enabled (excluding textfields)
+  List<String> get enabledSettings {
+    List<String> enabledSettings = [];
+    toJson().forEach((key, value) {
+      if (value == true) {
+        enabledSettings.add(key);
+      }
+    });
+    return enabledSettings;
+  }
+
+  /// return all textfields and dropdowns which are not empty or not set to default
+  List<Map<String, String>> get enabledtextfields {
+    List<Map<String, String>> enabledtextfields = [];
+    toJson().forEach(
+      (key, value) {
+        Map<String, String> textfield = {};
+        if (value is String && value.isNotEmpty && value != 'auto/default') {
+          textfield[key] = value;
+          enabledtextfields.add(textfield);
+        }
+      },
+    );
+    return enabledtextfields;
+  }
 
   SettingsModel copyWith({
     String? out,
@@ -290,6 +428,14 @@ class SettingsModel {
     String? tpage,
     bool? teletext,
     bool? noteletext,
+    bool? hardsubx,
+    bool? tickertext,
+    String? ocrMode,
+    String? subcolor,
+    String? minSubDuration,
+    bool? detectItalics,
+    String? confThresh,
+    String? whiteThresh,
   }) {
     return SettingsModel(
       out: out ?? this.out,
@@ -381,122 +527,15 @@ class SettingsModel {
       tpage: tpage ?? this.tpage,
       teletext: teletext ?? this.teletext,
       noteletext: noteletext ?? this.noteletext,
+      hardsubx: hardsubx ?? this.hardsubx,
+      tickertext: tickertext ?? this.tickertext,
+      ocrMode: ocrMode ?? this.ocrMode,
+      subcolor: subcolor ?? this.subcolor,
+      minSubDuration: minSubDuration ?? this.minSubDuration,
+      detectItalics: detectItalics ?? this.detectItalics,
+      confThresh: confThresh ?? this.confThresh,
+      whiteThresh: whiteThresh ?? this.whiteThresh,
     );
-  }
-
-  static Map<String, String> get paramsLookUpMap {
-    return {
-      'out': '-out=',
-      'in': '-in=',
-      'outputfilename': '-o',
-      'fixptsjumps': '-fixptsjumps',
-      'append': '--append',
-      'outInterval': '--outinterval',
-      'segmentonkeyonly': '--segmentonkeyonly',
-      'goptime': '--goptime',
-      'nogoptime': '--nogoptime',
-      'fixpadding': '--fixpadding',
-      'freqEs15': '-90090',
-      'stream': '--stream',
-      'videoedited': '--videoedited',
-      'usepicorder': '--usepicorder',
-      'myth': '-myth',
-      'nomyth': '-nomyth',
-      'wtvconvertfix': '-wtvconvertfix',
-      'wtvmpeg2': '-wtvmpeg2',
-      'program_number': '--program-number',
-      'autoprogram': '-autoprogram',
-      'multiprogram': '-multiprogram',
-      'streamtype': '-streamtype',
-      'hauppauge': '--hauppauge',
-      'mp4vidtrack': '-mp4vidtrack',
-      'noautotimeref': '-noautotimeref',
-      'noscte20': '--noscte20',
-      'webvttcss': '--webvtt-create-css',
-      'analyzevideo': '--analyzevideo',
-      'notimestamp': '--no-timestamp-map',
-      'nolevdist': '-nolevdist',
-      'minlevdist': '-levdistmincnt',
-      'maxlevdist': '-levdistmaxpct',
-      'chapters': '-chapters',
-      'bom': '-bom',
-      'nobom': '-nobom',
-      'nofontcolor': '--nofontcolor',
-      'nohtmlescape': '--nohtmlescape',
-      'notypesetting': '--notypesetting',
-      'trim': '-trim',
-      'defaultcolor': '--defaultcolor',
-      'sentencecap': '--sentencecap',
-      'capFile': '--capfile',
-      'kf': '--kf',
-      'profanityFile': '--profanity-file',
-      'splitbysentence': '--splitbysentence',
-      'datets': '-datets',
-      'sects': '-sects',
-      'latrusmap': '-latrusmap',
-      'xds': '=xds',
-      'lf': '-lf',
-      'df': '-df',
-      'autodash': '-  autodash',
-      'xmltv': '-xmltv',
-      'xmltvliveinterval': '-xmltvliveinterval',
-      'xmltvoutputinterval': '-xmltvoutputinterval',
-      'xmltvonlycurrent': '-xmltvonlycurrent',
-      'sem': '-sem',
-      'dvblang': '-dvblang',
-      'ocrlang': '-ocrlang',
-      'mkvlang': '-mkvlang',
-      'quant': '-quant',
-      'oem': '-oem',
-      'bufferinput': '--bufferinput',
-      'nobufferinput': '-nobufferinput',
-      'buffersize': '--buffersize',
-      'koc': '-koc',
-      'dru': '-dru',
-      'norollup': '--norollup',
-      'delay': '-delay',
-      'startat': '-startat',
-      'endat': '-endat',
-      'codec': '-codec',
-      'nocodec': 'nocodec',
-      'startcreditstext': '--startcreditstext',
-      'startcreditsnotbefore': '--startcreditsnotbefore',
-      'startcreditsnotafter': '--startcreditsnotafter',
-      'startcreditsforatleast': '--startcreditsforatleast',
-      'startcreditsforatmost': '--startcreditsforatmost',
-      'endcreditstext': '--endcreditstext',
-      'endcreditsforatleast': '--endcreditsforatleast',
-      'endcreditsforatmost': '--endcreditsforatmost',
-      'tpage': '-tpage',
-      'teletext': '-teletext',
-      'noteletext': '-noteletext',
-    };
-  }
-
-  /// returns all toggeles which are enabled (excluding textfields)
-  List<String> get enabledSettings {
-    List<String> enabledSettings = [];
-    toJson().forEach((key, value) {
-      if (value == true) {
-        enabledSettings.add(key);
-      }
-    });
-    return enabledSettings;
-  }
-
-  /// return all textfields and dropdowns which are not empty or not set to default
-  List<Map<String, String>> get enabledtextfields {
-    List<Map<String, String>> enabledtextfields = [];
-    toJson().forEach(
-      (key, value) {
-        Map<String, String> textfield = {};
-        if (value is String && value.isNotEmpty && value != 'auto/default') {
-          textfield[key] = value;
-          enabledtextfields.add(textfield);
-        }
-      },
-    );
-    return enabledtextfields;
   }
 
   Map<String, dynamic> toJson() {
@@ -587,6 +626,14 @@ class SettingsModel {
       'tpage': tpage,
       'teletext': teletext,
       'noteletext': noteletext,
+      'hardsubx': hardsubx,
+      'tickertext': tickertext,
+      'ocrMode': ocrMode,
+      'subcolor': subcolor,
+      'minSubDuration': minSubDuration,
+      'detectItalics': detectItalics,
+      'confThresh': confThresh,
+      'whiteThresh': whiteThresh,
     };
   }
 
@@ -678,12 +725,20 @@ class SettingsModel {
       tpage: map['tpage'],
       teletext: map['teletext'],
       noteletext: map['noteletext'],
+      hardsubx: map['hardsubx'],
+      tickertext: map['tickertext'],
+      ocrMode: map['ocrMode'],
+      subcolor: map['subcolor'],
+      minSubDuration: map['minSubDuration'],
+      detectItalics: map['detectItalics'],
+      confThresh: map['confThresh'],
+      whiteThresh: map['whiteThresh'],
     );
   }
 
   @override
   String toString() {
-    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, streamtype: $streamtype, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, capFile: $capFile, kf: $kf, profanityFile: $profanityFile, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, dvblang: $dvblang, mkvlang: $mkvlang, ocrlang: $ocrlang, quant: $quant, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, rollUp: $rollUp, delay: $delay, startat: $startat, endat: $endat, codec: $codec, nocodec: $nocodec, startcreditstext: $startcreditstext, startcreditsnotbefore: $startcreditsnotbefore, startcreditsnotafter: $startcreditsnotafter, startcreditsforatleast: $startcreditsforatleast, startcreditsforatmost: $startcreditsforatmost, endcreditstext: $endcreditstext, endcreditsforatleast: $endcreditsforatleast, endcreditsforatmost: $endcreditsforatmost, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
+    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, streamtype: $streamtype, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, capFile: $capFile, kf: $kf, profanityFile: $profanityFile, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, dvblang: $dvblang, mkvlang: $mkvlang, ocrlang: $ocrlang, quant: $quant, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, rollUp: $rollUp, delay: $delay, startat: $startat, endat: $endat, codec: $codec, nocodec: $nocodec, startcreditstext: $startcreditstext, startcreditsnotbefore: $startcreditsnotbefore, startcreditsnotafter: $startcreditsnotafter, startcreditsforatleast: $startcreditsforatleast, startcreditsforatmost: $startcreditsforatmost, endcreditstext: $endcreditstext, endcreditsforatleast: $endcreditsforatleast, endcreditsforatmost: $endcreditsforatmost, tpage: $tpage, teletext: $teletext, noteletext: $noteletext, hardsubx: $hardsubx, tickertext: $tickertext, ocrMode: $ocrMode, subcolor: $subcolor, minSubDuration: $minSubDuration, detectItalics: $detectItalics, confThresh: $confThresh, whiteThresh: $whiteThresh)';
   }
 
   @override
@@ -776,7 +831,15 @@ class SettingsModel {
         other.endcreditsforatmost == endcreditsforatmost &&
         other.tpage == tpage &&
         other.teletext == teletext &&
-        other.noteletext == noteletext;
+        other.noteletext == noteletext &&
+        other.hardsubx == hardsubx &&
+        other.tickertext == tickertext &&
+        other.ocrMode == ocrMode &&
+        other.subcolor == subcolor &&
+        other.minSubDuration == minSubDuration &&
+        other.detectItalics == detectItalics &&
+        other.confThresh == confThresh &&
+        other.whiteThresh == whiteThresh;
   }
 
   @override
@@ -866,6 +929,14 @@ class SettingsModel {
         endcreditsforatmost.hashCode ^
         tpage.hashCode ^
         teletext.hashCode ^
-        noteletext.hashCode;
+        noteletext.hashCode ^
+        hardsubx.hashCode ^
+        tickertext.hashCode ^
+        ocrMode.hashCode ^
+        subcolor.hashCode ^
+        minSubDuration.hashCode ^
+        detectItalics.hashCode ^
+        confThresh.hashCode ^
+        whiteThresh.hashCode;
   }
 }

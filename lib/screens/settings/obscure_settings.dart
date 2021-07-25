@@ -27,6 +27,8 @@ class ObscureSettingsScreen extends StatelessWidget {
         if (state is CurrentSettingsState) {
           TextEditingController programNumberController =
               TextEditingController(text: state.settingsModel.program_number);
+          TextEditingController tpageController =
+              TextEditingController(text: state.settingsModel.tpage);
           return Scaffold(
             appBar: AppBar(
               flexibleSpace: FlexibleSpaceBar(
@@ -35,7 +37,7 @@ class ObscureSettingsScreen extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               ),
               elevation: 0,
-              toolbarHeight: 150,
+              toolbarHeight: 120,
               backgroundColor: Colors.transparent,
             ),
             body: Padding(
@@ -192,6 +194,68 @@ class ObscureSettingsScreen extends StatelessWidget {
                               ),
                             ),
                           );
+                    },
+                  ),
+                  CustomDivider(title: 'Teletext settings'),
+                    CustomTextField(
+                      title: 'Tpage',
+                      subtitle:
+                          'Use this page for subtitles, for example in Spain the page is always 888',
+                      intOnly: true,
+                      onEditingComplete: () => context.read<SettingsBloc>().add(
+                            SaveSettingsEvent(
+                              state.settingsModel.copyWith(
+                                tpage: tpageController.text,
+                              ),
+                            ),
+                          ),
+                      controller: tpageController,
+                    ),
+                  CustomSwitchListTile(
+                    title: 'Teletext mode',
+                    subtitle:
+                        'Force teletext mode even if teletext is not detected..',
+                    value: state.settingsModel.teletext,
+                    onTap: (bool value) {
+                      value == true
+                          ? context.read<SettingsBloc>().add(
+                                SettingsUpdatedEvent(
+                                  state.settingsModel.copyWith(
+                                    teletext: value,
+                                    noteletext: false,
+                                  ),
+                                ),
+                              )
+                          : context.read<SettingsBloc>().add(
+                                SettingsUpdatedEvent(
+                                  state.settingsModel.copyWith(
+                                    teletext: value,
+                                  ),
+                                ),
+                              );
+                    },
+                  ),
+                  CustomSwitchListTile(
+                    title: 'Disable teletext',
+                    subtitle: 'Disable teletext processing.',
+                    value: state.settingsModel.noteletext,
+                    onTap: (bool value) {
+                      value == true
+                          ? context.read<SettingsBloc>().add(
+                                SettingsUpdatedEvent(
+                                  state.settingsModel.copyWith(
+                                    noteletext: value,
+                                    teletext: false,
+                                  ),
+                                ),
+                              )
+                          : context.read<SettingsBloc>().add(
+                                SettingsUpdatedEvent(
+                                  state.settingsModel.copyWith(
+                                    noteletext: value,
+                                  ),
+                                ),
+                              );
                     },
                   ),
                 ],

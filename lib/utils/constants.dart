@@ -47,6 +47,15 @@ Map<String, Map<String, int>> dropdownListMap = {
     'AUDIO_DTS': 138
   },
 };
+
+List<String> ocrMode = [
+    'auto/default',
+
+  'frame',
+  'word',
+  'letter',
+];
+
 List<String> rollUp = [
   'auto/default',
   'ru1',

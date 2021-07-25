@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ccxgui/screens/settings/hardsubx_settings.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -150,6 +151,7 @@ class _HomeState extends State<Home> {
             BasicSettingsScreen(),
             InputSettingsScreen(),
             OutputSettingsScreen(),
+            HardSubxSettingsScreen(),
             ObscureSettingsScreen(),
           ],
         ),
@@ -169,6 +171,10 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             label: 'Output Settings',
             icon: Icon(Icons.dvr_outlined),
+          ),
+          BottomNavigationBarItem(
+            label: 'HardSubx Settings',
+            icon: Icon(Icons.search),
           ),
           BottomNavigationBarItem(
             label: 'Obscure Settings',
