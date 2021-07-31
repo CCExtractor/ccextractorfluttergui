@@ -55,10 +55,9 @@ The GUI has tons of options so they are seperated into several settings screens.
 - You can also reset the settings back to the default value with the reset settings button on the top right corner of each of the settings page
 
 
-{{< tip >}}
-To report any bugs, please file a issue on github or get in touch with us on slack. Most CCExtractor developers hang out in a slack team. You're welcome to request an invitation [here](/public/general/support/)
 
-{{< /tip >}}
+To report any bugs, please file a issue on github or get in touch with us on slack. Most CCExtractor developers hang out in a slack team. You're welcome to request an invitation [here](https://ccextractor.org/public/general/support/)
+
 
 ### Project structure
 ```
