@@ -23,6 +23,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  localstorage:
+    git:
+      url: git://github.com/Techno-Disaster/flutter_localstorage.git
   navigation_rail:
     git:
       url: git://github.com/Techno-Disaster/navigation_rail.git
@@ -32,30 +35,27 @@ dependencies:
       path: plugins/window_size
   bloc: ^7.0.0
   cupertino_icons: ^1.0.2
-  equatable: ^2.0.0
+  equatable: ^2.0.3
   file_selector: ^0.8.2
-  file_selector_linux: ^0.0.2
-  file_selector_windows: ^0.0.2
-  file_selector_macos: ^0.0.4
-  flutter_bloc: ^7.0.0
+  file_selector_linux: ^0.0.2+1
+  file_selector_macos: ^0.0.4+1
+  file_selector_windows: ^0.0.2+1
+  flutter_bloc: ^7.1.0
+  flutter_markdown: ^0.6.3
   flutter_svg: ^0.22.0
   hive: ^2.0.4
   hive_flutter: ^1.0.0
-  localstorage:
-    git:
-      url: git://github.com/Techno-Disaster/flutter_localstorage.git
-  path_provider: ^2.0.1
-  percent_indicator: ^3.3.0-nullsafety.1
   http: ^0.13.3
-  flutter_markdown: ^0.6.2
-  url_launcher: ^6.0.9    
+  path_provider: ^2.0.2
+  percent_indicator: ^3.0.1
+  url_launcher: ^6.0.9
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^2.0.3
   hive_generator: ^1.1.0
-  import_sorter: ^4.5.1
-  
+  import_sorter: ^4.6.0
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.
