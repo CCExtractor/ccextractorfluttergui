@@ -22,6 +22,14 @@ Usually, you will never need to use all the options (and even if you do, all the
 - Then clone [this](https://github.com/CCExtractor/ccextractorfluttergui) repository and run `flutter run -d <platform> --release` to run the app. 
 - To install the Gui you will need to build it using `flutter build <platform> --release`. The release builds should be located under /build/\<platform> 
 
+### Additional macOS steps:
+- If you build and install from source, you will probably get a `Process not permitted operation error` to fix remove 
+```
+<key>com.apple.security.app-sandbox</key>
+	<true/>
+```
+from macos/*.entitlements files
+
 --- 
 # Using the GUI
 
