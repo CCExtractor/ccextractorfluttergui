@@ -10,6 +10,22 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
+  flutter_test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2.3.4
+    - name: Install Flutter
+      uses: subosito/flutter-action@v1.5.3
+      with:
+        channel: 'master'
+    - name: Flutter format
+    - run: flutter format . --set-exit-if-changed && flutter pub run import_sorter:main --no-comments --exit-if-changed"
+    - name: Flutter analyze 
+    - run: flutter analyze .
+    - name: Flutter test
+    - run: flutter test
+
   build_windows:
     runs-on: windows-latest
     steps:
