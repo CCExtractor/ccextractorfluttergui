@@ -90,8 +90,7 @@ lib/
 ├── generated_plugin_registrant.dart
 ├── main.dart
 ├── models
-│   ├── settings_model.dart
-│   └── video.dart
+│   └── settings_model.dart
 ├── repositories
 │   ├── ccextractor.dart
 │   └── settings_repository.dart
@@ -121,5 +120,5 @@ lib/
     ├── constants.dart
     └── responsive.dart
 
-13 directories, 37 files
+13 directories, 36 files
 ```
