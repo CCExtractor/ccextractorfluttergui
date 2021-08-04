@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:ccxgui/screens/settings/hardsubx_settings.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +12,7 @@ import 'package:ccxgui/bloc/updater_bloc/updater_bloc.dart';
 import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
 import 'package:ccxgui/screens/dashboard/dashboard.dart';
 import 'package:ccxgui/screens/settings/basic_settings.dart';
+import 'package:ccxgui/screens/settings/hardsubx_settings.dart';
 import 'package:ccxgui/screens/settings/input_settings.dart';
 import 'package:ccxgui/screens/settings/obscure_settings.dart';
 import 'package:ccxgui/screens/settings/output_settings.dart';

@@ -197,20 +197,20 @@ class ObscureSettingsScreen extends StatelessWidget {
                     },
                   ),
                   CustomDivider(title: 'Teletext settings'),
-                    CustomTextField(
-                      title: 'Tpage',
-                      subtitle:
-                          'Use this page for subtitles, for example in Spain the page is always 888',
-                      intOnly: true,
-                      onEditingComplete: () => context.read<SettingsBloc>().add(
-                            SaveSettingsEvent(
-                              state.settingsModel.copyWith(
-                                tpage: tpageController.text,
-                              ),
+                  CustomTextField(
+                    title: 'Tpage',
+                    subtitle:
+                        'Use this page for subtitles, for example in Spain the page is always 888',
+                    intOnly: true,
+                    onEditingComplete: () => context.read<SettingsBloc>().add(
+                          SaveSettingsEvent(
+                            state.settingsModel.copyWith(
+                              tpage: tpageController.text,
                             ),
                           ),
-                      controller: tpageController,
-                    ),
+                        ),
+                    controller: tpageController,
+                  ),
                   CustomSwitchListTile(
                     title: 'Teletext mode',
                     subtitle:

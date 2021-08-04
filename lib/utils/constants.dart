@@ -49,8 +49,7 @@ Map<String, Map<String, int>> dropdownListMap = {
 };
 
 List<String> ocrMode = [
-    'auto/default',
-
+  'auto/default',
   'frame',
   'word',
   'letter',
