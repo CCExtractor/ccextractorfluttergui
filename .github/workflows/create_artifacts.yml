@@ -22,7 +22,7 @@ jobs:
     - name: Flutter format
       run: |
         flutter format . --set-exit-if-changed
-        flutter pub run import_sorter:main --no-comments --exit-if-changed"
+        flutter pub run import_sorter:main --no-comments --exit-if-changed
     - name: Flutter analyze 
       run: flutter analyze .
     - name: Flutter test
