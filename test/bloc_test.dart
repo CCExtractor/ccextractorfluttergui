@@ -17,6 +17,13 @@ void main() {
     );
 
     blocTest<SettingsBloc, SettingsState>(
+      'emit default settings model when nothing is changed',
+      build: () => SettingsBloc(_settingsRepository),
+      act: (bloc) => bloc.add(SettingsUpdatedEvent(settingsModel)),
+     // we don't care what's here so no expect. This just sets up config.json
+     // properly if it is not created yet, example on GH actions
+    );
+    blocTest<SettingsBloc, SettingsState>(
         'emits new settings model, settings saved correctly and getParamsList has the new setting',
         build: () => SettingsBloc(_settingsRepository),
         act: (bloc) {
