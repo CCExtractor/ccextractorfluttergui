@@ -1,39 +1,71 @@
-## Super good docs:
+## CCExtractor Flutter GUI 
+
+The new cross platform interface is all you need, as it includes all the options. After installing GUI you will have a shortcut in your desktop, this lets users not familiar with CLI to extract subtitles.
+Usually, you will never need to use all the options (and even if you do, all the setting are saved locally at Documents/config.json in your PC) for regular usage.
+
+## Install from releases 
+- This is the simplest method, just download the installer form [here](https://github.com/CCExtractor/ccextractor/releases) (currently only has windows), and then install it like any other windows program.
+
+--- 
 
 
-### Build and run
+#### If you run the GUI from nighly builds or source, you need to manually have the ccextractor binary in your PATH (`ccextractorwinfull.exe` if you are on windows or `ccextractor` if you are on linux/macOS)
 
-- Check out how to install Flutter [here](https://flutter.dev/docs/get-started/install)
-- Enable the flutter platform specific flag with `flutter config --enable-<platform>-desktop`, more info on this [here](https://flutter.dev/desktop)
-- To run the GUI, clone the repo and run `flutter run` or `flutter run -d <platform>` inside the cloned directory. 
-- To get any output you should have `ccextractorwinfull.exe` if you are on windows or `ccextractor` if you are on linux/macOS in your PATH. 
 
-#### For release builds: 
-- Run `flutter build <platform>` and you should get a executable in `./build/linux/x64/release/bundle/ccxgui`
+## Nightly builds
+- You can also get the latest files for your operating system from [here](https://nightly.link/CCExtractor/ccextractorfluttergui/workflows/create_artifacts/master).
 
-#### Using pre-built executables:
-- You can also just download the latest required executable from [here](https://nightly.link/CCExtractor/ccextractorfluttergui/workflows/create_artifacts/master) or manually from the github actions artifacts, keep in mind these still need `ccextractorwinfull.exe` if you are on windows or `ccextractor` if you are on linux/macOS in your PATH. 
-- For linux you need to `chmod 700 ./ccxgui`
-- Until the parameter names are more consistent in main ccx repo, please use [this](https://github.com/Techno-Disaster/ccextractor/tree/td/consistent-param-names) branch to build ccx.
+## Building and running the GUI from source
+- To build the GUI from source first install flutter from [here](https://flutter.dev/docs/get-started/install) for your operating system.
+- Switch to flutter master channel using `flutter channel master && flutter upgrade`
+- Next enable the flutter platform specific flag with `flutter config --enable-<platform>-desktop`, more info on this [here](https://flutter.dev/desktop)
+- Then clone [this](https://github.com/CCExtractor/ccextractorfluttergui) repository and run `flutter run -d <platform> --release` to run the app. 
+- To install the Gui you will need to build it using `flutter build <platform> --release`. The release builds should be located under /build/\<platform> 
 
-### checkValidJSON currenty supports 3 cases
+### Additional macOS steps:
+- If you build and install from source, you will probably get a `Process not permitted operation error` to fix remove 
+```
+<key>com.apple.security.app-sandbox</key>
+	<true/>
+```
+from macos/*.entitlements files
 
-- Check if the .json file is a valid json file.
-- Check if all the settings (keys) are present in the json file
-- Check if a value is the same as the datatype as it should be.
-- There is one more case in which, a dropdown can be of datatype `String` but still not be a valid option in the dropdown menu. This is also handled in checkValidJSON with a simple `dropDownOptionsList.contains('json[option]')`
+--- 
+# Using the GUI
 
-### Other docs
+The GUI is mainly divided into 2 parts, the home screen and the settings screen(s). 
 
-Most of the other parts of super good docs lie in the [process_bloc](lib/bloc/process_bloc/process_bloc.dart) file. Feel free to check that to see how most of the logic and file handling of the app. 
+- The home screen is where you can click the add files button and select one or multiple files. 
 
-### Proof of Concept videos submitted before GSoC'21
 
-https://user-images.githubusercontent.com/52817235/118916824-5420fb00-b94d-11eb-8134-7bf7740be11d.mp4
+## Home screen
+![image](https://ccextractor.org/images/flutter_gui/addfiles.png)
 
-https://user-images.githubusercontent.com/52817235/118916820-51260a80-b94d-11eb-81c8-a433171e5177.mp4
+- Once you select your files use the start all button to start running ccextractor on the selected files one by one. 
+- You can see the live output in the Logs container below. 
+- You can also use the clear list button to remove all the selected files from the menu. 
+- The progress for each file is shown with a circular green progress indicator. 
+- You can cancel/remove any file from the selected files using the delete button. 
+- To stop ccextractor, simply press the stop all button.
 
-sample files for testing are stored in sample/ (.gitignored)
+![image](https://ccextractor.org/images/flutter_gui/ccxrunning.png)
+
+## Settings screen(S)
+
+The GUI has tons of options so they are seperated into several settings screens. All of the options are saved locally in a json file so you can save the settings you need frequently,
+
+![image](https://ccextractor.org/images/flutter_gui/settings.png)
+
+
+- Each setting screen has a current command container at the top which shows you the exact command with the selected settings you will run when you click start all on the home page. 
+- To update the sttings, simply toggle the option or select the option from the dropdown menu. 
+- **To save settings which have a textfield press enter after you enter your setting value in the textfield.** 
+- You can also reset the settings back to the default value with the reset settings button on the top right corner of each of the settings page
+
+
+
+To report any bugs, please file a issue on github or get in touch with us on slack. Most CCExtractor developers hang out in a slack team. You're welcome to request an invitation [here](https://ccextractor.org/public/general/support/)
+
 
 ### Project structure
 ```
