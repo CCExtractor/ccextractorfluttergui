@@ -17,12 +17,6 @@ void main() {
     );
 
     blocTest<SettingsBloc, SettingsState>(
-      'emit default settings model when nothing is changed',
-      build: () => SettingsBloc(_settingsRepository),
-      act: (bloc) => bloc.add(SettingsUpdatedEvent(settingsModel)),
-      expect: () => [CurrentSettingsState(settingsModel)],
-    );
-    blocTest<SettingsBloc, SettingsState>(
         'emits new settings model, settings saved correctly and getParamsList has the new setting',
         build: () => SettingsBloc(_settingsRepository),
         act: (bloc) {
