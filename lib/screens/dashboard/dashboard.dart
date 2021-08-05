@@ -1,10 +1,10 @@
-import 'package:ccxgui/repositories/ccextractor.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
+import 'package:ccxgui/repositories/ccextractor.dart';
 import 'package:ccxgui/screens/dashboard/components/add_files.dart';
 import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
 import 'package:ccxgui/screens/dashboard/components/process_tile.dart';
