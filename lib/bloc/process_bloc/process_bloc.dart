@@ -56,14 +56,18 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     );
     unawaited(_extractor
         .extractFile(
-          file,
-          listenProgress: (progress) =>
-              add(ProcessFileExtractorProgress(progress)),
-          listenOutput: (line) => add(ProcessFileExtractorOutput(line)),
-          listenVideoDetails: (videoDetails) =>
-              add(ProcessFileVideoDetails(videoDetails)),
-        )
-        .then((value) => add(ProcessFileComplete(file))));
+      file,
+      listenProgress: (progress) => add(ProcessFileExtractorProgress(progress)),
+      listenOutput: (line) => add(ProcessFileExtractorOutput(line)),
+      listenVideoDetails: (videoDetails) =>
+          add(ProcessFileVideoDetails(videoDetails)),
+    )
+        .then((value) {
+      if (value != 0) {
+        add(ProcessError(value));
+      }
+      add(ProcessFileComplete(file));
+    }));
   }
 
   @override
@@ -164,6 +168,8 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         current: state.current,
         version: ccxVersion,
       );
+    } else if (event is ProcessError) {
+      yield state.copyWith(current: state.current, exitCode: event.exitCode);
     }
   }
 }

@@ -55,4 +55,9 @@ class ProcessFileComplete extends ProcessEvent {
   const ProcessFileComplete(this.file);
 }
 
+class ProcessError extends ProcessEvent {
+  final int exitCode;
+  const ProcessError(this.exitCode);
+}
+
 class GetCCExtractorVersion extends ProcessEvent {}

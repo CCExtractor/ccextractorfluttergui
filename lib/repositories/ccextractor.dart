@@ -39,11 +39,11 @@ class CCExtractor {
     );
 
     process.stdout.transform(latin1.decoder).listen((update) {
-      print(update);
+      //print(update);
     });
 
     process.stderr.transform(latin1.decoder).listen((update) {
-      print(update);
+      // print(update);
       if (progressRegx.hasMatch(update)) {
         for (RegExpMatch i in progressRegx.allMatches(update)) {
           listenProgress(i[1]!);
@@ -83,4 +83,24 @@ class CCExtractor {
     });
     return ccxStdOut;
   }
+
+  static Map<int, String> exitCodes = {
+    0: 'EXIT_OK',
+    2: 'EXIT_NO_INPUT_FILES',
+    3: 'EXIT_TOO_MANY_INPUT_FILES',
+    4: 'EXIT_INCOMPATIBLE_PARAMETERS',
+    6: 'EXIT_UNABLE_TO_DETERMINE_FILE_SIZE',
+    7: 'EXIT_MALFORMED_PARAMETER',
+    8: 'EXIT_READ_ERROR',
+    10: 'EXIT_NO_CAPTIONS',
+    300: 'EXIT_NOT_CLASSIFIED',
+    501: 'EXIT_ERROR_IN_CAPITALIZATION_FILE',
+    502: 'EXIT_BUFFER_FULL',
+    1001: 'EXIT_MISSING_ASF_HEADER',
+    1002: 'EXIT_MISSING_RCWT_HEADER',
+    5: 'CCX_COMMON_EXIT_FILE_CREATION_FAILED',
+    9: 'CCX_COMMON_EXIT_UNSUPPORTED',
+    500: 'EXIT_NOT_ENOUGH_MEMORY',
+    1000: 'CCX_COMMON_EXIT_BUG_BUG',
+  };
 }
