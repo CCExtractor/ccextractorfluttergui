@@ -35,7 +35,6 @@ class _ListenOnUDPButtonState extends State<ListenOnUDPButton> {
     return _host + portController.text;
   }
 
-  bool _validatePort = false;
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
