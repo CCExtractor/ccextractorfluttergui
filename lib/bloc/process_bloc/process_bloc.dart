@@ -54,20 +54,50 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       queue: state.queue.skip(1).toList(),
       progress: '0',
     );
-    unawaited(_extractor
-        .extractFile(
-      file,
-      listenProgress: (progress) => add(ProcessFileExtractorProgress(progress)),
-      listenOutput: (line) => add(ProcessFileExtractorOutput(line)),
-      listenVideoDetails: (videoDetails) =>
-          add(ProcessFileVideoDetails(videoDetails)),
-    )
-        .then((value) {
-      if (value != 0) {
-        add(ProcessError(value));
-      }
-      add(ProcessFileComplete(file));
-    }));
+    unawaited(
+      _extractor
+          .extractFile(
+        file,
+        listenProgress: (progress) =>
+            add(ProcessFileExtractorProgress(progress)),
+        listenOutput: (line) => add(ProcessFileExtractorOutput(line)),
+        listenVideoDetails: (videoDetails) =>
+            add(ProcessFileVideoDetails(videoDetails)),
+      )
+          .then(
+        (value) {
+          if (value != 0) {
+            add(ProcessError(value));
+          }
+          add(ProcessFileComplete(file));
+        },
+      ),
+    );
+  }
+
+  Stream<ProcessState> _extractOnNetwork(
+      String type, String location, String tcppassword, String tcpdesc) async* {
+    unawaited(
+      _extractor
+          .extractFileOverNetwork(
+        type: type,
+        location: location,
+        tcpdesc: tcpdesc,
+        tcppasswrd: tcppassword,
+        listenProgress: (progress) =>
+            add(ProcessFileExtractorProgress(progress)),
+        listenOutput: (line) => add(ProcessFileExtractorOutput(line)),
+        listenVideoDetails: (videoDetails) =>
+            add(ProcessFileVideoDetails(videoDetails)),
+      )
+          .then(
+        (value) {
+          if (value != 0) {
+            add(ProcessError(value));
+          }
+        },
+      ),
+    );
   }
 
   @override
@@ -170,6 +200,9 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       );
     } else if (event is ProcessError) {
       yield state.copyWith(current: state.current, exitCode: event.exitCode);
+    } else if (event is ProcessOnNetwork) {
+      yield* _extractOnNetwork(
+          event.type, event.location, event.tcppassword, event.tcpdesc);
     }
   }
 }

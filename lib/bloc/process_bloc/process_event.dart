@@ -60,4 +60,17 @@ class ProcessError extends ProcessEvent {
   const ProcessError(this.exitCode);
 }
 
+class ProcessOnNetwork extends ProcessEvent {
+  final String type;
+  final String location;
+  final String tcppassword;
+  final String tcpdesc;
+
+  ProcessOnNetwork(
+      {required this.type,
+      required this.location,
+      required this.tcppassword,
+      required this.tcpdesc});
+}
+
 class GetCCExtractorVersion extends ProcessEvent {}

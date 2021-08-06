@@ -6,6 +6,8 @@ import 'package:file_selector/file_selector.dart';
 import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/repositories/settings_repository.dart';
 
+enum NETWORK_TYPE { udp, tcp }
+
 class CCExtractor {
   late Process process;
   final RegExp progressRegx = RegExp(r'###PROGRESS#(\d+)', multiLine: true);
@@ -39,11 +41,63 @@ class CCExtractor {
     );
 
     process.stdout.transform(latin1.decoder).listen((update) {
-      //print(update);
+      print(update);
     });
 
     process.stderr.transform(latin1.decoder).listen((update) {
-      // print(update);
+      print(update);
+      if (progressRegx.hasMatch(update)) {
+        for (RegExpMatch i in progressRegx.allMatches(update)) {
+          listenProgress(i[1]!);
+        }
+      }
+      if (logsRegx.hasMatch(update)) {
+        for (RegExpMatch i in logsRegx.allMatches(update)) {
+          // 1,2 are here for regex groups, 1 corresponds to subtitle regex
+          // match and 2 is time regex match. Later we can seperate this if
+          // needed (no additonal benefit rn imo;td)
+          if (i[1] != null) listenOutput(i[1]!);
+          if (i[2] != null) listenOutput(i[2]!);
+        }
+      }
+      if (videoDetailsRegx.hasMatch(update)) {
+        for (RegExpMatch i in videoDetailsRegx.allMatches(update)) {
+          listenVideoDetails(i[1]!.split('#'));
+        }
+      }
+    });
+    return process.exitCode;
+  }
+
+  Future<int> extractFileOverNetwork({
+    required String type,
+    required String location,
+    required String tcppasswrd,
+    required String tcpdesc,
+    required Function(String) listenProgress,
+    required Function(String) listenOutput,
+    required Function(List<String>) listenVideoDetails,
+  }) async {
+    settings = await settingsRepository.getSettings();
+    List<String> paramsList = settingsRepository.getParamsList(settings);
+    process = await Process.start(
+      ccextractor,
+      [
+        '-' + type,
+        location,
+        tcppasswrd.isNotEmpty ? '-' + tcppasswrd : '',
+        tcpdesc.isNotEmpty ? '-' + tcpdesc : '',
+        '--gui_mode_reports',
+        ...paramsList,
+      ],
+    );
+
+    process.stdout.transform(latin1.decoder).listen((update) {
+      print(update);
+    });
+
+    process.stderr.transform(latin1.decoder).listen((update) {
+      print(update);
       if (progressRegx.hasMatch(update)) {
         for (RegExpMatch i in progressRegx.allMatches(update)) {
           listenProgress(i[1]!);

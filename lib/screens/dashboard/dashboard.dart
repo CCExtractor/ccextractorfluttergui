@@ -52,12 +52,12 @@ class ClearFilesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProcessBloc, ProcessState>(
-      listenWhen: (previous, current) {
-        return previous.exitCode != current.exitCode;
-      },
       listener: (context, processState) {
-        CustomSnackBarMessage.show(
-            context, CCExtractor.exitCodes[processState.exitCode]!);
+        //TODO: fix only works the first time, bloc wont emit same state
+        if (CCExtractor.exitCodes[processState.exitCode] != null) {
+          CustomSnackBarMessage.show(
+              context, CCExtractor.exitCodes[processState.exitCode]!);
+        }
       },
       builder: (context, processState) {
         return BlocBuilder<DashboardBloc, DashboardState>(
@@ -314,13 +314,7 @@ class LogsContainer extends StatelessWidget {
                       'Framerate:  ${state.videoDetails.isNotEmpty ? state.videoDetails[3].substring(5) : ''}',
                       style: TextStyle(fontSize: 15),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(right: 10.0),
-                    //   child: Text(
-                    //     'Encoding:  ${state.videoDetails[3]}',
-                    //     style: TextStyle(fontSize: 15),
-                    //   ),
-                    // ),
+                   
                   ],
                 ),
               ),
