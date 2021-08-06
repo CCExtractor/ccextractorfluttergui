@@ -314,7 +314,6 @@ class LogsContainer extends StatelessWidget {
                       'Framerate:  ${state.videoDetails.isNotEmpty ? state.videoDetails[3].substring(5) : ''}',
                       style: TextStyle(fontSize: 15),
                     ),
-                   
                   ],
                 ),
               ),
