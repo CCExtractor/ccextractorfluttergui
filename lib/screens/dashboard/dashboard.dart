@@ -52,6 +52,7 @@ class ClearFilesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProcessBloc, ProcessState>(
+      listenWhen: (_, __) => true,
       listener: (context, processState) {
         //TODO: fix only works the first time, bloc wont emit same state
         if (CCExtractor.exitCodes[processState.exitCode] != null) {

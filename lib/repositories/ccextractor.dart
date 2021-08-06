@@ -85,8 +85,8 @@ class CCExtractor {
       [
         '-' + type,
         location,
-        tcppasswrd.isNotEmpty ? '-' + tcppasswrd : '',
-        tcpdesc.isNotEmpty ? '-' + tcpdesc : '',
+        tcppasswrd.isNotEmpty ? '-tcppasswrd' + tcppasswrd : '',
+        tcpdesc.isNotEmpty ? '-tcpdesc' + tcpdesc : '',
         '--gui_mode_reports',
         ...paramsList,
       ],
