@@ -1,0 +1,41 @@
+{
+    "app-id": "org.ccextractor.gui",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "40",
+    "sdk": "org.gnome.Sdk",
+    "command": "ccxgui",
+    "separate-locales": false,
+    "finish-args": [
+        "--share=ipc",
+        "--socket=x11",
+        "--socket=fallback-x11",
+        "--socket=wayland",
+        "--share=network",
+        "--filesystem=home",
+        "--filesystem=xdg-documents"
+    ],
+    "modules": [
+        {
+            "name": "ccxgui",
+            "buildsystem": "simple",
+            "build-commands": [
+                "cd ccxgui && mkdir lib/ data/ && mv flutter_assets icudtl.dat data/ && mv lib*.so lib/",
+                "ls ccxgui",
+                "cp -r ccxgui /app/ccxgui",
+                "chmod +x /app/ccxgui/ccxgui",
+                "mkdir /app/bin",
+                "ln -s /app/ccxgui/ccxgui /app/bin/ccxgui"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://github.com/CCExtractor/ccextractorfluttergui/releases/download/v0.2.0/linux.zip",
+                    "dest": "ccxgui",
+                    "sha256": "a87033f0e11572ba948765099b95b6776b2be7f34253f20885bd2e8621441013"
+                }
+            
+              
+            ]
+        }
+    ]
+}
