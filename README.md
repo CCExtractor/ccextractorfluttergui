@@ -14,8 +14,10 @@ Usually, you will never need to use all the options (and even if you do, all the
 
 ## Nightly builds
 - You can also get the latest files for your operating system from [here](https://nightly.link/CCExtractor/ccextractorfluttergui/workflows/create_artifacts/master).
+- Once you unzip it, you should see a ccxgui executable in the folder. Double click to run :D
 
 ## Building and running the GUI from source
+- This method only makes sense for poeple who actually want ot debug the app. If you want to skip the hastle of insatlling frameworks and stuff just go the nightly way, the CI does these below steps for you automatically on every commit. 
 - To build the GUI from source first install flutter from [here](https://flutter.dev/docs/get-started/install) for your operating system.
 - Switch to flutter master channel using `flutter channel master && flutter upgrade`
 - Next enable the flutter platform specific flag with `flutter config --enable-<platform>-desktop`, more info on this [here](https://flutter.dev/desktop)
