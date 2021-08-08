@@ -13,6 +13,12 @@ slots:
     bus: session
     name: org.ccextractor.gui
 
+parts:
+  ccxgui:
+    source: .
+    plugin: flutter
+    flutter-target: lib/main.dart # The main entry-point file of the application
+
 apps:
   ccxgui:
     command: ccxgui
@@ -22,7 +28,3 @@ apps:
     - network
     slots:
       - dbus-ccxgui
-parts:
-  ccxgui:
-    plugin: dump
-    source: ./build/linux/x64/release/bundle/
