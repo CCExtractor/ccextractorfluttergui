@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=CCExtractpr GUI
+Comment=Extract subtitles from any media file.
+Exec=ccextractor-gui
+Icon=${SNAP}/meta/gui/ccextractor-gui.png
+Terminal=false
+Type=Application
+Categories=Media;

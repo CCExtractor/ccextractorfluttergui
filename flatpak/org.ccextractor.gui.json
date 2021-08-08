@@ -1,5 +1,5 @@
 {
-    "app-id": "org.ccextractor.Gui",
+    "app-id": "com.example.ccxgui",
     "runtime": "org.gnome.Platform",
     "runtime-version": "40",
     "sdk": "org.gnome.Sdk",

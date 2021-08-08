@@ -1,0 +1,28 @@
+name: ccextractor-gui
+version: 0.1.0
+summary: Extract subtitles from any media file.
+description: CCExtractor is the de-factor open source standard for closed captions / subtitles extraction from any media file. While the software itself belong to the niche category (main users being universities, media companies and enthusiasts) its output (meaning the .srt files it generates) is used by millions. If you've ever downloaded an external subtitle file for a TV show - most likely the original file came from CCExtractor.
+
+confinement: strict
+base: core18
+grade: stable
+
+slots:
+  dbus-ccextractor-gui:
+    interface: dbus
+    bus: session
+    name: org.bar.ccextractor_gui
+
+apps:
+  ccextractor-gui:
+    command: ccextractor_gui
+    extensions: [flutter-master]
+    plugs:
+    - network
+    slots:
+      - dbus-ccextractor-gui
+parts:
+  ccextractor-gui:
+    source: .
+    plugin: flutter
+    flutter-target: lib/main.dart
