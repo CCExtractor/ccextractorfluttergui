@@ -29,9 +29,9 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://nightly.link/CCExtractor/ccextractorfluttergui/workflows/create_artifacts/master/CCExtractor%20Flutter%20GUI%20Linux.zip",
+                    "url": "https://github.com/CCExtractor/ccextractorfluttergui/files/6950656/CCExtractor.Flutter.GUI.Linux.1.zip",
                     "dest": "ccxgui",
-                    "sha256": "0cf6b3174fe3d08fda0d3414c6f9c96e2f73b96c777c4378a8c166bed599812c"
+                    "sha256": "320ad1768543f9cd7ded2fedaf2cde905c450a6e725e9dcfbcd381d27f87a70d"
                 }
             
               
