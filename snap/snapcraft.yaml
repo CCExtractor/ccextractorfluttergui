@@ -14,6 +14,11 @@ slots:
     name: org.ccextractor.gui
 
 parts:
+  ccextractor: 
+    plugin: nil
+    source: https://github.com/CCExtractor/ccextractorfluttergui/files/6949923/ccx.zip
+    stage-packages: [libglew-dev, libglfw3-dev, cmake, gcc, libcurl4-gnutls-dev, tesseract-ocr, tesseract-ocr-dev, libleptonica-dev]
+    
   ccxgui:
     source: .
     plugin: flutter
