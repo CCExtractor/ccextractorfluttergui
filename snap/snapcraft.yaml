@@ -14,15 +14,12 @@ slots:
     name: org.ccextractor.gui
 
 parts:
-  ccextractor: 
-    plugin: nil
-    source: https://github.com/CCExtractor/ccextractorfluttergui/files/6949923/ccx.zip
-    stage-packages: [libglew-dev, libglfw3-dev, cmake, gcc, libcurl4-gnutls-dev, tesseract-ocr, libleptonica-dev]
-    
   ccxgui:
     source: .
     plugin: flutter
     flutter-target: lib/main.dart # The main entry-point file of the application
+    stage-packages: [ccextractor]
+
 
 apps:
   ccxgui:
