@@ -1,6 +1,7 @@
 // Logs events and states during transition, needs some improvement to reduce spam
 // @override
 // String toString() => 'Event { prop: prop }';
+
 import 'package:bloc/bloc.dart';
 
 class SimpleBlocObserver extends BlocObserver {

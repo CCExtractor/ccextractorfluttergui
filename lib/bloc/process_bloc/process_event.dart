@@ -52,7 +52,6 @@ class ProcessFileExtractorProgress extends ProcessEvent {
   final String progress;
 
   const ProcessFileExtractorProgress(this.progress);
-  
 }
 
 class ProcessFileComplete extends ProcessEvent {

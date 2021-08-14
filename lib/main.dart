@@ -12,7 +12,6 @@ import 'package:ccxgui/bloc/updater_bloc/updater_bloc.dart';
 import 'package:ccxgui/repositories/settings_repository.dart';
 import 'package:ccxgui/screens/home.dart';
 import 'package:ccxgui/utils/constants.dart';
-
 import 'bloc_observer.dart';
 
 void main() async {
