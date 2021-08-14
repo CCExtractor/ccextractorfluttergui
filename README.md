@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![bloc](https://img.shields.io/badge/flutter-bloc-blue)](https://github.com/felangel/bloc)
 
-oss platform interface is all you need, as it includes all the options. After installing GUI you will have a shortcut in your desktop, this lets users not familiar with CLI to extract subtitles.
+The new cross platform interface is all you need, as it includes all the options. After installing GUI you will have a shortcut in your desktop, this lets users not familiar with CLI to extract subtitles.
 Usually, you will never need to use all the options (and even if you do, all the setting are saved locally at Documents/config.json in your PC) for regular usage.
 
 
