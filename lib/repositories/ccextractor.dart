@@ -6,8 +6,6 @@ import 'package:file_selector/file_selector.dart';
 import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/repositories/settings_repository.dart';
 
-enum NETWORK_TYPE { udp, tcp }
-
 class CCExtractor {
   late Process process;
   final RegExp progressRegx = RegExp(r'###PROGRESS#(\d+)', multiLine: true);
@@ -39,13 +37,16 @@ class CCExtractor {
         ...paramsList,
       ],
     );
-
+    // sometimes stdout and stderr have important logs like how much time
+    // it took to process the file or some erros not captured by exitcodes,
+    // so just print them to the logs box
     process.stdout.transform(latin1.decoder).listen((update) {
-      print(update);
+      // print(update);
+      listenOutput(update);
     });
 
     process.stderr.transform(latin1.decoder).listen((update) {
-      print(update);
+      // print(update);
       if (progressRegx.hasMatch(update)) {
         for (RegExpMatch i in progressRegx.allMatches(update)) {
           listenProgress(i[1]!);
@@ -65,6 +66,7 @@ class CCExtractor {
           listenVideoDetails(i[1]!.split('#'));
         }
       }
+      update.contains('Error') ? listenOutput(update) : print(update);
     });
     return process.exitCode;
   }
@@ -93,11 +95,11 @@ class CCExtractor {
     );
 
     process.stdout.transform(latin1.decoder).listen((update) {
-      print(update);
+      //print(update);
+      listenOutput(update);
     });
 
     process.stderr.transform(latin1.decoder).listen((update) {
-      print(update);
       if (progressRegx.hasMatch(update)) {
         for (RegExpMatch i in progressRegx.allMatches(update)) {
           listenProgress(i[1]!);
@@ -117,6 +119,7 @@ class CCExtractor {
           listenVideoDetails(i[1]!.split('#'));
         }
       }
+      update.contains('Error') ? listenOutput(update) : print(update);
     });
     return process.exitCode;
   }

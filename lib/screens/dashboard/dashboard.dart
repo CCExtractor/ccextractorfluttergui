@@ -52,11 +52,16 @@ class ClearFilesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProcessBloc, ProcessState>(
+      listenWhen: (previous, current) =>
+          previous.exitCode !=
+          current
+              .exitCode, // we reset the exit code everytime so listen only when a new version actually comes not from some other state change before reset error code state comes
       listener: (context, processState) {
-        if (CCExtractor.exitCodes[processState.exitCode] != null && processState.exitCode != 0) {
+        if (CCExtractor.exitCodes[processState.exitCode] != null &&
+            processState.exitCode != 0) {
           CustomSnackBarMessage.show(
               context, CCExtractor.exitCodes[processState.exitCode]!);
-          context.read<ProcessBloc>().add(ResetProcessError()); 
+          context.read<ProcessBloc>().add(ResetProcessError());
         }
       },
       builder: (context, processState) {

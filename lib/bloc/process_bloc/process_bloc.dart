@@ -118,7 +118,10 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       );
       yield* _extractNext();
     } else if (event is ProcessStopped) {
-      _extractor.cancelRun();
+      // stops everything
+      try {
+        _extractor.cancelRun();
+      } on Exception catch (_) {}
       yield state.copyWith(
         current: null,
         queue: state.orignalList,
@@ -127,7 +130,9 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         started: false,
       );
     } else if (event is ProcessKill) {
-      _extractor.cancelRun();
+      try {
+        _extractor.cancelRun();
+      } on Exception catch (_) {}
       yield state.copyWith(
         current: state.current,
         orignalList: state.orignalList
@@ -136,7 +141,9 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         queue: state.queue.where((element) => element != event.file).toList(),
       );
     } else if (event is ProcessRemoveAll) {
-      _extractor.cancelRun();
+      try {
+        _extractor.cancelRun();
+      } on Exception catch (_) {}
       yield state.copyWith(
         current: null,
         progress: '0',
@@ -144,6 +151,9 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         queue: [],
         orignalList: [],
         started: false,
+        exitCode: null,
+        log: [],
+        videoDetails: [],
       );
     } else if (event is ProcessFileExtractorProgress) {
       yield state.copyWith(current: state.current, progress: event.progress);
@@ -159,7 +169,9 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       if (state.current == event.file) {
         yield state.copyWith(
           current: null,
+          log: state.queue.isNotEmpty ? [] : state.log,
           processed: state.processed.followedBy([event.file]).toList(),
+          exitCode: null,
         );
         yield* _extractNext();
       }
@@ -201,7 +213,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     } else if (event is ProcessError) {
       yield state.copyWith(current: state.current, exitCode: event.exitCode);
     } else if (event is ResetProcessError) {
-      yield state.copyWith(current: state.current, exitCode: 0);
+      yield state.copyWith(current: state.current, exitCode: null);
     } else if (event is ProcessOnNetwork) {
       yield* _extractOnNetwork(
           event.type, event.location, event.tcppassword, event.tcpdesc);

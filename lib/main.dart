@@ -66,11 +66,11 @@ class MyApp extends StatelessWidget {
 
 // Logs events and states during transition
 class SimpleBlocObserver extends BlocObserver {
-  @override
-  void onTransition(Bloc bloc, Transition transition) {
-    print(transition);
-    super.onTransition(bloc, transition);
-  }
+  // @override
+  // void onTransition(Bloc bloc, Transition transition) {
+  //   print(transition);
+  //   super.onTransition(bloc, transition);
+  // }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {

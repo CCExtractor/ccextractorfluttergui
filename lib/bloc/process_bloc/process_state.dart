@@ -46,7 +46,7 @@ class ProcessState extends Equatable {
           videoDetails: videoDetails ?? this.videoDetails,
           version: version ?? this.version,
           current: current,
-          exitCode: exitCode ?? this.exitCode);
+          exitCode: exitCode);
 
   @override
   List<Object?> get props => [
