@@ -1,126 +1,30 @@
-## CCExtractor Flutter GUI 
+# CCExtractor Flutter GUI 
+[![Upload artifact](https://github.com/CCExtractor/ccextractorfluttergui/actions/workflows/create_artifacts.yml/badge.svg)](https://github.com/CCExtractor/ccextractorfluttergui/actions/workflows/create_artifacts.yml)
+[![Upload releases](https://github.com/CCExtractor/ccextractorfluttergui/actions/workflows/create_releases.yml/badge.svg)](https://github.com/CCExtractor/ccextractorfluttergui/actions/workflows/create_releases.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![bloc](https://img.shields.io/badge/flutter-bloc-blue)](https://github.com/felangel/bloc)
 
-The new cross platform interface is all you need, as it includes all the options. After installing GUI you will have a shortcut in your desktop, this lets users not familiar with CLI to extract subtitles.
+oss platform interface is all you need, as it includes all the options. After installing GUI you will have a shortcut in your desktop, this lets users not familiar with CLI to extract subtitles.
 Usually, you will never need to use all the options (and even if you do, all the setting are saved locally at Documents/config.json in your PC) for regular usage.
 
-### Install from releases (WINDOWS ONLY)
-- This is the simplest method, just download the installer form [here](https://github.com/CCExtractor/ccextractor/releases) (currently only has windows), and then install it like any other windows program.
 
---- 
-
-
-##### If you run the GUI from nighly builds or source, you need to manually have the ccextractor binary in your PATH (`ccextractorwinfull.exe` if you are on windows or `ccextractor` if you are on linux/macOS)
-
-
-### Nightly builds (WINDOWS, LINUX)
-- You can also get the latest files for your operating system from [here](https://nightly.link/CCExtractor/ccextractorfluttergui/workflows/create_artifacts/master).
-- Once you unzip it, you should see a ccxgui executable in the folder. Double click to run :D
-
-### Building and running the GUI from source (WINDOWS, LINUX, MACOS)
-- This method only makes sense for people who actually want to debug the app. If you want to skip the hastle of installing frameworks and stuff just go the nightly way, the CI does these below steps for you automatically on every commit. 
-- To build the GUI from source first install flutter from [here](https://flutter.dev/docs/get-started/install) for your operating system.
-- Switch to flutter master channel using `flutter channel master && flutter upgrade`
-- Next enable the flutter platform specific flag with `flutter config --enable-<platform>-desktop`, more info on this [here](https://flutter.dev/desktop)
-- Then clone [this](https://github.com/CCExtractor/ccextractorfluttergui) repository and run `flutter run -d <platform> --release` to run the app. 
-- To install the Gui you will need to build it using `flutter build <platform> --release`. The release builds should be located under /build/\<platform> 
-
-#### Additional macOS steps:
-- If you build and install from source, you will probably get a `Process not permitted operation error` to fix remove 
-```
-<key>com.apple.security.app-sandbox</key>
-	<true/>
-```
-from macos/*.entitlements files
-
---- 
-### Using the GUI
-
-The GUI is mainly divided into 2 parts, the home screen and the settings screen(s). 
-
-- The home screen is where you can click the add files button and select one or multiple files. 
+## Table of contents
+* [Installation](#installation)
+* [Usage](#usage)
+* [Contributing](#contributing)
+* [License](#license)
 
 
-### Home screen
-![image](https://ccextractor.org/images/flutter_gui/addfiles.png)
-
-- Once you select your files use the start all button to start running ccextractor on the selected files one by one. 
-- You can see the live output in the Logs container below. 
-- You can also use the clear list button to remove all the selected files from the menu. 
-- The progress for each file is shown with a circular green progress indicator. 
-- You can cancel/remove any file from the selected files using the delete button. 
-- To stop ccextractor, simply press the stop all button.
-
-![image](https://ccextractor.org/images/flutter_gui/ccxrunning.png)
-
-### Settings screen(S)
-
-The GUI has tons of options so they are seperated into several settings screens. All of the options are saved locally in a json file so you can save the settings you need frequently,
-
-![image](https://ccextractor.org/images/flutter_gui/settings.png)
+## Installation
+CCExtractor Flutter GUI releases a windows msi every release. For linux you will find executables [here](https://nightly.link/CCExtractor/ccextractorfluttergui/workflows/create_artifacts/master) or on the [releases page](https://github.com/CCExtractor/ccextractorfluttergui/releases), but still need to get ccextractor manually. For macOS you need to build the GUI from source and get ccextractor manually. For detailed information on this please refer [INSTAL.MD](INSTALL.MD).
 
 
-- Each setting screen has a current command container at the top which shows you the exact command with the selected settings you will run when you click start all on the home page. 
-- To update the sttings, simply toggle the option or select the option from the dropdown menu. 
-- **To save settings which have a textfield press enter after you enter your setting value in the textfield.** 
-- You can also reset the settings back to the default value with the reset settings button on the top right corner of each of the settings page
+## Usage
+For users new to GUI check out the usage guide [here](USAGE.MD). You can also check all the options avaiable in ccextractor [here](https://ccextractor.org/public/general/command_line_usage/)
 
 
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. Please make sure to update tests as appropriate. For more details, see the [Contributing Page](CONTRIBUTING.md)
 
-To report any bugs, please file a issue on github or get in touch with us on slack. Most CCExtractor developers hang out in a slack team. You're welcome to request an invitation [here](https://ccextractor.org/public/general/support/)
-
-
-### Project structure
-```
-lib/
-├── bloc
-│   ├── dashboard_bloc
-│   │   ├── dashboard_bloc.dart
-│   │   ├── dashboard_event.dart
-│   │   └── dashboard_state.dart
-│   ├── process_bloc
-│   │   ├── process_bloc.dart
-│   │   ├── process_event.dart
-│   │   └── process_state.dart
-│   ├── settings_bloc
-│   │   ├── settings_bloc.dart
-│   │   ├── settings_event.dart
-│   │   └── settings_state.dart
-│   └── updater_bloc
-│       ├── updater_bloc.dart
-│       ├── updater_event.dart
-│       └── updater_state.dart
-├── generated_plugin_registrant.dart
-├── main.dart
-├── models
-│   └── settings_model.dart
-├── repositories
-│   ├── ccextractor.dart
-│   └── settings_repository.dart
-├── screens
-│   ├── dashboard
-│   │   ├── components
-│   │   │   ├── add_files.dart
-│   │   │   ├── custom_snackbar.dart
-│   │   │   ├── process_tile.dart
-│   │   │   └── udp_button.dart
-│   │   └── dashboard.dart
-│   ├── home.dart
-│   └── settings
-│       ├── basic_settings.dart
-│       ├── components
-│       │   ├── current_command.dart
-│       │   ├── custom_divider.dart
-│       │   ├── custom_dropdown.dart
-│       │   ├── custom_path_button.dart
-│       │   ├── custom_swtich_listTile.dart
-│       │   └── custom_textfield.dart
-│       ├── hardsubx_settings.dart
-│       ├── input_settings.dart
-│       ├── obscure_settings.dart
-│       └── output_settings.dart
-└── utils
-    ├── constants.dart
-    └── responsive.dart
-
-13 directories, 36 files
-```
+## Lice
+[MIT License](LICENSE)
