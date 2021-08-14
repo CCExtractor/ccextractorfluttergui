@@ -200,6 +200,8 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       );
     } else if (event is ProcessError) {
       yield state.copyWith(current: state.current, exitCode: event.exitCode);
+    } else if (event is ResetProcessError) {
+      yield state.copyWith(current: state.current, exitCode: 0);
     } else if (event is ProcessOnNetwork) {
       yield* _extractOnNetwork(
           event.type, event.location, event.tcppassword, event.tcpdesc);

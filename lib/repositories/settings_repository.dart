@@ -36,17 +36,16 @@ class SettingsRepository {
           throw Exception('Setting key not found');
         }
       }
-      // This checks if all the values are of the intended datatype. TODO
-      if (outputFormats.contains(data['out']) &&
-          data['outputfilename'] is String &&
-          data['append'] is bool &&
-          data['autoprogram'] is bool) {
-      } else {
-        throw Exception('Settings value has mismatched datatype');
+      // This checks if all the values are of the intended datatype, by setting the current data to a settingsModel object
+      try {
+        // ignore: unused_local_variable
+        final _settingsModel = SettingsModel.fromJson(data);
+      } catch (e) {
+        throw Exception('Settings value has mismatched datatype. Error $e');
       }
       return true;
     } catch (e) {
-      print('Rewriting config.json file');
+      print('Rewriting config.json file. Error $e');
       await file.writeAsString(jsonEncode(SettingsModel()));
       return false;
     }
