@@ -66,7 +66,7 @@ class CCExtractor {
           listenVideoDetails(i[1]!.split('#'));
         }
       }
-      update.contains('Error') ? listenOutput(update) : print(update);
+      update.contains('Error') ? listenOutput(update) : null;
     });
     return process.exitCode;
   }
@@ -119,7 +119,7 @@ class CCExtractor {
           listenVideoDetails(i[1]!.split('#'));
         }
       }
-      update.contains('Error') ? listenOutput(update) : print(update);
+      update.contains('Error') ? listenOutput(update) : null;
     });
     return process.exitCode;
   }

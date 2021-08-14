@@ -13,6 +13,8 @@ import 'package:ccxgui/repositories/settings_repository.dart';
 import 'package:ccxgui/screens/home.dart';
 import 'package:ccxgui/utils/constants.dart';
 
+import 'bloc_observer.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
@@ -61,20 +63,5 @@ class MyApp extends StatelessWidget {
         home: Home(),
       ),
     );
-  }
-}
-
-// Logs events and states during transition
-class SimpleBlocObserver extends BlocObserver {
-  // @override
-  // void onTransition(Bloc bloc, Transition transition) {
-  //   print(transition);
-  //   super.onTransition(bloc, transition);
-  // }
-
-  @override
-  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-    print('${bloc.runtimeType} $error $stackTrace');
-    super.onError(bloc, error, stackTrace);
   }
 }

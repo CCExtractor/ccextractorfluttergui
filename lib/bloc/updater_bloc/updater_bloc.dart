@@ -38,7 +38,6 @@ class UpdaterBloc extends Bloc<UpdaterEvent, UpdaterState> {
 
       bool updateAvailable =
           double.parse(latestVersion) > double.parse(event.currentVersion);
-      print(latestVersion);
       yield state.copyWith(
         currentVersion: event.currentVersion,
         latestVersion: latestVersion,
