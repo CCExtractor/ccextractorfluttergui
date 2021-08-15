@@ -27,7 +27,7 @@ class ObscureSettingsScreen extends StatelessWidget {
         if (state is CurrentSettingsState) {
           TextEditingController programNumberController =
               TextEditingController(text: state.settingsModel.program_number);
-         
+
           return Scaffold(
             appBar: AppBar(
               flexibleSpace: FlexibleSpaceBar(
@@ -195,7 +195,6 @@ class ObscureSettingsScreen extends StatelessWidget {
                           );
                     },
                   ),
-                 
                 ],
               ),
             ),

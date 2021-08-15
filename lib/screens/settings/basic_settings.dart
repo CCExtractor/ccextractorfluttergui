@@ -36,7 +36,7 @@ class BasicSettingsScreen extends StatelessWidget {
               TextEditingController(text: state.settingsModel.startat);
           TextEditingController endat =
               TextEditingController(text: state.settingsModel.endat);
-         
+
           return Scaffold(
             appBar: AppBar(
               flexibleSpace: FlexibleSpaceBar(
@@ -180,7 +180,6 @@ class BasicSettingsScreen extends StatelessWidget {
                     },
                     controller: endat,
                   ),
-                  
                 ],
               ),
             ),
