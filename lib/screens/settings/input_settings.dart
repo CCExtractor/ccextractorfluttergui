@@ -31,10 +31,8 @@ class InputSettingsScreen extends StatelessWidget {
               TextEditingController(text: state.settingsModel.outInterval);
           TextEditingController streamController =
               TextEditingController(text: state.settingsModel.stream);
-          TextEditingController minlevdist =
-              TextEditingController(text: state.settingsModel.minlevdist);
-          TextEditingController maxlevdist =
-              TextEditingController(text: state.settingsModel.maxlevdist);
+          TextEditingController tpageController =
+              TextEditingController(text: state.settingsModel.tpage);
           return Scaffold(
             appBar: AppBar(
               flexibleSpace: FlexibleSpaceBar(
@@ -43,7 +41,7 @@ class InputSettingsScreen extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               ),
               elevation: 0,
-              toolbarHeight: 120,
+              toolbarHeight: 110,
               backgroundColor: Colors.transparent,
             ),
             body: Padding(
@@ -284,50 +282,6 @@ class InputSettingsScreen extends StatelessWidget {
                           );
                     },
                   ),
-                  CustomDivider(title: 'Levenshtein distance'),
-                  CustomSwitchListTile(
-                    title: 'No Levenshtein distance',
-                    subtitle:
-                        "Don't attempt to correct typos with Levenshtein distance.",
-                    value: state.settingsModel.nolevdist,
-                    onTap: (value) {
-                      context.read<SettingsBloc>().add(
-                            SettingsUpdatedEvent(
-                              state.settingsModel.copyWith(
-                                nolevdist: value,
-                              ),
-                            ),
-                          );
-                    },
-                  ),
-                  CustomTextField(
-                    title: 'Minumin Levenshtein distance count',
-                    intOnly: true,
-                    subtitle:
-                        'Minimum distance we always allow regardless of the length of the strings.Default 2.',
-                    onEditingComplete: () => context.read<SettingsBloc>().add(
-                          SaveSettingsEvent(
-                            state.settingsModel.copyWith(
-                              minlevdist: minlevdist.text,
-                            ),
-                          ),
-                        ),
-                    controller: minlevdist,
-                  ),
-                  CustomTextField(
-                    title: 'Maximun eLvenshtein distance percentage',
-                    intOnly: true,
-                    subtitle:
-                        'Maximum distance we allow, as a percentage of the shortest string length. Default 10%.',
-                    onEditingComplete: () => context.read<SettingsBloc>().add(
-                          SaveSettingsEvent(
-                            state.settingsModel.copyWith(
-                              maxlevdist: maxlevdist.text,
-                            ),
-                          ),
-                        ),
-                    controller: maxlevdist,
-                  ),
                   CustomDivider(title: 'Codec settings'),
                   CustomDropDown(
                     title: 'Codec',
@@ -359,6 +313,68 @@ class InputSettingsScreen extends StatelessWidget {
                               ),
                             ),
                           );
+                    },
+                  ),
+                  CustomDivider(title: 'Teletext settings'),
+                  CustomTextField(
+                    title: 'Teletext page',
+                    subtitle:
+                        'Use this page for subtitles, for example in Spain the page is always 888',
+                    intOnly: true,
+                    onEditingComplete: () => context.read<SettingsBloc>().add(
+                          SaveSettingsEvent(
+                            state.settingsModel.copyWith(
+                              tpage: tpageController.text,
+                            ),
+                          ),
+                        ),
+                    controller: tpageController,
+                  ),
+                  CustomSwitchListTile(
+                    title: 'Teletext mode',
+                    subtitle:
+                        'Force teletext mode even if teletext is not detected..',
+                    value: state.settingsModel.teletext,
+                    onTap: (bool value) {
+                      value == true
+                          ? context.read<SettingsBloc>().add(
+                                SettingsUpdatedEvent(
+                                  state.settingsModel.copyWith(
+                                    teletext: value,
+                                    noteletext: false,
+                                  ),
+                                ),
+                              )
+                          : context.read<SettingsBloc>().add(
+                                SettingsUpdatedEvent(
+                                  state.settingsModel.copyWith(
+                                    teletext: value,
+                                  ),
+                                ),
+                              );
+                    },
+                  ),
+                  CustomSwitchListTile(
+                    title: 'Disable teletext',
+                    subtitle: 'Disable teletext processing.',
+                    value: state.settingsModel.noteletext,
+                    onTap: (bool value) {
+                      value == true
+                          ? context.read<SettingsBloc>().add(
+                                SettingsUpdatedEvent(
+                                  state.settingsModel.copyWith(
+                                    noteletext: value,
+                                    teletext: false,
+                                  ),
+                                ),
+                              )
+                          : context.read<SettingsBloc>().add(
+                                SettingsUpdatedEvent(
+                                  state.settingsModel.copyWith(
+                                    noteletext: value,
+                                  ),
+                                ),
+                              );
                     },
                   ),
                 ],

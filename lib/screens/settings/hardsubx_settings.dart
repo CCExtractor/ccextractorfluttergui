@@ -51,7 +51,7 @@ class HardSubxSettingsScreen extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               ),
               elevation: 0,
-              toolbarHeight: 120,
+              toolbarHeight: 110,
               backgroundColor: Colors.transparent,
             ),
             body: Padding(
