@@ -1,6 +1,5 @@
 # CCExtractor Flutter GUI 
 [![Upload artifact](https://github.com/CCExtractor/ccextractorfluttergui/actions/workflows/create_artifacts.yml/badge.svg)](https://github.com/CCExtractor/ccextractorfluttergui/actions/workflows/create_artifacts.yml)
-[![Upload releases](https://github.com/CCExtractor/ccextractorfluttergui/actions/workflows/create_releases.yml/badge.svg)](https://github.com/CCExtractor/ccextractorfluttergui/actions/workflows/create_releases.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![bloc](https://img.shields.io/badge/flutter-bloc-blue)](https://github.com/felangel/bloc)
 
