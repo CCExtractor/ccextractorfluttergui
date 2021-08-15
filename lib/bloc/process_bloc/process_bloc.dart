@@ -188,11 +188,18 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         // state.queue automatically.
         // if state.started is false, that means that the first x files have
         // finsihed processing and then he user adds y new files, so new queue
-        // need to be set to event.files instead of originalList
+        // need to be set to event.files instead of originalList.
+        // state.started can also be false when the users selects x files from
+        // one folder and then clicks add files again to select y files from
+        // some different folder, so we should also check if the processed files
+        // list is empty if no its the above case, if it is empty that means the
+        // user has selected x and y files from different folders by clicking
+        // add files button 2 times and we should start running ccx on all the
+        // files
 
         // TLDR; this part handles the y new files thingy mentioned in
         // _extractNext func comments.
-        queue: state.started
+        queue: state.started || state.processed.isEmpty
             ? state.queue.followedBy(event.files).toList()
             : event.files,
       );
