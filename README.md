@@ -15,7 +15,18 @@ Usually, you will never need to use all the options (and even if you do, all the
 
 
 ## Installation
-CCExtractor Flutter GUI releases a windows msi every release. For linux you will find executables [here](https://nightly.link/CCExtractor/ccextractorfluttergui/workflows/create_artifacts/master) or on the [releases page](https://github.com/CCExtractor/ccextractorfluttergui/releases), but still need to get ccextractor manually. For macOS you need to build the GUI from source and get ccextractor manually. For detailed information on this please refer [INSTAL.MD](INSTALL.MD).
+Depending on your OS of choice, one or multiple options are available.
+
+### Windows
+- (preferred) [Download the .msi](https://github.com/CCExtractor/ccextractor/releases) to install CCExtractor and this GUI
+- Download the built GUI from the releases on this repository. You'll have to provide a CCExtractor binary yourself
+- Download this repository and build the GUI by yourself. You'll have to provide a CCExtractor binary yourself
+
+### Linux
+Executables for Linux can be  found [here](https://nightly.link/CCExtractor/ccextractorfluttergui/workflows/create_artifacts/master) or on the [releases page](https://github.com/CCExtractor/ccextractorfluttergui/releases). Both still require to get ccextractor manually. 
+
+### macOS
+MacOS requires you to build the GUI from source and get ccextractor manually. For detailed information on this please refer [INSTAL.MD](INSTALL.MD).
 
 
 ## Usage
