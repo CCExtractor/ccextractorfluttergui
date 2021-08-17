@@ -1,13 +1,11 @@
-// Flutter imports:
-import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-// Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// Project imports:
 import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
+import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
+import 'package:ccxgui/screens/settings/components/current_command.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'components/custom_divider.dart';
 import 'components/custom_dropdown.dart';
@@ -38,13 +36,16 @@ class BasicSettingsScreen extends StatelessWidget {
               TextEditingController(text: state.settingsModel.startat);
           TextEditingController endat =
               TextEditingController(text: state.settingsModel.endat);
+
           return Scaffold(
             appBar: AppBar(
-              title: Text(
-                'Basic settings',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              flexibleSpace: FlexibleSpaceBar(
+                title: CurrentCommandContainer(),
+                titlePadding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               ),
               elevation: 0,
+              toolbarHeight: 110,
               backgroundColor: Colors.transparent,
             ),
             body: Padding(
@@ -142,7 +143,7 @@ class BasicSettingsScreen extends StatelessWidget {
                   CustomTextField(
                     title: 'Start at',
                     subtitle:
-                        'Only write caption information that starts after the given time. Format: MM:SS',
+                        'Only write caption information that starts after the given time. Format: S or  MM:SS',
                     onEditingComplete: () {
                       RegExp(r'^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$')
                                   .hasMatch(startat.text) ||

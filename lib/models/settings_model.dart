@@ -30,7 +30,7 @@ class SettingsModel {
   String program_number;
   bool autoprogram;
   bool multiprogram;
-  String datapid;
+  String streamtype;
   bool hauppauge;
   bool mp4vidtrack;
   bool noautotimeref;
@@ -56,7 +56,9 @@ class SettingsModel {
   bool trim;
   String defaultcolor;
   bool sentencecap;
+  String capFile;
   bool kf;
+  String profanityFile;
   bool splitbysentence;
   bool datets;
   bool sects;
@@ -71,8 +73,11 @@ class SettingsModel {
   String xmltvoutputinterval;
   bool xmltvonlycurrent;
   bool sem;
+  String dvblang;
+  String mkvlang;
+  String ocrlang;
   //DROPDOWN
-  String quantmode;
+  String quant;
   String oem;
 
   // Options that affect how ccextractor reads and writes (buffering):
@@ -82,16 +87,40 @@ class SettingsModel {
   bool koc;
   bool dru;
   bool norollup;
+  String rollUp;
 
   // Options that affect timing:
   String delay;
   String startat;
   String endat;
+  String codec;
+  String nocodec;
 
-  // Teletext related options: TODO
+  // start end credits
+  String startcreditstext;
+  String startcreditsnotbefore;
+  String startcreditsnotafter;
+  String startcreditsforatleast;
+  String startcreditsforatmost;
+  String endcreditstext;
+  String endcreditsforatleast;
+  String endcreditsforatmost;
+
+  // Teletext related options:
   String tpage;
   bool teletext;
   bool noteletext;
+
+  // Hardsubx
+  bool hardsubx;
+  bool tickertext;
+  String ocrMode;
+  String subcolor;
+  String minSubDuration;
+  bool detectItalics;
+  String confThresh;
+  String whiteThresh;
+
   SettingsModel({
     this.out = 'auto/default',
     this.inp = 'auto/default',
@@ -114,7 +143,7 @@ class SettingsModel {
     this.program_number = '',
     this.autoprogram = true,
     this.multiprogram = false,
-    this.datapid = '',
+    this.streamtype = 'auto/default',
     this.hauppauge = false,
     this.mp4vidtrack = false,
     this.noautotimeref = false,
@@ -135,7 +164,9 @@ class SettingsModel {
     this.trim = false,
     this.defaultcolor = '',
     this.sentencecap = false,
+    this.capFile = '',
     this.kf = false,
+    this.profanityFile = '',
     this.splitbysentence = false,
     this.datets = false,
     this.sects = false,
@@ -149,167 +180,43 @@ class SettingsModel {
     this.xmltvoutputinterval = '',
     this.xmltvonlycurrent = false,
     this.sem = false,
-    this.quantmode = 'auto/default',
-    this.oem = '',
+    this.dvblang = '',
+    this.mkvlang = '',
+    this.ocrlang = '',
+    this.quant = 'auto/default',
+    this.oem = 'auto/default',
     this.bufferinput = false,
     this.nobufferinput = false,
     this.buffersize = '',
     this.koc = false,
     this.dru = false,
     this.norollup = false,
+    this.rollUp = 'auto/default',
     this.delay = '',
     this.startat = '',
     this.endat = '',
+    this.codec = 'auto/default',
+    this.nocodec = 'auto/default',
+    this.startcreditstext = '',
+    this.startcreditsnotbefore = '',
+    this.startcreditsnotafter = '',
+    this.startcreditsforatleast = '',
+    this.startcreditsforatmost = '',
+    this.endcreditstext = '',
+    this.endcreditsforatleast = '',
+    this.endcreditsforatmost = '',
     this.tpage = '',
     this.teletext = false,
     this.noteletext = false,
+    this.hardsubx = false,
+    this.tickertext = false,
+    this.ocrMode = 'auto/default',
+    this.subcolor = '',
+    this.minSubDuration = '',
+    this.detectItalics = false,
+    this.confThresh = '',
+    this.whiteThresh = '',
   });
-
-  SettingsModel copyWith({
-    String? out,
-    String? inp,
-    String? outputfilename,
-    bool? fixptsjumps,
-    bool? append,
-    String? outInterval,
-    bool? segmentonkeyonly,
-    bool? goptime,
-    bool? nogoptime,
-    bool? fixpadding,
-    bool? freqEs15,
-    String? stream,
-    bool? videoedited,
-    bool? usepicorder,
-    bool? myth,
-    bool? nomyth,
-    bool? wtvconvertfix,
-    bool? wtvmpeg2,
-    String? program_number,
-    bool? autoprogram,
-    bool? multiprogram,
-    String? datapid,
-    bool? hauppauge,
-    bool? mp4vidtrack,
-    bool? noautotimeref,
-    bool? noscte20,
-    bool? webvttcss,
-    bool? analyzevideo,
-    bool? notimestamp,
-    bool? nolevdist,
-    String? minlevdist,
-    String? maxlevdist,
-    bool? chapters,
-    bool? bom,
-    bool? nobom,
-    String? encoder,
-    bool? nofontcolor,
-    bool? nohtmlescape,
-    bool? notypesetting,
-    bool? trim,
-    String? defaultcolor,
-    bool? sentencecap,
-    bool? kf,
-    bool? splitbysentence,
-    bool? datets,
-    bool? sects,
-    bool? latrusmap,
-    bool? xds,
-    bool? lf,
-    bool? df,
-    bool? autodash,
-    String? xmltv,
-    String? xmltvliveinterval,
-    String? xmltvoutputinterval,
-    bool? xmltvonlycurrent,
-    bool? sem,
-    String? quantmode,
-    String? oem,
-    bool? bufferinput,
-    bool? nobufferinput,
-    String? buffersize,
-    bool? koc,
-    bool? dru,
-    bool? norollup,
-    String? delay,
-    String? startat,
-    String? endat,
-    String? tpage,
-    bool? teletext,
-    bool? noteletext,
-  }) {
-    return SettingsModel(
-      out: out ?? this.out,
-      inp: inp ?? this.inp,
-      outputfilename: outputfilename ?? this.outputfilename,
-      fixptsjumps: fixptsjumps ?? this.fixptsjumps,
-      append: append ?? this.append,
-      outInterval: outInterval ?? this.outInterval,
-      segmentonkeyonly: segmentonkeyonly ?? this.segmentonkeyonly,
-      goptime: goptime ?? this.goptime,
-      nogoptime: nogoptime ?? this.nogoptime,
-      fixpadding: fixpadding ?? this.fixpadding,
-      freqEs15: freqEs15 ?? this.freqEs15,
-      stream: stream ?? this.stream,
-      videoedited: videoedited ?? this.videoedited,
-      usepicorder: usepicorder ?? this.usepicorder,
-      myth: myth ?? this.myth,
-      nomyth: nomyth ?? this.nomyth,
-      wtvconvertfix: wtvconvertfix ?? this.wtvconvertfix,
-      wtvmpeg2: wtvmpeg2 ?? this.wtvmpeg2,
-      program_number: program_number ?? this.program_number,
-      autoprogram: autoprogram ?? this.autoprogram,
-      multiprogram: multiprogram ?? this.multiprogram,
-      datapid: datapid ?? this.datapid,
-      hauppauge: hauppauge ?? this.hauppauge,
-      mp4vidtrack: mp4vidtrack ?? this.mp4vidtrack,
-      noautotimeref: noautotimeref ?? this.noautotimeref,
-      noscte20: noscte20 ?? this.noscte20,
-      webvttcss: webvttcss ?? this.webvttcss,
-      analyzevideo: analyzevideo ?? this.analyzevideo,
-      notimestamp: notimestamp ?? this.notimestamp,
-      nolevdist: nolevdist ?? this.nolevdist,
-      minlevdist: minlevdist ?? this.minlevdist,
-      maxlevdist: maxlevdist ?? this.maxlevdist,
-      chapters: chapters ?? this.chapters,
-      bom: bom ?? this.bom,
-      nobom: nobom ?? this.nobom,
-      encoder: encoder ?? this.encoder,
-      nofontcolor: nofontcolor ?? this.nofontcolor,
-      nohtmlescape: nohtmlescape ?? this.nohtmlescape,
-      notypesetting: notypesetting ?? this.notypesetting,
-      trim: trim ?? this.trim,
-      defaultcolor: defaultcolor ?? this.defaultcolor,
-      sentencecap: sentencecap ?? this.sentencecap,
-      kf: kf ?? this.kf,
-      splitbysentence: splitbysentence ?? this.splitbysentence,
-      datets: datets ?? this.datets,
-      sects: sects ?? this.sects,
-      latrusmap: latrusmap ?? this.latrusmap,
-      xds: xds ?? this.xds,
-      lf: lf ?? this.lf,
-      df: df ?? this.df,
-      autodash: autodash ?? this.autodash,
-      xmltv: xmltv ?? this.xmltv,
-      xmltvliveinterval: xmltvliveinterval ?? this.xmltvliveinterval,
-      xmltvoutputinterval: xmltvoutputinterval ?? this.xmltvoutputinterval,
-      xmltvonlycurrent: xmltvonlycurrent ?? this.xmltvonlycurrent,
-      sem: sem ?? this.sem,
-      quantmode: quantmode ?? this.quantmode,
-      oem: oem ?? this.oem,
-      bufferinput: bufferinput ?? this.bufferinput,
-      nobufferinput: nobufferinput ?? this.nobufferinput,
-      buffersize: buffersize ?? this.buffersize,
-      koc: koc ?? this.koc,
-      dru: dru ?? this.dru,
-      norollup: norollup ?? this.norollup,
-      delay: delay ?? this.delay,
-      startat: startat ?? this.startat,
-      endat: endat ?? this.endat,
-      tpage: tpage ?? this.tpage,
-      teletext: teletext ?? this.teletext,
-      noteletext: noteletext ?? this.noteletext,
-    );
-  }
 
   static Map<String, String> get paramsLookUpMap {
     return {
@@ -334,7 +241,7 @@ class SettingsModel {
       'program_number': '--program-number',
       'autoprogram': '-autoprogram',
       'multiprogram': '-multiprogram',
-      'datapid': '-datapid',
+      'streamtype': '-streamtype',
       'hauppauge': '--hauppauge',
       'mp4vidtrack': '-mp4vidtrack',
       'noautotimeref': '-noautotimeref',
@@ -354,7 +261,9 @@ class SettingsModel {
       'trim': '-trim',
       'defaultcolor': '--defaultcolor',
       'sentencecap': '--sentencecap',
+      'capFile': '--capfile',
       'kf': '--kf',
+      'profanityFile': '--profanity-file',
       'splitbysentence': '--splitbysentence',
       'datets': '-datets',
       'sects': '-sects',
@@ -368,7 +277,10 @@ class SettingsModel {
       'xmltvoutputinterval': '-xmltvoutputinterval',
       'xmltvonlycurrent': '-xmltvonlycurrent',
       'sem': '-sem',
-      'quantmode': '-quant',
+      'dvblang': '-dvblang',
+      'ocrlang': '-ocrlang',
+      'mkvlang': '-mkvlang',
+      'quant': '-quant',
       'oem': '-oem',
       'bufferinput': '--bufferinput',
       'nobufferinput': '-nobufferinput',
@@ -379,165 +291,28 @@ class SettingsModel {
       'delay': '-delay',
       'startat': '-startat',
       'endat': '-endat',
+      'codec': '-codec',
+      'nocodec': 'nocodec',
+      'startcreditstext': '--startcreditstext',
+      'startcreditsnotbefore': '--startcreditsnotbefore',
+      'startcreditsnotafter': '--startcreditsnotafter',
+      'startcreditsforatleast': '--startcreditsforatleast',
+      'startcreditsforatmost': '--startcreditsforatmost',
+      'endcreditstext': '--endcreditstext',
+      'endcreditsforatleast': '--endcreditsforatleast',
+      'endcreditsforatmost': '--endcreditsforatmost',
       'tpage': '-tpage',
       'teletext': '-teletext',
       'noteletext': '-noteletext',
+      'hardsubx': '-hardsubx',
+      'tickertext': '-tickertext',
+      'ocrMode': '-ocr_mode',
+      'subcolor': '-subcolor',
+      'minSubDuration': '-min_sub_duration',
+      'detectItalics': '-detect_italics',
+      'confThresh': '-conf_thresh',
+      'whiteThresh': '-whiteness_thresh',
     };
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'out': out,
-      'inp': inp,
-      'outputfilename': outputfilename,
-      'fixptsjumps': fixptsjumps,
-      'append': append,
-      'outInterval': outInterval,
-      'segmentonkeyonly': segmentonkeyonly,
-      'goptime': goptime,
-      'nogoptime': nogoptime,
-      'fixpadding': fixpadding,
-      'freqEs15': freqEs15,
-      'stream': stream,
-      'videoedited': videoedited,
-      'usepicorder': usepicorder,
-      'myth': myth,
-      'nomyth': nomyth,
-      'wtvconvertfix': wtvconvertfix,
-      'wtvmpeg2': wtvmpeg2,
-      'program_number': program_number,
-      'autoprogram': autoprogram,
-      'multiprogram': multiprogram,
-      'datapid': datapid,
-      'hauppauge': hauppauge,
-      'mp4vidtrack': mp4vidtrack,
-      'noautotimeref': noautotimeref,
-      'noscte20': noscte20,
-      'webvttcss': webvttcss,
-      'analyzevideo': analyzevideo,
-      'notimestamp': notimestamp,
-      'nolevdist': nolevdist,
-      'minlevdist': minlevdist,
-      'maxlevdist': maxlevdist,
-      'chapters': chapters,
-      'bom': bom,
-      'nobom': nobom,
-      'encoder': encoder,
-      'nofontcolor': nofontcolor,
-      'nohtmlescape': nohtmlescape,
-      'notypesetting': notypesetting,
-      'trim': trim,
-      'defaultcolor': defaultcolor,
-      'sentencecap': sentencecap,
-      'kf': kf,
-      'splitbysentence': splitbysentence,
-      'datets': datets,
-      'sects': sects,
-      'latrusmap': latrusmap,
-      'xds': xds,
-      'lf': lf,
-      'df': df,
-      'autodash': autodash,
-      'xmltv': xmltv,
-      'xmltvliveinterval': xmltvliveinterval,
-      'xmltvoutputinterval': xmltvoutputinterval,
-      'xmltvonlycurrent': xmltvonlycurrent,
-      'sem': sem,
-      'quantmode': quantmode,
-      'oem': oem,
-      'bufferinput': bufferinput,
-      'nobufferinput': nobufferinput,
-      'buffersize': buffersize,
-      'koc': koc,
-      'dru': dru,
-      'norollup': norollup,
-      'delay': delay,
-      'startat': startat,
-      'endat': endat,
-      'tpage': tpage,
-      'teletext': teletext,
-      'noteletext': noteletext,
-    };
-  }
-
-  static SettingsModel fromJson(Map<String, dynamic> map) {
-    return SettingsModel(
-      out: map['out'],
-      inp: map['inp'],
-      outputfilename: map['outputfilename'],
-      fixptsjumps: map['fixptsjumps'],
-      append: map['append'],
-      outInterval: map['outInterval'],
-      segmentonkeyonly: map['segmentonkeyonly'],
-      goptime: map['goptime'],
-      nogoptime: map['nogoptime'],
-      fixpadding: map['fixpadding'],
-      freqEs15: map['freqEs15'],
-      stream: map['stream'],
-      videoedited: map['videoedited'],
-      usepicorder: map['usepicorder'],
-      myth: map['myth'],
-      nomyth: map['nomyth'],
-      wtvconvertfix: map['wtvconvertfix'],
-      wtvmpeg2: map['wtvmpeg2'],
-      program_number: map['program_number'],
-      autoprogram: map['autoprogram'],
-      multiprogram: map['multiprogram'],
-      datapid: map['datapid'],
-      hauppauge: map['hauppauge'],
-      mp4vidtrack: map['mp4vidtrack'],
-      noautotimeref: map['noautotimeref'],
-      noscte20: map['noscte20'],
-      webvttcss: map['webvttcss'],
-      analyzevideo: map['analyzevideo'],
-      notimestamp: map['notimestamp'],
-      nolevdist: map['nolevdist'],
-      minlevdist: map['minlevdist'],
-      maxlevdist: map['maxlevdist'],
-      chapters: map['chapters'],
-      bom: map['bom'],
-      nobom: map['nobom'],
-      encoder: map['encoder'],
-      nofontcolor: map['nofontcolor'],
-      nohtmlescape: map['nohtmlescape'],
-      notypesetting: map['notypesetting'],
-      trim: map['trim'],
-      defaultcolor: map['defaultcolor'],
-      sentencecap: map['sentencecap'],
-      kf: map['kf'],
-      splitbysentence: map['splitbysentence'],
-      datets: map['datets'],
-      sects: map['sects'],
-      latrusmap: map['latrusmap'],
-      xds: map['xds'],
-      lf: map['lf'],
-      df: map['df'],
-      autodash: map['autodash'],
-      xmltv: map['xmltv'],
-      xmltvliveinterval: map['xmltvliveinterval'],
-      xmltvoutputinterval: map['xmltvoutputinterval'],
-      xmltvonlycurrent: map['xmltvonlycurrent'],
-      sem: map['sem'],
-      quantmode: map['quantmode'],
-      oem: map['oem'],
-      bufferinput: map['bufferinput'],
-      nobufferinput: map['nobufferinput'],
-      buffersize: map['buffersize'],
-      koc: map['koc'],
-      dru: map['dru'],
-      norollup: map['norollup'],
-      delay: map['delay'],
-      startat: map['startat'],
-      endat: map['endat'],
-      tpage: map['tpage'],
-      teletext: map['teletext'],
-      noteletext: map['noteletext'],
-    );
-  }
-
-  @override
-  String toString() {
-    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, datapid: $datapid, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, kf: $kf, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, quantmode: $quantmode, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, delay: $delay, startat: $startat, endat: $endat, tpage: $tpage, teletext: $teletext, noteletext: $noteletext)';
   }
 
   /// returns all toggeles which are enabled (excluding textfields)
@@ -566,6 +341,406 @@ class SettingsModel {
     return enabledtextfields;
   }
 
+  SettingsModel copyWith({
+    String? out,
+    String? inp,
+    String? outputfilename,
+    bool? fixptsjumps,
+    bool? append,
+    String? outInterval,
+    bool? segmentonkeyonly,
+    bool? goptime,
+    bool? nogoptime,
+    bool? fixpadding,
+    bool? freqEs15,
+    String? stream,
+    bool? videoedited,
+    bool? usepicorder,
+    bool? myth,
+    bool? nomyth,
+    bool? wtvconvertfix,
+    bool? wtvmpeg2,
+    String? program_number,
+    bool? autoprogram,
+    bool? multiprogram,
+    String? streamtype,
+    bool? hauppauge,
+    bool? mp4vidtrack,
+    bool? noautotimeref,
+    bool? noscte20,
+    bool? webvttcss,
+    bool? analyzevideo,
+    bool? notimestamp,
+    bool? nolevdist,
+    String? minlevdist,
+    String? maxlevdist,
+    bool? chapters,
+    bool? bom,
+    bool? nobom,
+    String? encoder,
+    bool? nofontcolor,
+    bool? nohtmlescape,
+    bool? notypesetting,
+    bool? trim,
+    String? defaultcolor,
+    bool? sentencecap,
+    String? capFile,
+    bool? kf,
+    String? profanityFile,
+    bool? splitbysentence,
+    bool? datets,
+    bool? sects,
+    bool? latrusmap,
+    bool? xds,
+    bool? lf,
+    bool? df,
+    bool? autodash,
+    String? xmltv,
+    String? xmltvliveinterval,
+    String? xmltvoutputinterval,
+    bool? xmltvonlycurrent,
+    bool? sem,
+    String? dvblang,
+    String? mkvlang,
+    String? ocrlang,
+    String? quant,
+    String? oem,
+    bool? bufferinput,
+    bool? nobufferinput,
+    String? buffersize,
+    bool? koc,
+    bool? dru,
+    bool? norollup,
+    String? rollUp,
+    String? delay,
+    String? startat,
+    String? endat,
+    String? codec,
+    String? nocodec,
+    String? startcreditstext,
+    String? startcreditsnotbefore,
+    String? startcreditsnotafter,
+    String? startcreditsforatleast,
+    String? startcreditsforatmost,
+    String? endcreditstext,
+    String? endcreditsforatleast,
+    String? endcreditsforatmost,
+    String? tpage,
+    bool? teletext,
+    bool? noteletext,
+    bool? hardsubx,
+    bool? tickertext,
+    String? ocrMode,
+    String? subcolor,
+    String? minSubDuration,
+    bool? detectItalics,
+    String? confThresh,
+    String? whiteThresh,
+  }) {
+    return SettingsModel(
+      out: out ?? this.out,
+      inp: inp ?? this.inp,
+      outputfilename: outputfilename ?? this.outputfilename,
+      fixptsjumps: fixptsjumps ?? this.fixptsjumps,
+      append: append ?? this.append,
+      outInterval: outInterval ?? this.outInterval,
+      segmentonkeyonly: segmentonkeyonly ?? this.segmentonkeyonly,
+      goptime: goptime ?? this.goptime,
+      nogoptime: nogoptime ?? this.nogoptime,
+      fixpadding: fixpadding ?? this.fixpadding,
+      freqEs15: freqEs15 ?? this.freqEs15,
+      stream: stream ?? this.stream,
+      videoedited: videoedited ?? this.videoedited,
+      usepicorder: usepicorder ?? this.usepicorder,
+      myth: myth ?? this.myth,
+      nomyth: nomyth ?? this.nomyth,
+      wtvconvertfix: wtvconvertfix ?? this.wtvconvertfix,
+      wtvmpeg2: wtvmpeg2 ?? this.wtvmpeg2,
+      program_number: program_number ?? this.program_number,
+      autoprogram: autoprogram ?? this.autoprogram,
+      multiprogram: multiprogram ?? this.multiprogram,
+      streamtype: streamtype ?? this.streamtype,
+      hauppauge: hauppauge ?? this.hauppauge,
+      mp4vidtrack: mp4vidtrack ?? this.mp4vidtrack,
+      noautotimeref: noautotimeref ?? this.noautotimeref,
+      noscte20: noscte20 ?? this.noscte20,
+      webvttcss: webvttcss ?? this.webvttcss,
+      analyzevideo: analyzevideo ?? this.analyzevideo,
+      notimestamp: notimestamp ?? this.notimestamp,
+      nolevdist: nolevdist ?? this.nolevdist,
+      minlevdist: minlevdist ?? this.minlevdist,
+      maxlevdist: maxlevdist ?? this.maxlevdist,
+      chapters: chapters ?? this.chapters,
+      bom: bom ?? this.bom,
+      nobom: nobom ?? this.nobom,
+      encoder: encoder ?? this.encoder,
+      nofontcolor: nofontcolor ?? this.nofontcolor,
+      nohtmlescape: nohtmlescape ?? this.nohtmlescape,
+      notypesetting: notypesetting ?? this.notypesetting,
+      trim: trim ?? this.trim,
+      defaultcolor: defaultcolor ?? this.defaultcolor,
+      sentencecap: sentencecap ?? this.sentencecap,
+      capFile: capFile ?? this.capFile,
+      kf: kf ?? this.kf,
+      profanityFile: profanityFile ?? this.profanityFile,
+      splitbysentence: splitbysentence ?? this.splitbysentence,
+      datets: datets ?? this.datets,
+      sects: sects ?? this.sects,
+      latrusmap: latrusmap ?? this.latrusmap,
+      xds: xds ?? this.xds,
+      lf: lf ?? this.lf,
+      df: df ?? this.df,
+      autodash: autodash ?? this.autodash,
+      xmltv: xmltv ?? this.xmltv,
+      xmltvliveinterval: xmltvliveinterval ?? this.xmltvliveinterval,
+      xmltvoutputinterval: xmltvoutputinterval ?? this.xmltvoutputinterval,
+      xmltvonlycurrent: xmltvonlycurrent ?? this.xmltvonlycurrent,
+      sem: sem ?? this.sem,
+      dvblang: dvblang ?? this.dvblang,
+      mkvlang: mkvlang ?? this.mkvlang,
+      ocrlang: ocrlang ?? this.ocrlang,
+      quant: quant ?? this.quant,
+      oem: oem ?? this.oem,
+      bufferinput: bufferinput ?? this.bufferinput,
+      nobufferinput: nobufferinput ?? this.nobufferinput,
+      buffersize: buffersize ?? this.buffersize,
+      koc: koc ?? this.koc,
+      dru: dru ?? this.dru,
+      norollup: norollup ?? this.norollup,
+      rollUp: rollUp ?? this.rollUp,
+      delay: delay ?? this.delay,
+      startat: startat ?? this.startat,
+      endat: endat ?? this.endat,
+      codec: codec ?? this.codec,
+      nocodec: nocodec ?? this.nocodec,
+      startcreditstext: startcreditstext ?? this.startcreditstext,
+      startcreditsnotbefore:
+          startcreditsnotbefore ?? this.startcreditsnotbefore,
+      startcreditsnotafter: startcreditsnotafter ?? this.startcreditsnotafter,
+      startcreditsforatleast:
+          startcreditsforatleast ?? this.startcreditsforatleast,
+      startcreditsforatmost:
+          startcreditsforatmost ?? this.startcreditsforatmost,
+      endcreditstext: endcreditstext ?? this.endcreditstext,
+      endcreditsforatleast: endcreditsforatleast ?? this.endcreditsforatleast,
+      endcreditsforatmost: endcreditsforatmost ?? this.endcreditsforatmost,
+      tpage: tpage ?? this.tpage,
+      teletext: teletext ?? this.teletext,
+      noteletext: noteletext ?? this.noteletext,
+      hardsubx: hardsubx ?? this.hardsubx,
+      tickertext: tickertext ?? this.tickertext,
+      ocrMode: ocrMode ?? this.ocrMode,
+      subcolor: subcolor ?? this.subcolor,
+      minSubDuration: minSubDuration ?? this.minSubDuration,
+      detectItalics: detectItalics ?? this.detectItalics,
+      confThresh: confThresh ?? this.confThresh,
+      whiteThresh: whiteThresh ?? this.whiteThresh,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'out': out,
+      'inp': inp,
+      'outputfilename': outputfilename,
+      'fixptsjumps': fixptsjumps,
+      'append': append,
+      'outInterval': outInterval,
+      'segmentonkeyonly': segmentonkeyonly,
+      'goptime': goptime,
+      'nogoptime': nogoptime,
+      'fixpadding': fixpadding,
+      'freqEs15': freqEs15,
+      'stream': stream,
+      'videoedited': videoedited,
+      'usepicorder': usepicorder,
+      'myth': myth,
+      'nomyth': nomyth,
+      'wtvconvertfix': wtvconvertfix,
+      'wtvmpeg2': wtvmpeg2,
+      'program_number': program_number,
+      'autoprogram': autoprogram,
+      'multiprogram': multiprogram,
+      'streamtype': streamtype,
+      'hauppauge': hauppauge,
+      'mp4vidtrack': mp4vidtrack,
+      'noautotimeref': noautotimeref,
+      'noscte20': noscte20,
+      'webvttcss': webvttcss,
+      'analyzevideo': analyzevideo,
+      'notimestamp': notimestamp,
+      'nolevdist': nolevdist,
+      'minlevdist': minlevdist,
+      'maxlevdist': maxlevdist,
+      'chapters': chapters,
+      'bom': bom,
+      'nobom': nobom,
+      'encoder': encoder,
+      'nofontcolor': nofontcolor,
+      'nohtmlescape': nohtmlescape,
+      'notypesetting': notypesetting,
+      'trim': trim,
+      'defaultcolor': defaultcolor,
+      'sentencecap': sentencecap,
+      'capFile': capFile,
+      'kf': kf,
+      'profanityFile': profanityFile,
+      'splitbysentence': splitbysentence,
+      'datets': datets,
+      'sects': sects,
+      'latrusmap': latrusmap,
+      'xds': xds,
+      'lf': lf,
+      'df': df,
+      'autodash': autodash,
+      'xmltv': xmltv,
+      'xmltvliveinterval': xmltvliveinterval,
+      'xmltvoutputinterval': xmltvoutputinterval,
+      'xmltvonlycurrent': xmltvonlycurrent,
+      'sem': sem,
+      'dvblang': dvblang,
+      'mkvlang': mkvlang,
+      'ocrlang': ocrlang,
+      'quant': quant,
+      'oem': oem,
+      'bufferinput': bufferinput,
+      'nobufferinput': nobufferinput,
+      'buffersize': buffersize,
+      'koc': koc,
+      'dru': dru,
+      'norollup': norollup,
+      'rollUp': rollUp,
+      'delay': delay,
+      'startat': startat,
+      'endat': endat,
+      'codec': codec,
+      'nocodec': nocodec,
+      'startcreditstext': startcreditstext,
+      'startcreditsnotbefore': startcreditsnotbefore,
+      'startcreditsnotafter': startcreditsnotafter,
+      'startcreditsforatleast': startcreditsforatleast,
+      'startcreditsforatmost': startcreditsforatmost,
+      'endcreditstext': endcreditstext,
+      'endcreditsforatleast': endcreditsforatleast,
+      'endcreditsforatmost': endcreditsforatmost,
+      'tpage': tpage,
+      'teletext': teletext,
+      'noteletext': noteletext,
+      'hardsubx': hardsubx,
+      'tickertext': tickertext,
+      'ocrMode': ocrMode,
+      'subcolor': subcolor,
+      'minSubDuration': minSubDuration,
+      'detectItalics': detectItalics,
+      'confThresh': confThresh,
+      'whiteThresh': whiteThresh,
+    };
+  }
+
+  static SettingsModel fromJson(Map<String, dynamic> map) {
+    return SettingsModel(
+      out: map['out'],
+      inp: map['inp'],
+      outputfilename: map['outputfilename'],
+      fixptsjumps: map['fixptsjumps'],
+      append: map['append'],
+      outInterval: map['outInterval'],
+      segmentonkeyonly: map['segmentonkeyonly'],
+      goptime: map['goptime'],
+      nogoptime: map['nogoptime'],
+      fixpadding: map['fixpadding'],
+      freqEs15: map['freqEs15'],
+      stream: map['stream'],
+      videoedited: map['videoedited'],
+      usepicorder: map['usepicorder'],
+      myth: map['myth'],
+      nomyth: map['nomyth'],
+      wtvconvertfix: map['wtvconvertfix'],
+      wtvmpeg2: map['wtvmpeg2'],
+      program_number: map['program_number'],
+      autoprogram: map['autoprogram'],
+      multiprogram: map['multiprogram'],
+      streamtype: map['streamtype'],
+      hauppauge: map['hauppauge'],
+      mp4vidtrack: map['mp4vidtrack'],
+      noautotimeref: map['noautotimeref'],
+      noscte20: map['noscte20'],
+      webvttcss: map['webvttcss'],
+      analyzevideo: map['analyzevideo'],
+      notimestamp: map['notimestamp'],
+      nolevdist: map['nolevdist'],
+      minlevdist: map['minlevdist'],
+      maxlevdist: map['maxlevdist'],
+      chapters: map['chapters'],
+      bom: map['bom'],
+      nobom: map['nobom'],
+      encoder: map['encoder'],
+      nofontcolor: map['nofontcolor'],
+      nohtmlescape: map['nohtmlescape'],
+      notypesetting: map['notypesetting'],
+      trim: map['trim'],
+      defaultcolor: map['defaultcolor'],
+      sentencecap: map['sentencecap'],
+      capFile: map['capFile'],
+      kf: map['kf'],
+      profanityFile: map['profanityFile'],
+      splitbysentence: map['splitbysentence'],
+      datets: map['datets'],
+      sects: map['sects'],
+      latrusmap: map['latrusmap'],
+      xds: map['xds'],
+      lf: map['lf'],
+      df: map['df'],
+      autodash: map['autodash'],
+      xmltv: map['xmltv'],
+      xmltvliveinterval: map['xmltvliveinterval'],
+      xmltvoutputinterval: map['xmltvoutputinterval'],
+      xmltvonlycurrent: map['xmltvonlycurrent'],
+      sem: map['sem'],
+      dvblang: map['dvblang'],
+      mkvlang: map['mkvlang'],
+      ocrlang: map['ocrlang'],
+      quant: map['quant'],
+      oem: map['oem'],
+      bufferinput: map['bufferinput'],
+      nobufferinput: map['nobufferinput'],
+      buffersize: map['buffersize'],
+      koc: map['koc'],
+      dru: map['dru'],
+      norollup: map['norollup'],
+      rollUp: map['rollUp'],
+      delay: map['delay'],
+      startat: map['startat'],
+      endat: map['endat'],
+      codec: map['codec'],
+      nocodec: map['nocodec'],
+      startcreditstext: map['startcreditstext'],
+      startcreditsnotbefore: map['startcreditsnotbefore'],
+      startcreditsnotafter: map['startcreditsnotafter'],
+      startcreditsforatleast: map['startcreditsforatleast'],
+      startcreditsforatmost: map['startcreditsforatmost'],
+      endcreditstext: map['endcreditstext'],
+      endcreditsforatleast: map['endcreditsforatleast'],
+      endcreditsforatmost: map['endcreditsforatmost'],
+      tpage: map['tpage'],
+      teletext: map['teletext'],
+      noteletext: map['noteletext'],
+      hardsubx: map['hardsubx'],
+      tickertext: map['tickertext'],
+      ocrMode: map['ocrMode'],
+      subcolor: map['subcolor'],
+      minSubDuration: map['minSubDuration'],
+      detectItalics: map['detectItalics'],
+      confThresh: map['confThresh'],
+      whiteThresh: map['whiteThresh'],
+    );
+  }
+
+  @override
+  String toString() {
+    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, streamtype: $streamtype, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, capFile: $capFile, kf: $kf, profanityFile: $profanityFile, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, dvblang: $dvblang, mkvlang: $mkvlang, ocrlang: $ocrlang, quant: $quant, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, rollUp: $rollUp, delay: $delay, startat: $startat, endat: $endat, codec: $codec, nocodec: $nocodec, startcreditstext: $startcreditstext, startcreditsnotbefore: $startcreditsnotbefore, startcreditsnotafter: $startcreditsnotafter, startcreditsforatleast: $startcreditsforatleast, startcreditsforatmost: $startcreditsforatmost, endcreditstext: $endcreditstext, endcreditsforatleast: $endcreditsforatleast, endcreditsforatmost: $endcreditsforatmost, tpage: $tpage, teletext: $teletext, noteletext: $noteletext, hardsubx: $hardsubx, tickertext: $tickertext, ocrMode: $ocrMode, subcolor: $subcolor, minSubDuration: $minSubDuration, detectItalics: $detectItalics, confThresh: $confThresh, whiteThresh: $whiteThresh)';
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
@@ -592,7 +767,7 @@ class SettingsModel {
         other.program_number == program_number &&
         other.autoprogram == autoprogram &&
         other.multiprogram == multiprogram &&
-        other.datapid == datapid &&
+        other.streamtype == streamtype &&
         other.hauppauge == hauppauge &&
         other.mp4vidtrack == mp4vidtrack &&
         other.noautotimeref == noautotimeref &&
@@ -613,7 +788,9 @@ class SettingsModel {
         other.trim == trim &&
         other.defaultcolor == defaultcolor &&
         other.sentencecap == sentencecap &&
+        other.capFile == capFile &&
         other.kf == kf &&
+        other.profanityFile == profanityFile &&
         other.splitbysentence == splitbysentence &&
         other.datets == datets &&
         other.sects == sects &&
@@ -627,7 +804,10 @@ class SettingsModel {
         other.xmltvoutputinterval == xmltvoutputinterval &&
         other.xmltvonlycurrent == xmltvonlycurrent &&
         other.sem == sem &&
-        other.quantmode == quantmode &&
+        other.dvblang == dvblang &&
+        other.mkvlang == mkvlang &&
+        other.ocrlang == ocrlang &&
+        other.quant == quant &&
         other.oem == oem &&
         other.bufferinput == bufferinput &&
         other.nobufferinput == nobufferinput &&
@@ -635,12 +815,31 @@ class SettingsModel {
         other.koc == koc &&
         other.dru == dru &&
         other.norollup == norollup &&
+        other.rollUp == rollUp &&
         other.delay == delay &&
         other.startat == startat &&
         other.endat == endat &&
+        other.codec == codec &&
+        other.nocodec == nocodec &&
+        other.startcreditstext == startcreditstext &&
+        other.startcreditsnotbefore == startcreditsnotbefore &&
+        other.startcreditsnotafter == startcreditsnotafter &&
+        other.startcreditsforatleast == startcreditsforatleast &&
+        other.startcreditsforatmost == startcreditsforatmost &&
+        other.endcreditstext == endcreditstext &&
+        other.endcreditsforatleast == endcreditsforatleast &&
+        other.endcreditsforatmost == endcreditsforatmost &&
         other.tpage == tpage &&
         other.teletext == teletext &&
-        other.noteletext == noteletext;
+        other.noteletext == noteletext &&
+        other.hardsubx == hardsubx &&
+        other.tickertext == tickertext &&
+        other.ocrMode == ocrMode &&
+        other.subcolor == subcolor &&
+        other.minSubDuration == minSubDuration &&
+        other.detectItalics == detectItalics &&
+        other.confThresh == confThresh &&
+        other.whiteThresh == whiteThresh;
   }
 
   @override
@@ -666,7 +865,7 @@ class SettingsModel {
         program_number.hashCode ^
         autoprogram.hashCode ^
         multiprogram.hashCode ^
-        datapid.hashCode ^
+        streamtype.hashCode ^
         hauppauge.hashCode ^
         mp4vidtrack.hashCode ^
         noautotimeref.hashCode ^
@@ -687,7 +886,9 @@ class SettingsModel {
         trim.hashCode ^
         defaultcolor.hashCode ^
         sentencecap.hashCode ^
+        capFile.hashCode ^
         kf.hashCode ^
+        profanityFile.hashCode ^
         splitbysentence.hashCode ^
         datets.hashCode ^
         sects.hashCode ^
@@ -701,7 +902,10 @@ class SettingsModel {
         xmltvoutputinterval.hashCode ^
         xmltvonlycurrent.hashCode ^
         sem.hashCode ^
-        quantmode.hashCode ^
+        dvblang.hashCode ^
+        mkvlang.hashCode ^
+        ocrlang.hashCode ^
+        quant.hashCode ^
         oem.hashCode ^
         bufferinput.hashCode ^
         nobufferinput.hashCode ^
@@ -709,11 +913,30 @@ class SettingsModel {
         koc.hashCode ^
         dru.hashCode ^
         norollup.hashCode ^
+        rollUp.hashCode ^
         delay.hashCode ^
         startat.hashCode ^
         endat.hashCode ^
+        codec.hashCode ^
+        nocodec.hashCode ^
+        startcreditstext.hashCode ^
+        startcreditsnotbefore.hashCode ^
+        startcreditsnotafter.hashCode ^
+        startcreditsforatleast.hashCode ^
+        startcreditsforatmost.hashCode ^
+        endcreditstext.hashCode ^
+        endcreditsforatleast.hashCode ^
+        endcreditsforatmost.hashCode ^
         tpage.hashCode ^
         teletext.hashCode ^
-        noteletext.hashCode;
+        noteletext.hashCode ^
+        hardsubx.hashCode ^
+        tickertext.hashCode ^
+        ocrMode.hashCode ^
+        subcolor.hashCode ^
+        minSubDuration.hashCode ^
+        detectItalics.hashCode ^
+        confThresh.hashCode ^
+        whiteThresh.hashCode;
   }
 }

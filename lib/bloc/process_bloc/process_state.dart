@@ -10,6 +10,7 @@ class ProcessState extends Equatable {
   final XFile? current;
   final bool started;
   final String? version;
+  final int? exitCode;
   const ProcessState({
     required this.orignalList,
     required this.queue,
@@ -20,6 +21,7 @@ class ProcessState extends Equatable {
     required this.progress,
     required this.current,
     required this.version,
+    this.exitCode,
   });
 
   ProcessState copyWith({
@@ -32,18 +34,19 @@ class ProcessState extends Equatable {
     String? progress,
     String? version,
     required XFile? current,
+    int? exitCode,
   }) =>
       ProcessState(
-        orignalList: orignalList ?? this.orignalList,
-        queue: queue ?? this.queue,
-        processed: processed ?? this.processed,
-        log: log ?? this.log,
-        started: started ?? this.started,
-        progress: progress ?? this.progress,
-        videoDetails: videoDetails ?? this.videoDetails,
-        version: version ?? this.version,
-        current: current,
-      );
+          orignalList: orignalList ?? this.orignalList,
+          queue: queue ?? this.queue,
+          processed: processed ?? this.processed,
+          log: log ?? this.log,
+          started: started ?? this.started,
+          progress: progress ?? this.progress,
+          videoDetails: videoDetails ?? this.videoDetails,
+          version: version ?? this.version,
+          current: current,
+          exitCode: exitCode);
 
   @override
   List<Object?> get props => [
@@ -56,5 +59,6 @@ class ProcessState extends Equatable {
         videoDetails,
         orignalList,
         version,
+        exitCode,
       ];
 }

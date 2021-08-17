@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class CustomDivider extends StatelessWidget {
   final String title;
-
-  const CustomDivider({Key? key, required this.title}) : super(key: key);
+  final String? description;
+  const CustomDivider({Key? key, required this.title, this.description})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,13 +13,26 @@ class CustomDivider extends StatelessWidget {
       children: [
         Divider(),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          child: Text(
-            title,
-            style: TextStyle(
-              fontSize: 19,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 19,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              if (description != null) SizedBox(height: 10),
+              Text(
+                description ?? '',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.grey.shade400,
+                ),
+              ),
+            ],
           ),
         ),
       ],

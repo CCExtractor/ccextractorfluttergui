@@ -1,14 +1,12 @@
-// Flutter imports:
-import 'package:ccxgui/screens/settings/components/custom_divider.dart';
-import 'package:ccxgui/screens/settings/components/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-// Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// Project imports:
 import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
+import 'package:ccxgui/screens/settings/components/current_command.dart';
+import 'package:ccxgui/screens/settings/components/custom_divider.dart';
+import 'package:ccxgui/screens/settings/components/custom_textfield.dart';
 import 'components/custom_swtich_listTile.dart';
 
 class ObscureSettingsScreen extends StatelessWidget {
@@ -29,13 +27,16 @@ class ObscureSettingsScreen extends StatelessWidget {
         if (state is CurrentSettingsState) {
           TextEditingController programNumberController =
               TextEditingController(text: state.settingsModel.program_number);
+
           return Scaffold(
             appBar: AppBar(
-              title: Text(
-                'Obscure settings',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              flexibleSpace: FlexibleSpaceBar(
+                title: CurrentCommandContainer(),
+                titlePadding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               ),
               elevation: 0,
+              toolbarHeight: 110,
               backgroundColor: Colors.transparent,
             ),
             body: Padding(

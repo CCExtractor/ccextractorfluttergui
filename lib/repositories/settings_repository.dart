@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-// Package imports:
 import 'package:localstorage/localstorage.dart';
 import 'package:path_provider/path_provider.dart';
 
-// Project imports:
 import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/utils/constants.dart';
 
@@ -38,17 +36,16 @@ class SettingsRepository {
           throw Exception('Setting key not found');
         }
       }
-      // This checks if all the values are of the intended datatype. TODO
-      if (outputFormats.contains(data['out']) &&
-          data['outputfilename'] is String &&
-          data['append'] is bool &&
-          data['autoprogram'] is bool) {
-      } else {
-        throw Exception('Settings value has mismatched datatype');
+      // This checks if all the values are of the intended datatype, by setting the current data to a settingsModel object
+      try {
+        // ignore: unused_local_variable
+        final _settingsModel = SettingsModel.fromJson(data);
+      } catch (e) {
+        throw Exception('Settings value has mismatched datatype. Error $e');
       }
       return true;
     } catch (e) {
-      print('Rewriting config.json file');
+      print('Rewriting config.json file. Error $e');
       await file.writeAsString(jsonEncode(SettingsModel()));
       return false;
     }
@@ -63,9 +60,7 @@ class SettingsRepository {
     );
 
     settings.enabledtextfields.forEach((param) {
-      if (param.keys.first != 'encoder' &&
-          param.keys.first != 'out' &&
-          param.keys.first != 'inp') {
+      if (!{'encoder', 'rollUp', 'out', 'inp'}.contains(param.keys.first)) {
         // no --encoder direct -latin1 or -utf8
         // -out=format
         paramsList.add(SettingsModel.paramsLookUpMap[param.keys.first]!);
@@ -73,10 +68,20 @@ class SettingsRepository {
       if (param.keys.first == 'outputfilename' && filePath.isNotEmpty) {
         paramsList.add(
             '${filePath.substring(0, filePath.lastIndexOf(RegExp(r'(\\|\/)')))}/${param.values.first}');
-      } else if (param.keys.first == 'encoder') {
+      } else if ({'encoder', 'rollUp'}.contains(param.keys.first)) {
         paramsList.add('-' + param.values.first);
       } else if (param.keys.first == 'out' || param.keys.first == 'inp') {
         paramsList.add('-' + param.keys.first + '=' + param.values.first);
+      } else if (dropdownListMap.keys.contains(param.keys.first)) {
+        /// this part handles the dropdown menus, ccx takes in arg xmltv 3 ,
+        /// which is the same as "Both" option in the GUI, if the enabled setting
+        /// is in dropdownListMap we search for the particular setting, xmltv in
+        /// this case, then we get a map with the corresponding settings and the
+        /// int ccx takes for eg: "Both": 3, then we pass this value to paramsList
+        /// auto/default can take in anyvalue because that is filtered out during
+        /// [settings.enabledtextfields]
+        paramsList.add(
+            dropdownListMap[param.keys.first]![param.values.first].toString());
       } else {
         paramsList.add(param.values.first);
       }
@@ -98,11 +103,12 @@ class SettingsRepository {
     return _settings;
   }
 
-  Future clearSettings() async {
-    print('deleting');
+  Future resetSettings() async {
+    final file = await _localFile;
     LocalStorage storage = LocalStorage('config.json');
     await storage.ready;
-    await storage.clear();
+    await storage.clear(); // just works
+    await file.writeAsString(jsonEncode(SettingsModel()));
   }
 
   Future saveSettings(SettingsModel settingsModel) async {

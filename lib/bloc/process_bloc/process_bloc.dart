@@ -1,10 +1,8 @@
-// Package imports:
 import 'package:equatable/equatable.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pedantic/pedantic.dart';
 
-// Project imports:
 import 'package:ccxgui/repositories/ccextractor.dart';
 
 part 'process_event.dart';
@@ -56,16 +54,50 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       queue: state.queue.skip(1).toList(),
       progress: '0',
     );
-    unawaited(_extractor
-        .extractFile(
-          file,
-          listenProgress: (progress) =>
-              add(ProcessFileExtractorProgress(progress)),
-          listenOutput: (line) => add(ProcessFileExtractorOutput(line)),
-          listenVideoDetails: (videoDetails) =>
-              add(ProcessFileVideoDetails(videoDetails)),
-        )
-        .then((value) => add(ProcessFileComplete(file))));
+    unawaited(
+      _extractor
+          .extractFile(
+        file,
+        listenProgress: (progress) =>
+            add(ProcessFileExtractorProgress(progress)),
+        listenOutput: (line) => add(ProcessFileExtractorOutput(line)),
+        listenVideoDetails: (videoDetails) =>
+            add(ProcessFileVideoDetails(videoDetails)),
+      )
+          .then(
+        (value) {
+          if (value != 0) {
+            add(ProcessError(value));
+          }
+          add(ProcessFileComplete(file));
+        },
+      ),
+    );
+  }
+
+  Stream<ProcessState> _extractOnNetwork(
+      String type, String location, String tcppassword, String tcpdesc) async* {
+    unawaited(
+      _extractor
+          .extractFileOverNetwork(
+        type: type,
+        location: location,
+        tcpdesc: tcpdesc,
+        tcppasswrd: tcppassword,
+        listenProgress: (progress) =>
+            add(ProcessFileExtractorProgress(progress)),
+        listenOutput: (line) => add(ProcessFileExtractorOutput(line)),
+        listenVideoDetails: (videoDetails) =>
+            add(ProcessFileVideoDetails(videoDetails)),
+      )
+          .then(
+        (value) {
+          if (value != 0) {
+            add(ProcessError(value));
+          }
+        },
+      ),
+    );
   }
 
   @override
@@ -86,7 +118,10 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       );
       yield* _extractNext();
     } else if (event is ProcessStopped) {
-      _extractor.cancelRun();
+      // stops everything
+      try {
+        _extractor.cancelRun();
+      } on Exception catch (_) {}
       yield state.copyWith(
         current: null,
         queue: state.orignalList,
@@ -95,7 +130,9 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         started: false,
       );
     } else if (event is ProcessKill) {
-      _extractor.cancelRun();
+      try {
+        _extractor.cancelRun();
+      } on Exception catch (_) {}
       yield state.copyWith(
         current: state.current,
         orignalList: state.orignalList
@@ -104,7 +141,9 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         queue: state.queue.where((element) => element != event.file).toList(),
       );
     } else if (event is ProcessRemoveAll) {
-      _extractor.cancelRun();
+      try {
+        _extractor.cancelRun();
+      } on Exception catch (_) {}
       yield state.copyWith(
         current: null,
         progress: '0',
@@ -112,6 +151,9 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         queue: [],
         orignalList: [],
         started: false,
+        exitCode: null,
+        log: [],
+        videoDetails: [],
       );
     } else if (event is ProcessFileExtractorProgress) {
       yield state.copyWith(current: state.current, progress: event.progress);
@@ -127,7 +169,9 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       if (state.current == event.file) {
         yield state.copyWith(
           current: null,
+          log: state.queue.isNotEmpty ? [] : state.log,
           processed: state.processed.followedBy([event.file]).toList(),
+          exitCode: null,
         );
         yield* _extractNext();
       }
@@ -144,11 +188,18 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         // state.queue automatically.
         // if state.started is false, that means that the first x files have
         // finsihed processing and then he user adds y new files, so new queue
-        // need to be set to event.files instead of originalList
+        // need to be set to event.files instead of originalList.
+        // state.started can also be false when the users selects x files from
+        // one folder and then clicks add files again to select y files from
+        // some different folder, so we should also check if the processed files
+        // list is empty if no its the above case, if it is empty that means the
+        // user has selected x and y files from different folders by clicking
+        // add files button 2 times and we should start running ccx on all the
+        // files
 
         // TLDR; this part handles the y new files thingy mentioned in
         // _extractNext func comments.
-        queue: state.started
+        queue: state.started || state.processed.isEmpty
             ? state.queue.followedBy(event.files).toList()
             : event.files,
       );
@@ -162,11 +213,17 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       );
     } else if (event is GetCCExtractorVersion) {
       String ccxVersion = await _extractor.getCCExtractorVersion;
-      print(ccxVersion);
       yield state.copyWith(
         current: state.current,
         version: ccxVersion,
       );
+    } else if (event is ProcessError) {
+      yield state.copyWith(current: state.current, exitCode: event.exitCode);
+    } else if (event is ResetProcessError) {
+      yield state.copyWith(current: state.current, exitCode: null);
+    } else if (event is ProcessOnNetwork) {
+      yield* _extractOnNetwork(
+          event.type, event.location, event.tcppassword, event.tcpdesc);
     }
   }
 }

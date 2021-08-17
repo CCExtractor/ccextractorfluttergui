@@ -47,3 +47,9 @@ app.*.map.json
 /android/app/release
 
 /samples
+
+
+# flatpak 
+
+flatpak/.flatpak-builder
+flatpak/build-dir
