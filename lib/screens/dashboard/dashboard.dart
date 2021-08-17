@@ -103,21 +103,21 @@ class ClearFilesButton extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
+                    Text(
+                      'Clear list',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
                     Icon(
                       Icons.clear_all,
                       color: dashboardState.files.isEmpty
                           ? Colors.grey
                           : Colors.amber,
                       size: 30,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      'Clear list',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
                     ),
                   ],
                 ),
@@ -144,7 +144,7 @@ class StartStopButton extends StatelessWidget {
                     : processState.started
                         ? {
                             context.read<ProcessBloc>().add(
-                                  ProcessStopped(),
+                                  StopAllProcess(),
                                 ),
                             CustomSnackBarMessage.show(
                               context,
@@ -153,7 +153,7 @@ class StartStopButton extends StatelessWidget {
                           }
                         : {
                             context.read<ProcessBloc>().add(
-                                  ProcessStarted(),
+                                  StartAllProcess(),
                                 ),
                             CustomSnackBarMessage.show(
                               context,
@@ -165,6 +165,15 @@ class StartStopButton extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
+                    Text(
+                      processState.started ? 'Stop all' : 'Start all',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
                     processState.started
                         ? Icon(Icons.stop, color: Colors.redAccent, size: 30)
                         : Icon(
@@ -174,15 +183,6 @@ class StartStopButton extends StatelessWidget {
                                 : Colors.greenAccent,
                             size: 30,
                           ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      processState.started ? 'Stop all' : 'Start all',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
                   ],
                 ),
               ),

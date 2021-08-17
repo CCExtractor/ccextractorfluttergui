@@ -124,6 +124,61 @@ class CCExtractor {
     return process.exitCode;
   }
 
+  // List<String> allFilesPath(List<XFile> files) {
+  //   tempList = [];
+
+  // }
+
+  Future<int> extractFilesInSplitMode(
+    List<XFile> files, {
+    required Function(String) listenProgress,
+    required Function(String) listenOutput,
+    required Function(List<String>) listenVideoDetails,
+  }) async {
+    settings = await settingsRepository.getSettings();
+    List<String> paramsList = settingsRepository.getParamsList(settings);
+    process = await Process.start(
+      ccextractor,
+      [
+        ...files.map((e) => e.path).toList(),
+        '--gui_mode_reports',
+        ...paramsList,
+      ],
+    );
+    // sometimes stdout and stderr have important logs like how much time
+    // it took to process the file or some erros not captured by exitcodes,
+    // so just print them to the logs box
+    process.stdout.transform(latin1.decoder).listen((update) {
+      print(update);
+      listenOutput(update);
+    });
+
+    process.stderr.transform(latin1.decoder).listen((update) {
+      print(update);
+      if (progressRegx.hasMatch(update)) {
+        for (RegExpMatch i in progressRegx.allMatches(update)) {
+          listenProgress(i[1]!);
+        }
+      }
+      if (logsRegx.hasMatch(update)) {
+        for (RegExpMatch i in logsRegx.allMatches(update)) {
+          // 1,2 are here for regex groups, 1 corresponds to subtitle regex
+          // match and 2 is time regex match. Later we can seperate this if
+          // needed (no additonal benefit rn imo;td)
+          if (i[1] != null) listenOutput(i[1]!);
+          if (i[2] != null) listenOutput(i[2]!);
+        }
+      }
+      if (videoDetailsRegx.hasMatch(update)) {
+        for (RegExpMatch i in videoDetailsRegx.allMatches(update)) {
+          listenVideoDetails(i[1]!.split('#'));
+        }
+      }
+      update.contains('Error') ? listenOutput(update) : null;
+    });
+    return process.exitCode;
+  }
+
   /// Cancels the ongoing file process
   void cancelRun() {
     process.kill();

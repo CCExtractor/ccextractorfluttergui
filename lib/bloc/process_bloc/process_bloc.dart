@@ -1,3 +1,5 @@
+import 'package:ccxgui/models/settings_model.dart';
+import 'package:ccxgui/repositories/settings_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -100,9 +102,34 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     );
   }
 
+  Stream<ProcessState> _extractFilesInSplitMode() async* {
+    unawaited(
+      _extractor
+          .extractFilesInSplitMode(
+        state.orignalList,
+        listenProgress: (progress) =>
+            add(ProcessFileExtractorProgress(progress)),
+        listenOutput: (line) => add(ProcessFileExtractorOutput(line)),
+        listenVideoDetails: (videoDetails) =>
+            add(ProcessFileVideoDetails(videoDetails)),
+      )
+          .then(
+        (value) {
+          if (value != 0) {
+            add(ProcessError(value));
+          }
+        },
+      ),
+    );
+  }
+
   @override
   Stream<ProcessState> mapEventToState(ProcessEvent event) async* {
-    if (event is ProcessStarted) {
+    if (event is StartAllProcess) {
+      SettingsRepository settingsRepository = SettingsRepository();
+      SettingsModel settings = SettingsModel();
+      settings = await settingsRepository.getSettings();
+
       yield state.copyWith(
         current: state.current,
         // This equality checks if the queue and originalList are same which
@@ -116,8 +143,8 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         processed: state.queue == state.orignalList ? [] : state.processed,
         started: true,
       );
-      yield* _extractNext();
-    } else if (event is ProcessStopped) {
+      yield* settings.splitMode ? _extractFilesInSplitMode() : _extractNext();
+    } else if (event is StopAllProcess) {
       // stops everything
       try {
         _extractor.cancelRun();

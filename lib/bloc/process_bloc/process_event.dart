@@ -11,10 +11,10 @@ class ProcessFilesSubmitted extends ProcessEvent {
   const ProcessFilesSubmitted(this.files);
 }
 
-class ProcessStarted extends ProcessEvent {}
+class StartAllProcess extends ProcessEvent {}
 
 /// ProcessStopped stops all the files from processing.
-class ProcessStopped extends ProcessEvent {}
+class StopAllProcess extends ProcessEvent {}
 
 /// Removes pending file from state queue
 class ProcessFileRemoved extends ProcessEvent {

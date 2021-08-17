@@ -125,6 +125,21 @@ class BasicSettingsScreen extends StatelessWidget {
                           );
                     },
                   ),
+                  CustomSwitchListTile(
+                    title: 'Enable split mode',
+                    subtitle:
+                        'Output will be one single file (either raw or srt). Use this if you made your recording in several cuts (to skip commercials for example) but you want one subtitle file with continuous timing. (warning: you cannot add more files till ccextractor finishes running on the selected files when this is enabled',
+                    value: state.settingsModel.splitMode,
+                    onTap: (value) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                splitMode: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
                   CustomDivider(title: 'Timing settings'),
                   CustomTextField(
                     title: 'Delay (ms)',
