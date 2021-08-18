@@ -16,6 +16,11 @@ class StartAllProcess extends ProcessEvent {}
 /// ProcessStopped stops all the files from processing.
 class StopAllProcess extends ProcessEvent {}
 
+/// ccx runs on all the files at once
+class StartProcessInSplitMode extends ProcessEvent {}
+
+class SplitModeProcessComplete extends ProcessEvent {}
+
 /// Removes pending file from state queue
 class ProcessFileRemoved extends ProcessEvent {
   final XFile file;

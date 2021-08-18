@@ -1,5 +1,3 @@
-import 'package:ccxgui/models/settings_model.dart';
-import 'package:ccxgui/repositories/settings_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -118,6 +116,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
           if (value != 0) {
             add(ProcessError(value));
           }
+          add(SplitModeProcessComplete());
         },
       ),
     );
@@ -126,10 +125,6 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
   @override
   Stream<ProcessState> mapEventToState(ProcessEvent event) async* {
     if (event is StartAllProcess) {
-      SettingsRepository settingsRepository = SettingsRepository();
-      SettingsModel settings = SettingsModel();
-      settings = await settingsRepository.getSettings();
-
       yield state.copyWith(
         current: state.current,
         // This equality checks if the queue and originalList are same which
@@ -143,12 +138,15 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         processed: state.queue == state.orignalList ? [] : state.processed,
         started: true,
       );
-      yield* settings.splitMode ? _extractFilesInSplitMode() : _extractNext();
+      yield* _extractNext();
+    } else if (event is StartProcessInSplitMode) {
+      yield state.copyWith(current: state.current, started: true);
+      yield* _extractFilesInSplitMode();
     } else if (event is StopAllProcess) {
       // stops everything
       try {
         _extractor.cancelRun();
-      } on Exception catch (_) {}
+      } catch (_) {}
       yield state.copyWith(
         current: null,
         queue: state.orignalList,
@@ -159,7 +157,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     } else if (event is ProcessKill) {
       try {
         _extractor.cancelRun();
-      } on Exception catch (_) {}
+      } catch (_) {}
       yield state.copyWith(
         current: state.current,
         orignalList: state.orignalList
@@ -170,7 +168,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     } else if (event is ProcessRemoveAll) {
       try {
         _extractor.cancelRun();
-      } on Exception catch (_) {}
+      } catch (_) {}
       yield state.copyWith(
         current: null,
         progress: '0',
@@ -202,6 +200,13 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         );
         yield* _extractNext();
       }
+    } else if (event is SplitModeProcessComplete) {
+      yield state.copyWith(
+          current: null,
+          log: state.log,
+          exitCode: null,
+          started: false,
+          progress: '100');
     } else if (event is ProcessFilesSubmitted) {
       yield state.copyWith(
         current: state.current,

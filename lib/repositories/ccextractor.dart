@@ -95,7 +95,7 @@ class CCExtractor {
     );
 
     process.stdout.transform(latin1.decoder).listen((update) {
-      //print(update);
+      // print(update);
       listenOutput(update);
     });
 
@@ -149,12 +149,12 @@ class CCExtractor {
     // it took to process the file or some erros not captured by exitcodes,
     // so just print them to the logs box
     process.stdout.transform(latin1.decoder).listen((update) {
-      print(update);
+      // print(update);
       listenOutput(update);
     });
 
     process.stderr.transform(latin1.decoder).listen((update) {
-      print(update);
+      // print(update);
       if (progressRegx.hasMatch(update)) {
         for (RegExpMatch i in progressRegx.allMatches(update)) {
           listenProgress(i[1]!);

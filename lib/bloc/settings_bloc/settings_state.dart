@@ -1,5 +1,7 @@
 part of 'settings_bloc.dart';
 
+//TODO: CurrentSettingsState sometimes makes the code messy,
+//try to change it a single class state like other bloc states
 abstract class SettingsState extends Equatable {
   const SettingsState();
 

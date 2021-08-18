@@ -4,12 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
+import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
 import 'package:ccxgui/repositories/ccextractor.dart';
 import 'package:ccxgui/screens/dashboard/components/add_files.dart';
 import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
+import 'package:ccxgui/screens/dashboard/components/multi_process_tile.dart';
 import 'package:ccxgui/screens/dashboard/components/process_tile.dart';
 import 'package:ccxgui/screens/dashboard/components/udp_button.dart';
 import 'package:ccxgui/utils/constants.dart';
+import 'components/start_stop_button.dart';
 
 class Dashboard extends StatelessWidget {
   @override
@@ -130,70 +133,6 @@ class ClearFilesButton extends StatelessWidget {
   }
 }
 
-class StartStopButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ProcessBloc, ProcessState>(
-      builder: (context, processState) {
-        return BlocBuilder<DashboardBloc, DashboardState>(
-          builder: (context, dashboardState) {
-            return MaterialButton(
-              onPressed: () {
-                dashboardState.files.isEmpty
-                    ? null
-                    : processState.started
-                        ? {
-                            context.read<ProcessBloc>().add(
-                                  StopAllProcess(),
-                                ),
-                            CustomSnackBarMessage.show(
-                              context,
-                              'Cancelled process on all files.',
-                            )
-                          }
-                        : {
-                            context.read<ProcessBloc>().add(
-                                  StartAllProcess(),
-                                ),
-                            CustomSnackBarMessage.show(
-                              context,
-                              'Process started.',
-                            )
-                          };
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Text(
-                      processState.started ? 'Stop all' : 'Start all',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    processState.started
-                        ? Icon(Icons.stop, color: Colors.redAccent, size: 30)
-                        : Icon(
-                            Icons.play_arrow,
-                            color: dashboardState.files.isEmpty
-                                ? Colors.grey
-                                : Colors.greenAccent,
-                            size: 30,
-                          ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-}
-
 class SelectedFilesContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -233,31 +172,51 @@ class SelectedFilesContainer extends StatelessWidget {
                   ],
                 ),
               ),
-              Expanded(
-                child: state.files.isNotEmpty
-                    ? Scrollbar(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          itemCount: state.files.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              color: kBgLightColor,
-                              child: ProcessTile(
-                                file: state.files[index],
+              BlocBuilder<SettingsBloc, SettingsState>(
+                builder: (context, settingsState) {
+                  if (settingsState is CurrentSettingsState) {
+                    return Expanded(
+                      child: state.files.isNotEmpty
+                          ? Scrollbar(
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: ClampingScrollPhysics(),
+                                itemCount:
+                                    settingsState.settingsModel.splitMode &&
+                                            state.files.length > 1
+                                        ? 1
+                                        : state.files.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    color: kBgLightColor,
+                                    child: settingsState
+                                                .settingsModel.splitMode &&
+                                            state.files.length > 1
+                                        ? MultiProcessTile(files: state.files)
+                                        : ProcessTile(file: state.files[index]),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        ),
-                      )
-                    : Center(
-                        child: Text(
-                          'No files selected',
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
+                            )
+                          : Center(
+                              child: Text(
+                                'No files selected',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                    );
+                  }
+                  return Center(
+                    child: Text(
+                      'Loading settings, this should be super fast so if this is stuck something is broken, please open a issue on github',
+                      style: TextStyle(
+                        fontSize: 15,
                       ),
+                    ),
+                  );
+                },
               ),
             ],
           );
@@ -324,36 +283,37 @@ class LogsContainer extends StatelessWidget {
               ),
             ),
             Container(
-                decoration: BoxDecoration(
-                  color: kBgLightColor,
-                ),
-                height: MediaQuery.of(context).size.height / 4,
-                child: state.log.isNotEmpty
-                    ? Scrollbar(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          controller: _scrollController,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                state.log[index],
-                                style: TextStyle(
-                                  color: state.log[index]
-                                          .contains(RegExp(r'\d+:\d+-\d+:\d+'))
-                                      ? Colors.amber
-                                      : Colors.white,
-                                ),
+              decoration: BoxDecoration(
+                color: kBgLightColor,
+              ),
+              height: MediaQuery.of(context).size.height / 4,
+              child: state.log.isNotEmpty
+                  ? Scrollbar(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        controller: _scrollController,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              state.log[index],
+                              style: TextStyle(
+                                color: state.log[index]
+                                        .contains(RegExp(r'\d+:\d+-\d+:\d+'))
+                                    ? Colors.amber
+                                    : Colors.white,
                               ),
-                            );
-                          },
-                          itemCount: state.log.length,
-                        ),
-                      )
-                    : Center(
-                        child: Text(
-                            'Start processing a file to see output genrated here'),
-                      )),
+                            ),
+                          );
+                        },
+                        itemCount: state.log.length,
+                      ),
+                    )
+                  : Center(
+                      child: Text(
+                          'Start processing a file to see output genrated here'),
+                    ),
+            ),
           ],
         );
       },
