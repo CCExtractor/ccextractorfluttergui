@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
+import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
+import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
 import 'package:ccxgui/utils/constants.dart';
 
 class AddFilesButton extends StatelessWidget {
@@ -43,29 +45,65 @@ class AddFilesButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-      child: InkWell(
-        hoverColor: Colors.transparent,
-        onTap: () => _openVideosFileSelector(context),
-        child: Container(
-          decoration: BoxDecoration(
-            color: kBgLightColor,
-            borderRadius: BorderRadius.all(
-              Radius.circular(
-                10,
+    return BlocBuilder<ProcessBloc, ProcessState>(
+      builder: (context, processState) {
+        return BlocBuilder<SettingsBloc, SettingsState>(
+          builder: (context, settingsState) {
+            if (settingsState is CurrentSettingsState) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                child: InkWell(
+                  hoverColor: Colors.transparent,
+                  onTap: () => (settingsState.settingsModel.splitMode &&
+                          processState.started)
+                      ? CustomSnackBarMessage.show(context,
+                          "Can't add files when splitMode is enabled and there is a ongoing process")
+                      : _openVideosFileSelector(context),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: kBgLightColor,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          10,
+                        ),
+                      ),
+                    ),
+                    height: 75,
+                    child: Center(
+                      child: Text(
+                        'Add more files',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
+            return Padding(
+              padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+              child: InkWell(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: kBgLightColor,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(
+                        10,
+                      ),
+                    ),
+                  ),
+                  height: 75,
+                  child: Center(
+                    child: Text(
+                      'Loading...',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-          height: 75,
-          child: Center(
-            child: Text(
-              'Add more files',
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-        ),
-      ),
+            );
+          },
+        );
+      },
     );
   }
 }

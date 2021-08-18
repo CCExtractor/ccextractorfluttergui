@@ -100,9 +100,31 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     );
   }
 
+  Stream<ProcessState> _extractFilesInSplitMode() async* {
+    unawaited(
+      _extractor
+          .extractFilesInSplitMode(
+        state.orignalList,
+        listenProgress: (progress) =>
+            add(ProcessFileExtractorProgress(progress)),
+        listenOutput: (line) => add(ProcessFileExtractorOutput(line)),
+        listenVideoDetails: (videoDetails) =>
+            add(ProcessFileVideoDetails(videoDetails)),
+      )
+          .then(
+        (value) {
+          if (value != 0) {
+            add(ProcessError(value));
+          }
+          add(SplitModeProcessComplete());
+        },
+      ),
+    );
+  }
+
   @override
   Stream<ProcessState> mapEventToState(ProcessEvent event) async* {
-    if (event is ProcessStarted) {
+    if (event is StartAllProcess) {
       yield state.copyWith(
         current: state.current,
         // This equality checks if the queue and originalList are same which
@@ -117,11 +139,14 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         started: true,
       );
       yield* _extractNext();
-    } else if (event is ProcessStopped) {
+    } else if (event is StartProcessInSplitMode) {
+      yield state.copyWith(current: state.current, started: true);
+      yield* _extractFilesInSplitMode();
+    } else if (event is StopAllProcess) {
       // stops everything
       try {
         _extractor.cancelRun();
-      } on Exception catch (_) {}
+      } catch (_) {}
       yield state.copyWith(
         current: null,
         queue: state.orignalList,
@@ -132,7 +157,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     } else if (event is ProcessKill) {
       try {
         _extractor.cancelRun();
-      } on Exception catch (_) {}
+      } catch (_) {}
       yield state.copyWith(
         current: state.current,
         orignalList: state.orignalList
@@ -143,7 +168,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     } else if (event is ProcessRemoveAll) {
       try {
         _extractor.cancelRun();
-      } on Exception catch (_) {}
+      } catch (_) {}
       yield state.copyWith(
         current: null,
         progress: '0',
@@ -175,6 +200,13 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         );
         yield* _extractNext();
       }
+    } else if (event is SplitModeProcessComplete) {
+      yield state.copyWith(
+          current: null,
+          log: state.log,
+          exitCode: null,
+          started: false,
+          progress: '100');
     } else if (event is ProcessFilesSubmitted) {
       yield state.copyWith(
         current: state.current,

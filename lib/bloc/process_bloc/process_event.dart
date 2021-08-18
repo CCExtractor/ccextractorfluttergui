@@ -11,10 +11,15 @@ class ProcessFilesSubmitted extends ProcessEvent {
   const ProcessFilesSubmitted(this.files);
 }
 
-class ProcessStarted extends ProcessEvent {}
+class StartAllProcess extends ProcessEvent {}
 
 /// ProcessStopped stops all the files from processing.
-class ProcessStopped extends ProcessEvent {}
+class StopAllProcess extends ProcessEvent {}
+
+/// ccx runs on all the files at once
+class StartProcessInSplitMode extends ProcessEvent {}
+
+class SplitModeProcessComplete extends ProcessEvent {}
 
 /// Removes pending file from state queue
 class ProcessFileRemoved extends ProcessEvent {

@@ -120,7 +120,7 @@ class SettingsModel {
   bool detectItalics;
   String confThresh;
   String whiteThresh;
-
+  bool splitMode;
   SettingsModel({
     this.out = 'auto/default',
     this.inp = 'auto/default',
@@ -216,6 +216,7 @@ class SettingsModel {
     this.detectItalics = false,
     this.confThresh = '',
     this.whiteThresh = '',
+    this.splitMode = false,
   });
 
   static Map<String, String> get paramsLookUpMap {
@@ -312,6 +313,7 @@ class SettingsModel {
       'detectItalics': '-detect_italics',
       'confThresh': '-conf_thresh',
       'whiteThresh': '-whiteness_thresh',
+      'splitMode': '', // splitMode is not a ccx setting
     };
   }
 
@@ -341,102 +343,102 @@ class SettingsModel {
     return enabledtextfields;
   }
 
-  SettingsModel copyWith({
-    String? out,
-    String? inp,
-    String? outputfilename,
-    bool? fixptsjumps,
-    bool? append,
-    String? outInterval,
-    bool? segmentonkeyonly,
-    bool? goptime,
-    bool? nogoptime,
-    bool? fixpadding,
-    bool? freqEs15,
-    String? stream,
-    bool? videoedited,
-    bool? usepicorder,
-    bool? myth,
-    bool? nomyth,
-    bool? wtvconvertfix,
-    bool? wtvmpeg2,
-    String? program_number,
-    bool? autoprogram,
-    bool? multiprogram,
-    String? streamtype,
-    bool? hauppauge,
-    bool? mp4vidtrack,
-    bool? noautotimeref,
-    bool? noscte20,
-    bool? webvttcss,
-    bool? analyzevideo,
-    bool? notimestamp,
-    bool? nolevdist,
-    String? minlevdist,
-    String? maxlevdist,
-    bool? chapters,
-    bool? bom,
-    bool? nobom,
-    String? encoder,
-    bool? nofontcolor,
-    bool? nohtmlescape,
-    bool? notypesetting,
-    bool? trim,
-    String? defaultcolor,
-    bool? sentencecap,
-    String? capFile,
-    bool? kf,
-    String? profanityFile,
-    bool? splitbysentence,
-    bool? datets,
-    bool? sects,
-    bool? latrusmap,
-    bool? xds,
-    bool? lf,
-    bool? df,
-    bool? autodash,
-    String? xmltv,
-    String? xmltvliveinterval,
-    String? xmltvoutputinterval,
-    bool? xmltvonlycurrent,
-    bool? sem,
-    String? dvblang,
-    String? mkvlang,
-    String? ocrlang,
-    String? quant,
-    String? oem,
-    bool? bufferinput,
-    bool? nobufferinput,
-    String? buffersize,
-    bool? koc,
-    bool? dru,
-    bool? norollup,
-    String? rollUp,
-    String? delay,
-    String? startat,
-    String? endat,
-    String? codec,
-    String? nocodec,
-    String? startcreditstext,
-    String? startcreditsnotbefore,
-    String? startcreditsnotafter,
-    String? startcreditsforatleast,
-    String? startcreditsforatmost,
-    String? endcreditstext,
-    String? endcreditsforatleast,
-    String? endcreditsforatmost,
-    String? tpage,
-    bool? teletext,
-    bool? noteletext,
-    bool? hardsubx,
-    bool? tickertext,
-    String? ocrMode,
-    String? subcolor,
-    String? minSubDuration,
-    bool? detectItalics,
-    String? confThresh,
-    String? whiteThresh,
-  }) {
+  SettingsModel copyWith(
+      {String? out,
+      String? inp,
+      String? outputfilename,
+      bool? fixptsjumps,
+      bool? append,
+      String? outInterval,
+      bool? segmentonkeyonly,
+      bool? goptime,
+      bool? nogoptime,
+      bool? fixpadding,
+      bool? freqEs15,
+      String? stream,
+      bool? videoedited,
+      bool? usepicorder,
+      bool? myth,
+      bool? nomyth,
+      bool? wtvconvertfix,
+      bool? wtvmpeg2,
+      String? program_number,
+      bool? autoprogram,
+      bool? multiprogram,
+      String? streamtype,
+      bool? hauppauge,
+      bool? mp4vidtrack,
+      bool? noautotimeref,
+      bool? noscte20,
+      bool? webvttcss,
+      bool? analyzevideo,
+      bool? notimestamp,
+      bool? nolevdist,
+      String? minlevdist,
+      String? maxlevdist,
+      bool? chapters,
+      bool? bom,
+      bool? nobom,
+      String? encoder,
+      bool? nofontcolor,
+      bool? nohtmlescape,
+      bool? notypesetting,
+      bool? trim,
+      String? defaultcolor,
+      bool? sentencecap,
+      String? capFile,
+      bool? kf,
+      String? profanityFile,
+      bool? splitbysentence,
+      bool? datets,
+      bool? sects,
+      bool? latrusmap,
+      bool? xds,
+      bool? lf,
+      bool? df,
+      bool? autodash,
+      String? xmltv,
+      String? xmltvliveinterval,
+      String? xmltvoutputinterval,
+      bool? xmltvonlycurrent,
+      bool? sem,
+      String? dvblang,
+      String? mkvlang,
+      String? ocrlang,
+      String? quant,
+      String? oem,
+      bool? bufferinput,
+      bool? nobufferinput,
+      String? buffersize,
+      bool? koc,
+      bool? dru,
+      bool? norollup,
+      String? rollUp,
+      String? delay,
+      String? startat,
+      String? endat,
+      String? codec,
+      String? nocodec,
+      String? startcreditstext,
+      String? startcreditsnotbefore,
+      String? startcreditsnotafter,
+      String? startcreditsforatleast,
+      String? startcreditsforatmost,
+      String? endcreditstext,
+      String? endcreditsforatleast,
+      String? endcreditsforatmost,
+      String? tpage,
+      bool? teletext,
+      bool? noteletext,
+      bool? hardsubx,
+      bool? tickertext,
+      String? ocrMode,
+      String? subcolor,
+      String? minSubDuration,
+      bool? detectItalics,
+      String? confThresh,
+      String? whiteThresh,
+      bool? splitMode}) {
     return SettingsModel(
       out: out ?? this.out,
       inp: inp ?? this.inp,
@@ -535,6 +537,7 @@ class SettingsModel {
       detectItalics: detectItalics ?? this.detectItalics,
       confThresh: confThresh ?? this.confThresh,
       whiteThresh: whiteThresh ?? this.whiteThresh,
+      splitMode: splitMode ?? this.splitMode,
     );
   }
 
@@ -634,6 +637,7 @@ class SettingsModel {
       'detectItalics': detectItalics,
       'confThresh': confThresh,
       'whiteThresh': whiteThresh,
+      'splitMode': splitMode,
     };
   }
 
@@ -733,12 +737,13 @@ class SettingsModel {
       detectItalics: map['detectItalics'],
       confThresh: map['confThresh'],
       whiteThresh: map['whiteThresh'],
+      splitMode: map['splitMode'],
     );
   }
 
   @override
   String toString() {
-    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, streamtype: $streamtype, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, capFile: $capFile, kf: $kf, profanityFile: $profanityFile, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, dvblang: $dvblang, mkvlang: $mkvlang, ocrlang: $ocrlang, quant: $quant, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, rollUp: $rollUp, delay: $delay, startat: $startat, endat: $endat, codec: $codec, nocodec: $nocodec, startcreditstext: $startcreditstext, startcreditsnotbefore: $startcreditsnotbefore, startcreditsnotafter: $startcreditsnotafter, startcreditsforatleast: $startcreditsforatleast, startcreditsforatmost: $startcreditsforatmost, endcreditstext: $endcreditstext, endcreditsforatleast: $endcreditsforatleast, endcreditsforatmost: $endcreditsforatmost, tpage: $tpage, teletext: $teletext, noteletext: $noteletext, hardsubx: $hardsubx, tickertext: $tickertext, ocrMode: $ocrMode, subcolor: $subcolor, minSubDuration: $minSubDuration, detectItalics: $detectItalics, confThresh: $confThresh, whiteThresh: $whiteThresh)';
+    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, streamtype: $streamtype, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, capFile: $capFile, kf: $kf, profanityFile: $profanityFile, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, dvblang: $dvblang, mkvlang: $mkvlang, ocrlang: $ocrlang, quant: $quant, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, rollUp: $rollUp, delay: $delay, startat: $startat, endat: $endat, codec: $codec, nocodec: $nocodec, startcreditstext: $startcreditstext, startcreditsnotbefore: $startcreditsnotbefore, startcreditsnotafter: $startcreditsnotafter, startcreditsforatleast: $startcreditsforatleast, startcreditsforatmost: $startcreditsforatmost, endcreditstext: $endcreditstext, endcreditsforatleast: $endcreditsforatleast, endcreditsforatmost: $endcreditsforatmost, tpage: $tpage, teletext: $teletext, noteletext: $noteletext, hardsubx: $hardsubx, tickertext: $tickertext, ocrMode: $ocrMode, subcolor: $subcolor, minSubDuration: $minSubDuration, detectItalics: $detectItalics, confThresh: $confThresh, whiteThresh: $whiteThresh, splitMode: $splitMode,)';
   }
 
   @override
@@ -839,7 +844,8 @@ class SettingsModel {
         other.minSubDuration == minSubDuration &&
         other.detectItalics == detectItalics &&
         other.confThresh == confThresh &&
-        other.whiteThresh == whiteThresh;
+        other.whiteThresh == whiteThresh &&
+        other.splitMode == splitMode;
   }
 
   @override
@@ -937,6 +943,7 @@ class SettingsModel {
         minSubDuration.hashCode ^
         detectItalics.hashCode ^
         confThresh.hashCode ^
-        whiteThresh.hashCode;
+        whiteThresh.hashCode ^
+        splitMode.hashCode;
   }
 }
