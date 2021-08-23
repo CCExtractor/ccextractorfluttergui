@@ -5,14 +5,17 @@
 [![GitHub All Releases](https://img.shields.io/github/downloads/CCExtractor/ccextractorfluttergui/total.svg)](https://github.com/CCExtractor/ccextractorfluttergui/releases/latest)
 
 The new cross platform interface is all you need, as it includes all the options. After installing GUI you will have a shortcut in your desktop, this lets users not familiar with CLI to extract subtitles.
-Usually, you will never need to use all the options (and even if you do, all the setting are saved locally at Documents/config.json in your PC) for regular usage.
 
+Usually, you will never need to use all the options (and even if you do, all the setting are saved locally at `Documents/config.json` in your PC) for regular usage.
+
+The GUI basically uses dart's [process](https://api.dart.dev/stable/2.13.4/dart-io/Process-class.html) class to [start](https://api.dart.dev/stable/2.13.4/dart-io/Process/start.html) the ccextractor executable and shows the progress and live output.
 
 ## Table of contents
 * [Installation](#installation)
 * [Usage](#usage)
 * [Contributing](#contributing)
 * [License](#license)
+* [GSoC](#gsoc)
 
 
 ## Installation
@@ -39,3 +42,9 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## License
 [MIT License](LICENSE)
+
+## GSoC
+#### GSoC'21
+* Student: @Techno-Disaster ([commits](https://github.com/CCExtractor/ccextractorfluttergui/commits?author=Techno-Disaster))
+* Mentor: @csfmp3
+
