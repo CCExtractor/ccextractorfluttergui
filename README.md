@@ -30,7 +30,7 @@ Depending on your OS of choice, one or multiple options are available.
 Executables for Linux can be  found [here](https://nightly.link/CCExtractor/ccextractorfluttergui/workflows/create_artifacts/master) or on the [releases page](https://github.com/CCExtractor/ccextractorfluttergui/releases). Both still require to get ccextractor manually. 
 
 ### macOS
-MacOS requires you to build the GUI from source and get ccextractor manually. For detailed information on this please refer [INSTAL.MD](INSTALL.MD).
+MacOS requires you to build the GUI from source and get ccextractor manually. For detailed information on this please refer [INSTALL.MD](INSTALL.MD).
 
 
 ## Usage
