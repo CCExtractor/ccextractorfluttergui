@@ -57,6 +57,8 @@ class OutputSettingsScreen extends StatelessWidget {
               text: state.settingsModel.endcreditsforatleast);
           TextEditingController endcreditsforatmost = TextEditingController(
               text: state.settingsModel.endcreditsforatmost);
+          TextEditingController service =
+              TextEditingController(text: state.settingsModel.service);
           return Scaffold(
             appBar: AppBar(
               flexibleSpace: FlexibleSpaceBar(
@@ -618,6 +620,22 @@ class OutputSettingsScreen extends StatelessWidget {
                             ),
                           ),
                         ),
+                  ),
+                  CustomDivider(
+                    title: '708 closed caption decoder',
+                  ),
+                  CustomTextField(
+                    title: '708 service numbers',
+                    subtitle:
+                        'Enable CEA-708 (DTVCC) captions processing for the listed services. The parameter is a comma delimited list of services numbers, such as "1,2" to process the primary and secondary language services. Pass "all" to process all services found.',
+                    onEditingComplete: () => context.read<SettingsBloc>().add(
+                          SaveSettingsEvent(
+                            state.settingsModel.copyWith(
+                              service: service.text,
+                            ),
+                          ),
+                        ),
+                    controller: service,
                   ),
                   CustomDivider(
                     title: 'Live typo correction',
