@@ -65,15 +65,17 @@ class CurrentCommandContainer extends StatelessWidget {
                   width: Responsive.isDesktop(context)
                       ? MediaQuery.of(context).size.width - 270
                       : MediaQuery.of(context).size.width -
-                          56, // remove drawer width
+                          56, 
+                          height: Responsive.isDesktop(context)?MediaQuery.of(context).size.height/25:MediaQuery.of(context).size.height/5,// remove drawer width
                   decoration: BoxDecoration(
                     color: kBgLightColor,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(top: 10,left: 10),
                     child: SelectableText(
+                      
                       'ccextractor --gui_mode_reports ${paramsList.reduce((value, element) => value + ' ' + element)} +[input files]',
-                      maxLines: 2,
+                      // maxLines: 2,
                       style: TextStyle(
                         fontSize: 15,
                       ),
