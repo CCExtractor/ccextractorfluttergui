@@ -1,3 +1,5 @@
+import 'package:desktop_drop/desktop_drop.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -136,91 +138,102 @@ class ClearFilesButton extends StatelessWidget {
 class SelectedFilesContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: kBgLightColor,
-      ),
-      height: MediaQuery.of(context).size.height / 2,
-      child: BlocConsumer<DashboardBloc, DashboardState>(
-        listener: (context, state) {
-          if (state.alreadyPresent) {
-            CustomSnackBarMessage.show(
-                context, 'Already selected files were ignored');
-          }
-        },
-        builder: (context, state) {
-          return Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Container(
-                color: kBgDarkColor,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Selected files',
-                      style: TextStyle(
-                        fontSize: 20,
+    return DropTarget(
+      onDragDone: (detail) {
+        List<XFile> files = detail.urls.map((e) => XFile(e.path)).toList();
+        context.read<DashboardBloc>().add(
+              NewFileAdded(files),
+            );
+        context.read<ProcessBloc>().add(
+              ProcessFilesSubmitted(files),
+            );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: kBgLightColor,
+        ),
+        height: MediaQuery.of(context).size.height / 2,
+        child: BlocConsumer<DashboardBloc, DashboardState>(
+          listener: (context, state) {
+            if (state.alreadyPresent) {
+              CustomSnackBarMessage.show(
+                  context, 'Already selected files were ignored');
+            }
+          },
+          builder: (context, state) {
+            return Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  color: kBgDarkColor,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Selected files',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        ClearFilesButton(),
-                        StartStopButton(),
-                      ],
-                    ),
-                  ],
+                      Row(
+                        children: [
+                          ClearFilesButton(),
+                          StartStopButton(),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              BlocBuilder<SettingsBloc, SettingsState>(
-                builder: (context, settingsState) {
-                  if (settingsState is CurrentSettingsState) {
-                    return Expanded(
-                      child: state.files.isNotEmpty
-                          ? Scrollbar(
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
-                                itemCount:
-                                    settingsState.settingsModel.splitMode &&
-                                            state.files.length > 1
-                                        ? 1
-                                        : state.files.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    color: kBgLightColor,
-                                    child: settingsState
-                                                .settingsModel.splitMode &&
-                                            state.files.length > 1
-                                        ? MultiProcessTile(files: state.files)
-                                        : ProcessTile(file: state.files[index]),
-                                  );
-                                },
-                              ),
-                            )
-                          : Center(
-                              child: Text(
-                                'No files selected',
-                                style: TextStyle(
-                                  fontSize: 15,
+                BlocBuilder<SettingsBloc, SettingsState>(
+                  builder: (context, settingsState) {
+                    if (settingsState is CurrentSettingsState) {
+                      return Expanded(
+                        child: state.files.isNotEmpty
+                            ? Scrollbar(
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: ClampingScrollPhysics(),
+                                  itemCount:
+                                      settingsState.settingsModel.splitMode &&
+                                              state.files.length > 1
+                                          ? 1
+                                          : state.files.length,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      color: kBgLightColor,
+                                      child: settingsState
+                                                  .settingsModel.splitMode &&
+                                              state.files.length > 1
+                                          ? MultiProcessTile(files: state.files)
+                                          : ProcessTile(file: state.files[index]),
+                                    );
+                                  },
+                                ),
+                              )
+                            : Center(
+                                child: Text(
+                                  'No files selected',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                  ),
                                 ),
                               ),
-                            ),
-                    );
-                  }
-                  return Center(
-                    child: Text(
-                      'Loading settings, this should be super fast so if this is stuck something is broken, please open a issue on github',
-                      style: TextStyle(
-                        fontSize: 15,
+                      );
+                    }
+                    return Center(
+                      child: Text(
+                        'Loading settings, this should be super fast so if this is stuck something is broken, please open a issue on github',
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
-            ],
-          );
-        },
+                    );
+                  },
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
