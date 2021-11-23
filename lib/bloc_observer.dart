@@ -14,14 +14,21 @@ class SimpleBlocObserver extends BlocObserver {
   // @override
   // void onEvent(Bloc bloc, Object? event) {
   //   super.onEvent(bloc, event);
-  //   print('onEvent -- ${bloc.runtimeType}, $event');
+
+  //   if ({ProcessFileExtractorOutput, ProcessFileExtractorProgress}
+  //       .contains(event)) print('onEvent -- ${bloc.runtimeType}, $event');
   // }
 
-  @override
-  void onTransition(Bloc bloc, Transition transition) {
-    print(transition);
-    super.onTransition(bloc, transition);
-  }
+  // @override
+  // void onTransition(Bloc bloc, Transition transition) {
+  //   // CurrentSettingsState and ProcessState have a lot of spam
+  //   if ({transition.nextState, transition.nextState}
+  //           .contains(CurrentSettingsState) ||
+  //       {transition.nextState, transition.nextState}.contains(ProcessState)) {
+  //     print(transition);
+  //   }
+  //   super.onTransition(bloc, transition);
+  // }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
