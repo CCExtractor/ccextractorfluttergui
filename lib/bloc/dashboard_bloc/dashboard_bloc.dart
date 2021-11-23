@@ -30,12 +30,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             alreadyPresent: true);
       } else {
         yield state.copyWith(
-            files: List.from(state.files)..addAll(event.files));
+            files: List.from(state.files)..addAll(event.files),alreadyPresent: false);
       }
     } else if (event is FileRemoved) {
-      yield state.copyWith(files: List.from(state.files)..remove(event.file));
+      yield state.copyWith(files: List.from(state.files)..remove(event.file),alreadyPresent: false);
     } else if (event is RemoveAllFiles) {
-      yield state.copyWith(files: []);
+      yield state.copyWith(files: [],alreadyPresent: false);
     }
   }
 }
