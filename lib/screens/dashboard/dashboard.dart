@@ -205,7 +205,8 @@ class SelectedFilesContainer extends StatelessWidget {
                                                   .settingsModel.splitMode &&
                                               state.files.length > 1
                                           ? MultiProcessTile(files: state.files)
-                                          : ProcessTile(file: state.files[index]),
+                                          : ProcessTile(
+                                              file: state.files[index]),
                                     );
                                   },
                                 ),
