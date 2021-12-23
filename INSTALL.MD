@@ -19,10 +19,10 @@
 - Switch to flutter master channel using `flutter channel master && flutter upgrade`
 - Next enable the flutter platform specific flag with `flutter config --enable-<platform>-desktop`, more info on this [here](https://flutter.dev/desktop).
 - Then clone [this](https://github.com/CCExtractor/ccextractorfluttergui) repository and run `flutter run -d <platform> --release` to run the app. 
-- To install the Gui you will need to build it using `flutter build <platform> --release`. The release builds should be located under /build/\<platform> .
+- To install the Gui you will need to build it using `flutter build <platform> --release`. The release builds should be located under /build/\<platform>.
 
 ### Additional macOS steps:
-- If you build and install from source, you will probably get a `Process not permitted operation error` to fix remove the below lines from macos/*.entitlements files
+- If you build and install from source, you will probably get a `Process not permitted operation error` to fix remove the below lines from macos/*.entitlements files.
 
 ```
 <key>com.apple.security.app-sandbox</key>
