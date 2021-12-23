@@ -22,9 +22,9 @@ The GUI basically uses dart's [process](https://api.dart.dev/stable/2.13.4/dart-
 Depending on your OS of choice, one or multiple options are available.
 
 ### Windows
-- (preferred) [Download the .msi](https://github.com/CCExtractor/ccextractor/releases) to install CCExtractor and this GUI
-- Download the built GUI from the releases on this repository. You'll have to provide a CCExtractor binary yourself
-- Download this repository and build the GUI by yourself. You'll have to provide a CCExtractor binary yourself
+- (preferred) [Download the .msi](https://github.com/CCExtractor/ccextractor/releases) to install CCExtractor and this GUI.
+- Download the built GUI from the releases on this repository. You'll have to provide a CCExtractor binary yourself.
+- Download this repository and build the GUI by yourself. You'll have to provide a CCExtractor binary yourself.
 
 ### Linux
 Executables for Linux can be  found [here](https://nightly.link/CCExtractor/ccextractorfluttergui/workflows/create_artifacts/master) or on the [releases page](https://github.com/CCExtractor/ccextractorfluttergui/releases). Both still require to get ccextractor manually. 
@@ -34,11 +34,11 @@ MacOS requires you to build the GUI from source and get ccextractor manually. Fo
 
 
 ## Usage
-For users new to GUI check out the usage guide [here](USAGE.MD). You can also check all the options avaiable in ccextractor [here](https://ccextractor.org/public/general/command_line_usage/)
+For users new to GUI check out the usage guide [here](USAGE.MD). You can also check all the options avaiable in ccextractor [here](https://ccextractor.org/public/general/command_line_usage/).
 
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. Please make sure to update tests as appropriate. For more details, see the [Contributing Page](CONTRIBUTING.md)
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. Please make sure to update tests as appropriate. For more details, see the [Contributing Page](CONTRIBUTING.md).
 
 ## License
 [MIT License](LICENSE)
