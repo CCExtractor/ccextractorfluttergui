@@ -16,7 +16,6 @@
 ## Building and running the GUI from source (ALL)
 - This method only makes sense for people who actually want to debug the app. If you want to skip the hastle of installing frameworks and stuff just go the nightly way, the CI does these below steps for you automatically on every commit. 
 - To build the GUI from source first install flutter from [here](https://flutter.dev/docs/get-started/install) for your operating system.
-- Switch to flutter master channel using `flutter channel master && flutter upgrade`
 - Next enable the flutter platform specific flag with `flutter config --enable-<platform>-desktop`, more info on this [here](https://flutter.dev/desktop)
 - Then clone [this](https://github.com/CCExtractor/ccextractorfluttergui) repository and run `flutter run -d <platform> --release` to run the app. 
 - To install the Gui you will need to build it using `flutter build <platform> --release`. The release builds should be located under /build/\<platform> 
