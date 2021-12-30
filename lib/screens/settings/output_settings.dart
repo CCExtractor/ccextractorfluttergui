@@ -592,20 +592,21 @@ class OutputSettingsScreen extends StatelessWidget {
                     },
                   ),
                   CustomDropDown(
-                      title: 'Roll up',
-                      subtitle:
-                          'If having 3 or 4 lines annoys, use this to have 1,2,3 lines in roll-up captions',
-                      value: state.settingsModel.rollUp,
-                      items: rollUp,
-                      onChanged: (String newValue) {
-                        context.read<SettingsBloc>().add(
-                              SettingsUpdatedEvent(
-                                state.settingsModel.copyWith(
-                                  rollUp: newValue,
-                                ),
+                    title: 'Roll up',
+                    subtitle:
+                        'If having 3 or 4 lines annoys, use this to have 1,2,3 lines in roll-up captions',
+                    value: state.settingsModel.rollUp,
+                    items: rollUp,
+                    onChanged: (String newValue) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                rollUp: newValue,
                               ),
-                            );
-                      }),
+                            ),
+                          );
+                    },
+                  ),
                   CustomDropDown(
                     title: 'Stream Type',
                     subtitle:
