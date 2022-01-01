@@ -11,6 +11,7 @@ import 'components/custom_swtich_listTile.dart';
 import 'components/custom_textfield.dart';
 
 class InputSettingsScreen extends StatelessWidget {
+  final ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsBloc, SettingsState>(
@@ -46,6 +47,7 @@ class InputSettingsScreen extends StatelessWidget {
             body: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView(
+                controller: controller,
                 children: [
                   CustomSwitchListTile(
                     title: 'Fix pts jumps',

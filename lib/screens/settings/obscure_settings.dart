@@ -9,6 +9,7 @@ import 'package:ccxgui/screens/settings/components/custom_textfield.dart';
 import 'components/custom_swtich_listTile.dart';
 
 class ObscureSettingsScreen extends StatelessWidget {
+  final ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsBloc, SettingsState>(
@@ -41,6 +42,7 @@ class ObscureSettingsScreen extends StatelessWidget {
             body: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView(
+                controller: controller,
                 children: [
                   CustomSwitchListTile(
                     title: 'Panasonic DMR-ES15',
