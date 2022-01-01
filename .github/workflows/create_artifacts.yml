@@ -18,7 +18,7 @@ jobs:
     - name: Install Flutter
       uses: subosito/flutter-action@v1.5.3
       with:
-        channel: 'master'
+        channel: 'stable'
     - name: Flutter format
       run: |
         flutter format . --set-exit-if-changed
@@ -38,7 +38,7 @@ jobs:
     - name: Install Flutter
       uses: subosito/flutter-action@v1.5.3
       with:
-        channel: 'master'
+        channel: 'stable'
     - name: Enable desktop support
       run: flutter config --enable-windows-desktop
     - name: Build Windows app
@@ -67,7 +67,7 @@ jobs:
       - name: Install Flutter
         uses: subosito/flutter-action@v1.5.3
         with:
-          channel: 'master'
+          channel: 'stable'
       - name: Enable desktop support
         run: |
           flutter config --enable-linux-desktop

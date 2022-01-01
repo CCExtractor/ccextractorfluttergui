@@ -66,9 +66,9 @@ class CurrentCommandContainer extends StatelessWidget {
                       ? MediaQuery.of(context).size.width - 270
                       : MediaQuery.of(context).size.width - 56,
                   height: Responsive.isDesktop(context)
-                      ? MediaQuery.of(context).size.height / 25
+                      ? MediaQuery.of(context).size.height / 20
                       : MediaQuery.of(context).size.height /
-                          5, // remove drawer width
+                          20, // remove drawer width
                   decoration: BoxDecoration(
                     color: kBgLightColor,
                   ),
