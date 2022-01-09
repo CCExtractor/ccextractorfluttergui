@@ -12,6 +12,7 @@ import 'package:ccxgui/screens/settings/components/custom_textfield.dart';
 import 'package:ccxgui/utils/constants.dart';
 
 class HardSubxSettingsScreen extends StatelessWidget {
+  final ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsBloc, SettingsState>(
@@ -56,6 +57,7 @@ class HardSubxSettingsScreen extends StatelessWidget {
             body: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView(
+                controller: controller,
                 children: [
                   CustomSwitchListTile(
                     title: 'HardSubx',
