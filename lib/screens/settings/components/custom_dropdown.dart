@@ -26,7 +26,7 @@ class CustomDropDown extends StatelessWidget {
       trailing: MouseRegion(
         cursor: SystemMouseCursors.click,
         child: Container(
-          width: Responsive.isDesktop(context) ? 300 : 100,
+          width: Responsive.isDesktop(context) ? 300 : 125,
           color: kBgLightColor,
           child: DropdownButton<String>(
             underline: Container(),
@@ -36,10 +36,12 @@ class CustomDropDown extends StatelessWidget {
             items: items.map((String value) {
               return DropdownMenuItem(
                 value: value,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                  child: Text(value),
+                child: Center(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
+                    child: Text(value),
+                  ),
                 ),
               );
             }).toList(),

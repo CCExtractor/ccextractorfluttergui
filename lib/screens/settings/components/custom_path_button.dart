@@ -66,13 +66,14 @@ class _CustomGetFilePathButtonState extends State<CustomGetFilePathButton> {
           child: Row(
             children: [
               Tooltip(
-                  message: 'Clear field',
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: widget.clearField,
-                    icon: Icon(Icons.delete_outline),
-                    color: Colors.red,
-                  )),
+                message: 'Clear field',
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: widget.clearField,
+                  icon: Icon(Icons.delete_outline),
+                  color: Colors.red,
+                ),
+              ),
               SizedBox(
                 width: 10,
               ),

@@ -15,10 +15,12 @@ import 'package:ccxgui/utils/constants.dart';
 import 'components/start_stop_button.dart';
 
 class Dashboard extends StatelessWidget {
+  final ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Material(
       child: ListView(
+        controller: controller,
         children: [
           Row(
             mainAxisSize: MainAxisSize.max,
