@@ -44,6 +44,7 @@ class _CustomGetFilePathButtonState extends State<CustomGetFilePathButton> {
   final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
+    Size screensize = MediaQuery.of(context).size;
     _scrollController.hasClients
         ? _scrollController.animateTo(
             0.0,
@@ -59,7 +60,9 @@ class _CustomGetFilePathButtonState extends State<CustomGetFilePathButton> {
       trailing: MouseRegion(
         cursor: SystemMouseCursors.click,
         child: Container(
-          width: Responsive.isDesktop(context) ? 300 : 100,
+          width: Responsive.isDesktop(context)
+              ? screensize.width * 0.25
+              : screensize.width * 0.145,
           child: Row(
             children: [
               Tooltip(
@@ -75,7 +78,9 @@ class _CustomGetFilePathButtonState extends State<CustomGetFilePathButton> {
                 width: 10,
               ),
               Container(
-                width: Responsive.isDesktop(context) ? 250 : 50,
+                width: Responsive.isDesktop(context)
+                    ? screensize.width * 0.205
+                    : screensize.width * 0.081,
                 height: 46,
                 color: kBgLightColor,
                 child: MaterialButton(

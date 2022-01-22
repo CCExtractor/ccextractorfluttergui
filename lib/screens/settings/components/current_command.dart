@@ -73,7 +73,7 @@ class CurrentCommandContainer extends StatelessWidget {
                     color: kBgLightColor,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 10),
+                    padding: const EdgeInsets.only(left: 10),
                     child: SelectableText(
                       'ccextractor --gui_mode_reports ${paramsList.reduce((value, element) => value + ' ' + element)} +[input files]',
                       // maxLines: 2,
