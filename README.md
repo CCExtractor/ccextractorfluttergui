@@ -6,7 +6,7 @@
 
 The new cross platform interface is all you need, as it includes all the options. After installing GUI you will have a shortcut in your desktop, this lets users not familiar with CLI to extract subtitles.
 
-Usually, you will never need to use all the options (and even if you do, all the setting are saved locally at `Documents/config.json` in your PC) for regular usage.
+Usually, you will never need to use all the options (and even if you do, all the settings are saved locally at `Documents/config.json` in your PC) for regular usage.
 
 The GUI basically uses dart's [process](https://api.dart.dev/stable/2.13.4/dart-io/Process-class.html) class to [start](https://api.dart.dev/stable/2.13.4/dart-io/Process/start.html) the ccextractor executable and shows the progress and live output.
 
@@ -22,7 +22,7 @@ The GUI basically uses dart's [process](https://api.dart.dev/stable/2.13.4/dart-
 Depending on your OS of choice, one or multiple options are available.
 
 ### Windows
-- (preferred) [Download the .msi](https://github.com/CCExtractor/ccextractor/releases) to install CCExtractor and this GUI
+- (preferred) [Download the .msi](https://github.com/CCExtractor/ccextractor/releases) to install CCExtractor and the GUI
 - Download the built GUI from the releases on this repository. You'll have to provide a CCExtractor binary yourself
 - Download this repository and build the GUI by yourself. You'll have to provide a CCExtractor binary yourself
 
@@ -34,7 +34,7 @@ MacOS requires you to build the GUI from source and get ccextractor manually. Fo
 
 
 ## Usage
-For users new to GUI check out the usage guide [here](USAGE.MD). You can also check all the options avaiable in ccextractor [here](https://ccextractor.org/public/general/command_line_usage/)
+For users new to GUI check out the usage guide [here](USAGE.MD). You can also check all the options avaiable in ccextractor [here](https://ccextractor.org/public/general/command_line_usage/).
 
 
 ## Contributing
