@@ -16,8 +16,12 @@ import 'bloc_observer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Bloc.observer = SimpleBlocObserver();
-  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+  BlocOverrides.runZoned(
+        () {
+      // ...
+    },
+    blocObserver: SimpleBlocObserver(),
+  );  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle('CCExtractor');
     setWindowMinSize(const Size(800, 800));
     setWindowMaxSize(const Size(10000, 10000));
