@@ -16,18 +16,17 @@ import 'bloc_observer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  BlocOverrides.runZoned(
-        () {
-      // ...
+  BlocOverrides.runZoned(() {
+    if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+      setWindowTitle('CCExtractor');
+      setWindowMinSize(const Size(800, 800));
+      setWindowMaxSize(const Size(10000, 10000));
+    }
+    runApp(
+      MyApp(),
+    );
     },
     blocObserver: SimpleBlocObserver(),
-  );  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    setWindowTitle('CCExtractor');
-    setWindowMinSize(const Size(800, 800));
-    setWindowMaxSize(const Size(10000, 10000));
-  }
-  runApp(
-    MyApp(),
   );
 }
 

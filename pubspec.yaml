@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   bloc: ^8.0.0
+  bloc_concurrency: ^0.2.0
   bloc_test:
   cupertino_icons: ^1.0.2
   equatable: ^2.0.3
