@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pedantic/pedantic.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
+
 
 import 'package:ccxgui/repositories/ccextractor.dart';
 
@@ -13,18 +17,21 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
 
   ProcessBloc()
       : super(ProcessState(
-          orignalList: [],
-          queue: [],
-          processed: [],
-          log: [],
-          videoDetails: [],
-          started: false,
-          progress: '0',
-          current: null,
-          version: '0',
-        ));
+    orignalList: [],
+    queue: [],
+    processed: [],
+    log: [],
+    videoDetails: [],
+    started: false,
+    progress: '0',
+    current: null,
+    version: '0',
+  )){
+    on<ProcessEvent> (_onEvent,transformer: sequential());
 
-  Stream<ProcessState> _extractNext() async* {
+  }
+
+  Stream<ProcessState> _extractNext(Emitter<ProcessState> emit) async* {
     if (!state.started || state.current != null || state.queue.isEmpty) {
       if (state.queue.isEmpty) {
         // We need to show user that all files have finished processing
@@ -65,7 +72,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
             add(ProcessFileVideoDetails(videoDetails)),
       )
           .then(
-        (value) {
+            (value) {
           if (value != 0) {
             add(ProcessError(value));
           }
@@ -76,7 +83,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
   }
 
   Stream<ProcessState> _extractOnNetwork(
-      String type, String location, String tcppassword, String tcpdesc) async* {
+      String type, String location, String tcppassword, String tcpdesc, Emitter<ProcessState> emit) async* {
     unawaited(
       _extractor
           .extractFileOverNetwork(
@@ -91,7 +98,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
             add(ProcessFileVideoDetails(videoDetails)),
       )
           .then(
-        (value) {
+            (value) {
           if (value != 0) {
             add(ProcessError(value));
           }
@@ -100,7 +107,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     );
   }
 
-  Stream<ProcessState> _extractFilesInSplitMode() async* {
+  Stream<ProcessState> _extractFilesInSplitMode(Emitter<ProcessState> emit) async* {
     unawaited(
       _extractor
           .extractFilesInSplitMode(
@@ -112,7 +119,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
             add(ProcessFileVideoDetails(videoDetails)),
       )
           .then(
-        (value) {
+            (value) {
           if (value != 0) {
             add(ProcessError(value));
           }
@@ -122,10 +129,9 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     );
   }
 
-  @override
-  Stream<ProcessState> mapEventToState(ProcessEvent event) async* {
+  FutureOr<void> _onEvent(ProcessEvent event, Emitter<ProcessState> emit) async{
     if (event is StartAllProcess) {
-      yield state.copyWith(
+      emit( state.copyWith(
         current: state.current,
         // This equality checks if the queue and originalList are same which
         // means that the user has not added any new y files or they have been
@@ -137,39 +143,39 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         // proccessed x files as it is.
         processed: state.queue == state.orignalList ? [] : state.processed,
         started: true,
-      );
-      yield* _extractNext();
+      ));
+      _extractNext(emit);
     } else if (event is StartProcessInSplitMode) {
-      yield state.copyWith(current: state.current, started: true);
-      yield* _extractFilesInSplitMode();
+      emit( state.copyWith(current: state.current, started: true));
+      _extractFilesInSplitMode(emit);
     } else if (event is StopAllProcess) {
       // stops everything
       try {
         _extractor.cancelRun();
       } catch (_) {}
-      yield state.copyWith(
+      emit( state.copyWith(
         current: null,
         queue: state.orignalList,
         processed: [], // We don't need ticks when we stop so discard processed files list.
         progress: '0',
         started: false,
-      );
+      ));
     } else if (event is ProcessKill) {
       try {
         _extractor.cancelRun();
       } catch (_) {}
-      yield state.copyWith(
+      emit( state.copyWith(
         current: state.current,
         orignalList: state.orignalList
             .where((element) => element != event.file)
             .toList(),
         queue: state.queue.where((element) => element != event.file).toList(),
-      );
+      ));
     } else if (event is ProcessRemoveAll) {
       try {
         _extractor.cancelRun();
       } catch (_) {}
-      yield state.copyWith(
+      emit( state.copyWith(
         current: null,
         progress: '0',
         processed: [],
@@ -179,36 +185,36 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         exitCode: null,
         log: [],
         videoDetails: [],
-      );
+      ));
     } else if (event is ProcessFileExtractorProgress) {
-      yield state.copyWith(current: state.current, progress: event.progress);
+      emit( state.copyWith(current: state.current, progress: event.progress));
     } else if (event is ProcessFileVideoDetails) {
-      yield state.copyWith(
-          current: state.current, videoDetails: event.videoDetails);
+      emit( state.copyWith(
+          current: state.current, videoDetails: event.videoDetails));
     } else if (event is ProcessFileExtractorOutput) {
-      yield state.copyWith(
+      emit( state.copyWith(
         current: state.current,
         log: state.log.followedBy([event.log]).toList(),
-      );
+      ));
     } else if (event is ProcessFileComplete) {
       if (state.current == event.file) {
-        yield state.copyWith(
+        emit( state.copyWith(
           current: null,
           log: state.queue.isNotEmpty ? [] : state.log,
           processed: state.processed.followedBy([event.file]).toList(),
           exitCode: null,
-        );
-        yield* _extractNext();
+        ));
+        _extractNext(emit);
       }
     } else if (event is SplitModeProcessComplete) {
-      yield state.copyWith(
+      emit( state.copyWith(
           current: null,
           log: state.log,
           exitCode: null,
           started: false,
-          progress: '100');
+          progress: '100'));
     } else if (event is ProcessFilesSubmitted) {
-      yield state.copyWith(
+      emit( state.copyWith(
         current: state.current,
         orignalList: List.from(state.orignalList)..addAll(event.files),
         processed: state.processed,
@@ -234,28 +240,28 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         queue: state.started || state.processed.isEmpty
             ? state.queue.followedBy(event.files).toList()
             : event.files,
-      );
+      ));
     } else if (event is ProcessFileRemoved) {
-      yield state.copyWith(
+      emit( state.copyWith(
         current: state.current,
         orignalList: state.orignalList
             .where((element) => element != event.file)
             .toList(),
         queue: state.queue.where((element) => element != event.file).toList(),
-      );
+      ));
     } else if (event is GetCCExtractorVersion) {
       String ccxVersion = await _extractor.getCCExtractorVersion;
-      yield state.copyWith(
+      emit( state.copyWith(
         current: state.current,
         version: ccxVersion,
-      );
+      ));
     } else if (event is ProcessError) {
-      yield state.copyWith(current: state.current, exitCode: event.exitCode);
+      emit( state.copyWith(current: state.current, exitCode: event.exitCode));
     } else if (event is ResetProcessError) {
-      yield state.copyWith(current: state.current, exitCode: null);
+      emit( state.copyWith(current: state.current, exitCode: null));
     } else if (event is ProcessOnNetwork) {
-      yield* _extractOnNetwork(
-          event.type, event.location, event.tcppassword, event.tcpdesc);
+      _extractOnNetwork(
+          event.type, event.location, event.tcppassword, event.tcpdesc,emit);
     }
   }
 }

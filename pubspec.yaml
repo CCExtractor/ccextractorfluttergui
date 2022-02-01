@@ -8,8 +8,9 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  bloc: ^7.0.0
-  bloc_test: ^8.1.0
+  bloc: ^8.0.0
+  bloc_concurrency: ^0.2.0
+  bloc_test:
   cupertino_icons: ^1.0.2
   equatable: ^2.0.3
   expandable: ^5.0.1
@@ -19,7 +20,7 @@ dependencies:
   file_selector_windows: ^0.0.2+1
   flutter:
     sdk: flutter
-  flutter_bloc: ^7.1.0
+  flutter_bloc:
   flutter_markdown: ^0.6.3
   flutter_svg: ^0.22.0
   http: ^0.13.3

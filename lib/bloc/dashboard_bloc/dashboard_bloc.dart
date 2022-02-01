@@ -3,15 +3,18 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_selector/file_selector.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
 
 /// Handles selecting and removing files.
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
-  DashboardBloc() : super(DashboardState(files: [], alreadyPresent: false));
-  @override
-  Stream<DashboardState> mapEventToState(DashboardEvent event) async* {
+  DashboardBloc() : super(DashboardState(files: [], alreadyPresent: false)){
+    on<DashboardEvent> (_onEvent,transformer: sequential());
+  }
+  FutureOr<void> _onEvent(DashboardEvent event, Emitter<DashboardState> emit) async {
+    // TODO: logic goes here...
     if (event is NewFileAdded) {
       List<XFile> finalEventList = List.from(event.files);
       bool alreadyPresent = false;
@@ -25,21 +28,21 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         }
       }
       if (alreadyPresent) {
-        yield state.copyWith(
+        emit( state.copyWith(
             files: List.from(state.files)..addAll(finalEventList),
-            alreadyPresent: true);
+            alreadyPresent: true));
       } else {
-        yield state.copyWith(
+        emit( state.copyWith(
             files: List.from(state.files)..addAll(event.files),
-            alreadyPresent: false);
+            alreadyPresent: false));
         ;
       }
     } else if (event is FileRemoved) {
-      yield state.copyWith(
+      emit( state.copyWith(
           files: List.from(state.files)..remove(event.file),
-          alreadyPresent: false);
+          alreadyPresent: false));
     } else if (event is RemoveAllFiles) {
-      yield state.copyWith(files: [], alreadyPresent: false);
+      emit( state.copyWith(files: [], alreadyPresent: false));
     }
   }
 }
