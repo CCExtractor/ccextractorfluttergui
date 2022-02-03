@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
-
 import 'package:ccxgui/repositories/ccextractor.dart';
 
 part 'process_event.dart';
@@ -17,18 +16,17 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
 
   ProcessBloc()
       : super(ProcessState(
-    orignalList: [],
-    queue: [],
-    processed: [],
-    log: [],
-    videoDetails: [],
-    started: false,
-    progress: '0',
-    current: null,
-    version: '0',
-  )){
-    on<ProcessEvent> (_onEvent,transformer: sequential());
-
+          orignalList: [],
+          queue: [],
+          processed: [],
+          log: [],
+          videoDetails: [],
+          started: false,
+          progress: '0',
+          current: null,
+          version: '0',
+        )) {
+    on<ProcessEvent>(_onEvent, transformer: sequential());
   }
 
   Stream<ProcessState> _extractNext(Emitter<ProcessState> emit) async* {
@@ -72,7 +70,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
             add(ProcessFileVideoDetails(videoDetails)),
       )
           .then(
-            (value) {
+        (value) {
           if (value != 0) {
             add(ProcessError(value));
           }
@@ -82,8 +80,8 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     );
   }
 
-  Stream<ProcessState> _extractOnNetwork(
-      String type, String location, String tcppassword, String tcpdesc, Emitter<ProcessState> emit) async* {
+  Stream<ProcessState> _extractOnNetwork(String type, String location,
+      String tcppassword, String tcpdesc, Emitter<ProcessState> emit) async* {
     unawaited(
       _extractor
           .extractFileOverNetwork(
@@ -98,7 +96,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
             add(ProcessFileVideoDetails(videoDetails)),
       )
           .then(
-            (value) {
+        (value) {
           if (value != 0) {
             add(ProcessError(value));
           }
@@ -107,7 +105,8 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     );
   }
 
-  Stream<ProcessState> _extractFilesInSplitMode(Emitter<ProcessState> emit) async* {
+  Stream<ProcessState> _extractFilesInSplitMode(
+      Emitter<ProcessState> emit) async* {
     unawaited(
       _extractor
           .extractFilesInSplitMode(
@@ -119,7 +118,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
             add(ProcessFileVideoDetails(videoDetails)),
       )
           .then(
-            (value) {
+        (value) {
           if (value != 0) {
             add(ProcessError(value));
           }
@@ -129,9 +128,10 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     );
   }
 
-  FutureOr<void> _onEvent(ProcessEvent event, Emitter<ProcessState> emit) async{
+  FutureOr<void> _onEvent(
+      ProcessEvent event, Emitter<ProcessState> emit) async {
     if (event is StartAllProcess) {
-      emit( state.copyWith(
+      emit(state.copyWith(
         current: state.current,
         // This equality checks if the queue and originalList are same which
         // means that the user has not added any new y files or they have been
@@ -146,14 +146,14 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       ));
       _extractNext(emit);
     } else if (event is StartProcessInSplitMode) {
-      emit( state.copyWith(current: state.current, started: true));
+      emit(state.copyWith(current: state.current, started: true));
       _extractFilesInSplitMode(emit);
     } else if (event is StopAllProcess) {
       // stops everything
       try {
         _extractor.cancelRun();
       } catch (_) {}
-      emit( state.copyWith(
+      emit(state.copyWith(
         current: null,
         queue: state.orignalList,
         processed: [], // We don't need ticks when we stop so discard processed files list.
@@ -164,7 +164,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       try {
         _extractor.cancelRun();
       } catch (_) {}
-      emit( state.copyWith(
+      emit(state.copyWith(
         current: state.current,
         orignalList: state.orignalList
             .where((element) => element != event.file)
@@ -175,7 +175,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       try {
         _extractor.cancelRun();
       } catch (_) {}
-      emit( state.copyWith(
+      emit(state.copyWith(
         current: null,
         progress: '0',
         processed: [],
@@ -187,18 +187,18 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         videoDetails: [],
       ));
     } else if (event is ProcessFileExtractorProgress) {
-      emit( state.copyWith(current: state.current, progress: event.progress));
+      emit(state.copyWith(current: state.current, progress: event.progress));
     } else if (event is ProcessFileVideoDetails) {
-      emit( state.copyWith(
+      emit(state.copyWith(
           current: state.current, videoDetails: event.videoDetails));
     } else if (event is ProcessFileExtractorOutput) {
-      emit( state.copyWith(
+      emit(state.copyWith(
         current: state.current,
         log: state.log.followedBy([event.log]).toList(),
       ));
     } else if (event is ProcessFileComplete) {
       if (state.current == event.file) {
-        emit( state.copyWith(
+        emit(state.copyWith(
           current: null,
           log: state.queue.isNotEmpty ? [] : state.log,
           processed: state.processed.followedBy([event.file]).toList(),
@@ -207,14 +207,14 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
         _extractNext(emit);
       }
     } else if (event is SplitModeProcessComplete) {
-      emit( state.copyWith(
+      emit(state.copyWith(
           current: null,
           log: state.log,
           exitCode: null,
           started: false,
           progress: '100'));
     } else if (event is ProcessFilesSubmitted) {
-      emit( state.copyWith(
+      emit(state.copyWith(
         current: state.current,
         orignalList: List.from(state.orignalList)..addAll(event.files),
         processed: state.processed,
@@ -242,7 +242,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
             : event.files,
       ));
     } else if (event is ProcessFileRemoved) {
-      emit( state.copyWith(
+      emit(state.copyWith(
         current: state.current,
         orignalList: state.orignalList
             .where((element) => element != event.file)
@@ -251,17 +251,17 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       ));
     } else if (event is GetCCExtractorVersion) {
       String ccxVersion = await _extractor.getCCExtractorVersion;
-      emit( state.copyWith(
+      emit(state.copyWith(
         current: state.current,
         version: ccxVersion,
       ));
     } else if (event is ProcessError) {
-      emit( state.copyWith(current: state.current, exitCode: event.exitCode));
+      emit(state.copyWith(current: state.current, exitCode: event.exitCode));
     } else if (event is ResetProcessError) {
-      emit( state.copyWith(current: state.current, exitCode: null));
+      emit(state.copyWith(current: state.current, exitCode: null));
     } else if (event is ProcessOnNetwork) {
       _extractOnNetwork(
-          event.type, event.location, event.tcppassword, event.tcpdesc,emit);
+          event.type, event.location, event.tcppassword, event.tcpdesc, emit);
     }
   }
 }

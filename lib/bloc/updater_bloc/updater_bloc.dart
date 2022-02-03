@@ -11,12 +11,13 @@ part 'updater_event.dart';
 part 'updater_state.dart';
 
 class UpdaterBloc extends Bloc<UpdaterEvent, UpdaterState> {
-  UpdaterBloc() : super(UpdaterState('0.0', '0.0', false, '', '')){
-    on<UpdaterEvent> (_onEvent,transformer: sequential());
+  UpdaterBloc() : super(UpdaterState('0.0', '0.0', false, '', '')) {
+    on<UpdaterEvent>(_onEvent, transformer: sequential());
   }
   static const URL =
       'https://api.github.com/repos/CCExtractor/ccextractor/releases';
-  FutureOr<void> _onEvent(UpdaterEvent event, Emitter<UpdaterState> emit) async{
+  FutureOr<void> _onEvent(
+      UpdaterEvent event, Emitter<UpdaterState> emit) async {
     if (event is CheckForUpdates) {
       var url = Uri.parse(URL);
       String changelog = '';
@@ -34,11 +35,11 @@ class UpdaterBloc extends Bloc<UpdaterEvent, UpdaterState> {
       }
       String latestVersion = data[0]['tag_name'].toString().substring(1);
       String downloadURL =
-      data[0]['assets'][0]['browser_download_url'].toString();
+          data[0]['assets'][0]['browser_download_url'].toString();
 
       bool updateAvailable =
           double.parse(latestVersion) > double.parse(event.currentVersion);
-      emit( state.copyWith(
+      emit(state.copyWith(
         currentVersion: event.currentVersion,
         latestVersion: latestVersion,
         updateAvailable: updateAvailable,

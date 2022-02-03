@@ -10,10 +10,11 @@ part 'dashboard_state.dart';
 
 /// Handles selecting and removing files.
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
-  DashboardBloc() : super(DashboardState(files: [], alreadyPresent: false)){
-    on<DashboardEvent> (_onEvent,transformer: sequential());
+  DashboardBloc() : super(DashboardState(files: [], alreadyPresent: false)) {
+    on<DashboardEvent>(_onEvent, transformer: sequential());
   }
-  FutureOr<void> _onEvent(DashboardEvent event, Emitter<DashboardState> emit) async {
+  FutureOr<void> _onEvent(
+      DashboardEvent event, Emitter<DashboardState> emit) async {
     // TODO: logic goes here...
     if (event is NewFileAdded) {
       List<XFile> finalEventList = List.from(event.files);
@@ -28,21 +29,21 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         }
       }
       if (alreadyPresent) {
-        emit( state.copyWith(
+        emit(state.copyWith(
             files: List.from(state.files)..addAll(finalEventList),
             alreadyPresent: true));
       } else {
-        emit( state.copyWith(
+        emit(state.copyWith(
             files: List.from(state.files)..addAll(event.files),
             alreadyPresent: false));
         ;
       }
     } else if (event is FileRemoved) {
-      emit( state.copyWith(
+      emit(state.copyWith(
           files: List.from(state.files)..remove(event.file),
           alreadyPresent: false));
     } else if (event is RemoveAllFiles) {
-      emit( state.copyWith(files: [], alreadyPresent: false));
+      emit(state.copyWith(files: [], alreadyPresent: false));
     }
   }
 }

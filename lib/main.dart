@@ -16,16 +16,17 @@ import 'bloc_observer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  BlocOverrides.runZoned(() {
-    if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-      setWindowTitle('CCExtractor');
-      setWindowMinSize(const Size(800, 800));
-      setWindowMaxSize(const Size(10000, 10000));
-    }
-    runApp(
-      MyApp(),
-    );
-  },
+  BlocOverrides.runZoned(
+    () {
+      if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+        setWindowTitle('CCExtractor');
+        setWindowMinSize(const Size(800, 800));
+        setWindowMaxSize(const Size(10000, 10000));
+      }
+      runApp(
+        MyApp(),
+      );
+    },
     blocObserver: SimpleBlocObserver(),
   );
 }
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<SettingsBloc>(
           create: (context) =>
-          SettingsBloc(SettingsRepository())..add(CheckSettingsEvent()),
+              SettingsBloc(SettingsRepository())..add(CheckSettingsEvent()),
         ),
         BlocProvider<UpdaterBloc>(
           create: (context) => UpdaterBloc(),
