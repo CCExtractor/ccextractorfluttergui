@@ -1,3 +1,7 @@
+language:
+    strict-interference: true
+    strict-raw-types: true
+
 linter:
   rules:
     - always_declare_return_types
@@ -13,6 +17,7 @@ linter:
     - await_only_futures
     - camel_case_extensions
     - curly_braces_in_flow_control_structures
+    - camel_case_types
     - empty_catches
     - empty_constructor_bodies
     - library_names
