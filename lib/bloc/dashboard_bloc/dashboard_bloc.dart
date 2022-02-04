@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_selector/file_selector.dart';
-import 'package:bloc_concurrency/bloc_concurrency.dart';
 
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
