@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -10,13 +11,13 @@ part 'updater_event.dart';
 part 'updater_state.dart';
 
 class UpdaterBloc extends Bloc<UpdaterEvent, UpdaterState> {
-  UpdaterBloc() : super(UpdaterState('0.0', '0.0', false, '', ''));
+  UpdaterBloc() : super(UpdaterState('0.0', '0.0', false, '', '')) {
+    on<UpdaterEvent>(_onEvent, transformer: sequential());
+  }
   static const URL =
       'https://api.github.com/repos/CCExtractor/ccextractor/releases';
-  @override
-  Stream<UpdaterState> mapEventToState(
-    UpdaterEvent event,
-  ) async* {
+  FutureOr<void> _onEvent(
+      UpdaterEvent event, Emitter<UpdaterState> emit) async {
     if (event is CheckForUpdates) {
       var url = Uri.parse(URL);
       String changelog = '';
@@ -38,13 +39,13 @@ class UpdaterBloc extends Bloc<UpdaterEvent, UpdaterState> {
 
       bool updateAvailable =
           double.parse(latestVersion) > double.parse(event.currentVersion);
-      yield state.copyWith(
+      emit(state.copyWith(
         currentVersion: event.currentVersion,
         latestVersion: latestVersion,
         updateAvailable: updateAvailable,
         downloadURL: downloadURL,
         changelog: changelog,
-      );
+      ));
     }
     if (event is DownloadUpdate) {
       await launch(event.downloadURl);
