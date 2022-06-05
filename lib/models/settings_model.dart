@@ -224,7 +224,7 @@ class SettingsModel {
   static Map<String, String> get paramsLookUpMap {
     return {
       'out': '-out=',
-      'in': '-in=',
+      'inp': '-in=',
       'outputfilename': '-o',
       'fixptsjumps': '-fixptsjumps',
       'append': '--append',

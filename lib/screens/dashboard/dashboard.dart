@@ -234,7 +234,7 @@ class LogsContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProcessBloc, ProcessState>(
       builder: (context, state) {
-        WidgetsBinding.instance!.addPostFrameCallback(
+        WidgetsBinding.instance.addPostFrameCallback(
           (_) {
             if (_scrollController.hasClients) {
               _scrollController.jumpTo(

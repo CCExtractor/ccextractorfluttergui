@@ -62,7 +62,7 @@ class SettingsRepository {
     settings.enabledtextfields.forEach((param) {
       if (!{'encoder', 'rollUp', 'out', 'inp'}.contains(param.keys.first)) {
         // no --encoder direct -latin1 or -utf8
-        // -out=format
+        // -out=format // no space
         paramsList.add(SettingsModel.paramsLookUpMap[param.keys.first]!);
       }
       if (param.keys.first == 'outputfilename' && filePath.isNotEmpty) {
@@ -71,7 +71,8 @@ class SettingsRepository {
       } else if ({'encoder', 'rollUp'}.contains(param.keys.first)) {
         paramsList.add('-' + param.values.first);
       } else if (param.keys.first == 'out' || param.keys.first == 'inp') {
-        paramsList.add('-' + param.keys.first + '=' + param.values.first);
+        paramsList.add(SettingsModel.paramsLookUpMap[param.keys.first]! +
+            param.values.first);
       } else if (dropdownListMap.keys.contains(param.keys.first)) {
         /// this part handles the dropdown menus, ccx takes in arg xmltv 3 ,
         /// which is the same as "Both" option in the GUI, if the enabled setting
