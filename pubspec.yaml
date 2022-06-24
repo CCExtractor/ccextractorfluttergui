@@ -25,16 +25,16 @@ dependencies:
   http: ^0.13.3
   localstorage:
     git:
-      url: git@github.com:Techno-Disaster/flutter_localstorage.git
+      url: https://git@github.com/Techno-Disaster/flutter_localstorage.git
   navigation_rail:
     git:
-      url: git@github.com:Techno-Disaster/navigation_rail.git
+      url: https://git@github.com/Techno-Disaster/navigation_rail.git
   path_provider: ^2.0.2
   percent_indicator: ^3.0.1
   url_launcher: ^6.0.9
   window_size:
     git:
-      url: git@github.com:google/flutter-desktop-embedding.git
+      url: https://git@github.com/google/flutter-desktop-embedding.git
       path: plugins/window_size
   provider: ^6.0.3
   platform: ^3.1.0
