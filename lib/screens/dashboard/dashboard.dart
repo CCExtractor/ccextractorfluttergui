@@ -1,3 +1,5 @@
+import 'package:desktop_drop/desktop_drop.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,31 +24,53 @@ class Dashboard extends StatelessWidget {
       child: ListView(
         controller: controller,
         children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: AddFilesButton(),
+          DropTarget(
+              onDragDone: (data) {
+                final List<XFile> fileData = data.files;
+                List<XFile> validFiles = [];
+                RegExp validExtensions = RegExp(
+                    r'(\.dvr-ms|\.m2v|\.mpg|\.ts|\.wtv|\.mp4|\.mpg2|\.vob|\.mkv)$');
+                print(validExtensions.hasMatch(fileData[0].path));
+                for (XFile file in fileData) {
+                  if (validExtensions.hasMatch(file.path)) {
+                    validFiles.add(file);
+                  } else {
+                    CustomSnackBarMessage.show(
+                        context, "Invalid file type: ${file.path}");
+                  }
+                }
+                context.read<DashboardBloc>().add(
+                      NewFileAdded(validFiles),
+                    );
+                context.read<ProcessBloc>().add(
+                      ProcessFilesSubmitted(validFiles),
+                    );
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: AddFilesButton(),
+                  ),
+                  Expanded(
+                    child: ListenOnUDPButton(),
+                  ),
+                ],
               ),
-              Expanded(
-                child: ListenOnUDPButton(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
+                child: SelectedFilesContainer(),
               ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 8,
-            ),
-            child: SelectedFilesContainer(),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20.0,
-              vertical: 8,
-            ),
-            child: LogsContainer(),
-          ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 8,
+                ),
+                child: LogsContainer(),
+              ))
         ],
       ),
     );
