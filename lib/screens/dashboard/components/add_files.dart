@@ -8,7 +8,6 @@ import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
 import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
 import 'package:ccxgui/utils/constants.dart';
-import 'package:desktop_drop/desktop_drop.dart';
 
 class AddFilesButton extends StatelessWidget {
   void _openVideosFileSelector(BuildContext context) async {
@@ -35,7 +34,6 @@ class AddFilesButton extends StatelessWidget {
       // Operation was canceled by the user.
       return;
     }
-    print(files);
     context.read<DashboardBloc>().add(
           NewFileAdded(files),
         );
@@ -61,48 +59,20 @@ class AddFilesButton extends StatelessWidget {
                           "Can't add files when splitMode is enabled and there is a ongoing process")
                       : _openVideosFileSelector(context),
                   child: Container(
-                    child: Stack(
-                      children: [
-                        DropTarget(
-                            onDragDone: (data) {
-                              final List<XFile> fileData = data.files;
-                              List<XFile> validFiles = [];
-                              RegExp validExtensions = RegExp(
-                                  r'(\.dvr-ms|\.m2v|\.mpg|\.ts|\.wtv|\.mp4|\.mpg2|\.vob|\.mkv)$');
-                              print(validExtensions.hasMatch(fileData[0].path));
-                              for (XFile file in fileData) {
-                                if (validExtensions.hasMatch(file.path)) {
-                                  validFiles.add(file);
-                                } else {
-                                  CustomSnackBarMessage.show(context,
-                                      "Invalid file type: ${file.path}");
-                                }
-                              }
-                              context.read<DashboardBloc>().add(
-                                    NewFileAdded(validFiles),
-                                  );
-                              context.read<ProcessBloc>().add(
-                                    ProcessFilesSubmitted(validFiles),
-                                  );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: kBgLightColor,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(
-                                    10,
-                                  ),
-                                ),
-                              ),
-                              height: 75,
-                              child: Center(
-                                child: Text(
-                                  'Drop The Files Here \n   Or Click To Add',
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              ),
-                            )),
-                      ],
+                    decoration: BoxDecoration(
+                      color: kBgLightColor,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          10,
+                        ),
+                      ),
+                    ),
+                    height: 75,
+                    child: Center(
+                      child: Text(
+                        'Add more files',
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                   ),
                 ),
