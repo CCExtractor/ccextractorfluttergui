@@ -16,8 +16,16 @@ import 'package:ccxgui/screens/dashboard/components/udp_button.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'components/start_stop_button.dart';
 
-class Dashboard extends StatelessWidget {
+bool dragFile = false;
+
+class Dashboard extends StatefulWidget {
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
   final ScrollController controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -25,7 +33,18 @@ class Dashboard extends StatelessWidget {
         controller: controller,
         children: [
           DropTarget(
+            onDragEntered: (data) {
+              setState(() {
+                dragFile = true;
+              });
+            },
+            onDragExited: (data) {
+              setState(() {
+                dragFile = false;
+              });
+            },
             onDragDone: (data) {
+              dragFile = false;
               final List<XFile> fileData = data.files;
               List<XFile> validFiles = [];
               RegExp validExtensions = RegExp(
@@ -103,6 +122,7 @@ class ClearFilesButton extends StatelessWidget {
           builder: (context, dashboardState) {
             return MaterialButton(
               onPressed: () {
+                dragFile = false;
                 dashboardState.files.isEmpty
                     ? null
                     : showDialog(
@@ -231,7 +251,7 @@ class SelectedFilesContainer extends StatelessWidget {
                             )
                           : Center(
                               child: Text(
-                                'No files selected',
+                                dragFile ? 'Drop to Add' : 'No files selected',
                                 style: TextStyle(
                                   fontSize: 15,
                                 ),
