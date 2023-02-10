@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+
+import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
+import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
+import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
 import 'package:ccxgui/repositories/ccextractor.dart';
 import 'package:ccxgui/screens/dashboard/components/add_files.dart';
 import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
@@ -8,11 +14,6 @@ import 'package:ccxgui/screens/dashboard/components/multi_process_tile.dart';
 import 'package:ccxgui/screens/dashboard/components/process_tile.dart';
 import 'package:ccxgui/screens/dashboard/components/udp_button.dart';
 import 'package:ccxgui/utils/constants.dart';
-import 'package:desktop_drop/desktop_drop.dart';
-import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
-import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
-import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
-
 import 'components/start_stop_button.dart';
 
 bool dragFile = false;
