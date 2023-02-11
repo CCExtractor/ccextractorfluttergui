@@ -55,7 +55,7 @@ class _DashboardState extends State<Dashboard> {
                   validFiles.add(file);
                 } else {
                   CustomSnackBarMessage.show(
-                      context, "Invalid file type: ${file.path}");
+                      context, 'Invalid file type: ${file.path}');
                 }
               }
               context.read<DashboardBloc>().add(
