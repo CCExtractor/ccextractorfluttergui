@@ -29,7 +29,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final ThemeData theme = ThemeData(
-    backgroundColor: kBgDarkColor,
+    colorScheme: ColorScheme.dark(background: kBgDarkColor),
     canvasColor: kBgDarkColor,
     brightness: Brightness.dark,
     visualDensity: VisualDensity.adaptivePlatformDensity,
