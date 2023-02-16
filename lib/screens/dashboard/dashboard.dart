@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:desktop_drop/desktop_drop.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
@@ -14,39 +16,85 @@ import 'package:ccxgui/screens/dashboard/components/udp_button.dart';
 import 'package:ccxgui/utils/constants.dart';
 import 'components/start_stop_button.dart';
 
-class Dashboard extends StatelessWidget {
+bool dragFile = false;
+
+class Dashboard extends StatefulWidget {
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
   final ScrollController controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Material(
       child: ListView(
         controller: controller,
         children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: AddFilesButton(),
-              ),
-              Expanded(
-                child: ListenOnUDPButton(),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 8,
+          DropTarget(
+            onDragEntered: (data) {
+              setState(() {
+                dragFile = true;
+              });
+            },
+            onDragExited: (data) {
+              setState(() {
+                dragFile = false;
+              });
+            },
+            onDragDone: (data) {
+              dragFile = false;
+              final List<XFile> fileData = data.files;
+              List<XFile> validFiles = [];
+              RegExp validExtensions = RegExp(
+                  r'(\.dvr-ms|\.m2v|\.mpg|\.ts|\.wtv|\.mp4|\.mpg2|\.vob|\.mkv)$');
+              print(validExtensions.hasMatch(fileData[0].path));
+              for (XFile file in fileData) {
+                if (validExtensions.hasMatch(file.path)) {
+                  validFiles.add(file);
+                } else {
+                  CustomSnackBarMessage.show(
+                      context, 'Invalid file type: ${file.path}');
+                }
+              }
+              context.read<DashboardBloc>().add(
+                    NewFileAdded(validFiles),
+                  );
+              context.read<ProcessBloc>().add(
+                    ProcessFilesSubmitted(validFiles),
+                  );
+            },
+            child: Column(
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      child: AddFilesButton(),
+                    ),
+                    Expanded(
+                      child: ListenOnUDPButton(),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 8,
+                  ),
+                  child: SelectedFilesContainer(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0,
+                    vertical: 8,
+                  ),
+                  child: LogsContainer(),
+                )
+              ],
             ),
-            child: SelectedFilesContainer(),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20.0,
-              vertical: 8,
-            ),
-            child: LogsContainer(),
-          ),
+          )
         ],
       ),
     );
@@ -74,6 +122,7 @@ class ClearFilesButton extends StatelessWidget {
           builder: (context, dashboardState) {
             return MaterialButton(
               onPressed: () {
+                dragFile = false;
                 dashboardState.files.isEmpty
                     ? null
                     : showDialog(
@@ -202,7 +251,7 @@ class SelectedFilesContainer extends StatelessWidget {
                             )
                           : Center(
                               child: Text(
-                                'No files selected',
+                                dragFile ? 'Drop to Add' : 'No files selected',
                                 style: TextStyle(
                                   fontSize: 15,
                                 ),
