@@ -40,6 +40,7 @@ dependencies:
   platform: ^3.1.0
   desktop_drop: ^0.4.0
   file: ^6.1.4
+  pedantic: ^1.11.1
 
 dev_dependencies:
   flutter_test:
