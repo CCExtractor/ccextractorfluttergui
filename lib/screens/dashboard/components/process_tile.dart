@@ -87,7 +87,7 @@ class _ProcessTileState extends State<ProcessTile> {
                                     builder: (context) => AlertDialog(
                                           title: Text('Warning'),
                                           content: Text(
-                                            'Are you sure you want to remove the selected\nfiles and cancel any files that is running?',
+                                            'Are you sure you want to remove the selected\nfile and cancel any files that is running?',
                                           ),
                                           actions: [
                                             TextButton(
