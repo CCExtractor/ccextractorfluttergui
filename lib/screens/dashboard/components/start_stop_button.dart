@@ -8,7 +8,12 @@ import 'package:ccxgui/bloc/settings_bloc/settings_bloc.dart';
 import 'package:ccxgui/screens/dashboard/components/custom_snackbar.dart';
 
 //TODO: this file can probably be improved
-class StartStopButton extends StatelessWidget {
+class StartStopButton extends StatefulWidget {
+  @override
+  State<StartStopButton> createState() => _StartStopButtonState();
+}
+
+class _StartStopButtonState extends State<StartStopButton> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProcessBloc, ProcessState>(
@@ -18,8 +23,15 @@ class StartStopButton extends StatelessWidget {
             return BlocBuilder<SettingsBloc, SettingsState>(
               builder: (context, settingsState) {
                 if (settingsState is CurrentSettingsState) {
+                  if (dashboardState.files.isEmpty && processState.started) {
+                    context.read<ProcessBloc>().add(
+                          StopAllProcess(),
+                        );
+                  }
                   return MaterialButton(
                     onPressed: () {
+                      print("start_stop");
+                      print(processState);
                       dashboardState.files.isEmpty
                           ? null
                           : processState.started
@@ -52,7 +64,10 @@ class StartStopButton extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            processState.started ? 'Stop all' : 'Start all',
+                            dashboardState.files.isNotEmpty &&
+                                    processState.started
+                                ? 'Stop all'
+                                : 'Start all',
                             style: TextStyle(
                               fontSize: 20,
                             ),
@@ -60,7 +75,8 @@ class StartStopButton extends StatelessWidget {
                           SizedBox(
                             width: 5,
                           ),
-                          processState.started
+                          dashboardState.files.isNotEmpty &&
+                                  processState.started
                               ? Icon(Icons.stop,
                                   color: Colors.redAccent, size: 30)
                               : Icon(

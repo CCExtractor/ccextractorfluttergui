@@ -1,3 +1,4 @@
+import 'package:ccxgui/screens/dashboard/components/start_stop_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:file_selector/file_selector.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
+import 'package:ccxgui/screens/dashboard/components/start_stop_button.dart';
 
 class ProcessTile extends StatefulWidget {
   final XFile file;
@@ -80,17 +82,46 @@ class _ProcessTileState extends State<ProcessTile> {
                             ),
                             IconButton(
                               onPressed: () {
-                                context.read<DashboardBloc>().add(
-                                      FileRemoved(widget.file),
-                                    );
-                                try {
-                                  context.read<ProcessBloc>().add(
-                                        ProcessKill(widget.file),
-                                      );
-                                } catch (e) {
-                                  print(
-                                      'processing for this file never started');
-                                }
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                          title: Text('Warning'),
+                                          content: Text(
+                                            'Are you sure you want to remove the selected\nfiles and cancel any files that is running?',
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: Text('No'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                StartStopButton();
+                                                context
+                                                    .read<DashboardBloc>()
+                                                    .add(
+                                                      FileRemoved(widget.file),
+                                                    );
+                                                try {
+                                                  context
+                                                      .read<ProcessBloc>()
+                                                      .add(
+                                                        ProcessKill(
+                                                            widget.file),
+                                                      );
+                                                } catch (e) {
+                                                  print(
+                                                      'processing for this file never started');
+                                                }
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text('Yes'),
+                                            ),
+                                          ],
+                                        ));
+                                print("process_tile");
+                                print(state.progress);
                               },
                               icon: Icon(
                                 Icons.delete_outline,
