@@ -119,8 +119,6 @@ class _ProcessTileState extends State<ProcessTile> {
                                             ),
                                           ],
                                         ));
-                                print("process_tile");
-                                print(state.progress);
                               },
                               icon: Icon(
                                 Icons.delete_outline,

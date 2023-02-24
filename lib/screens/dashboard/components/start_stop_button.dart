@@ -30,8 +30,6 @@ class _StartStopButtonState extends State<StartStopButton> {
                   }
                   return MaterialButton(
                     onPressed: () {
-                      print("start_stop");
-                      print(processState);
                       dashboardState.files.isEmpty
                           ? null
                           : processState.started
