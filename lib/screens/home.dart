@@ -155,6 +155,7 @@ class _HomeState extends State<Home> {
             ObscureSettingsScreen(),
           ],
         ),
+        isDense: true,
         tabs: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             label: 'Dashboard',
