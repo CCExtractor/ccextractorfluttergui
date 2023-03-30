@@ -91,7 +91,7 @@ class _HomeState extends State<Home> {
               BlocBuilder<ProcessBloc, ProcessState>(
                 builder: (context, state) {
                   return Column(
-                    children: [_checkForUpdates(state)],
+                    children: [_CheckForUpdatesButton(state: state)],
                   );
                 },
               ),
@@ -146,8 +146,18 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+}
 
-  Widget _checkForUpdates(ProcessState state) {
+class _CheckForUpdatesButton extends StatelessWidget {
+  const _CheckForUpdatesButton({
+    Key? key,
+    required this.state,
+  }) : super(key: key);
+
+  final ProcessState state;
+
+  @override
+  Widget build(BuildContext context) {
     if (!Platform.isWindows) return Container();
 
     return BlocBuilder<ProcessBloc, ProcessState>(
