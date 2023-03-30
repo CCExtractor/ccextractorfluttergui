@@ -88,13 +88,7 @@ class _HomeState extends State<Home> {
                   semanticsLabel: 'CCExtractor Logo',
                 ),
               ),
-              BlocBuilder<ProcessBloc, ProcessState>(
-                builder: (context, state) {
-                  return Column(
-                    children: [_CheckForUpdatesButton(state: state)],
-                  );
-                },
-              ),
+              _CheckForUpdatesButton()
             ],
           );
         },
@@ -151,24 +145,19 @@ class _HomeState extends State<Home> {
 class _CheckForUpdatesButton extends StatelessWidget {
   const _CheckForUpdatesButton({
     Key? key,
-    required this.state,
   }) : super(key: key);
-
-  final ProcessState state;
 
   @override
   Widget build(BuildContext context) {
     if (!Platform.isWindows) return Container();
 
     return BlocBuilder<ProcessBloc, ProcessState>(
-      builder: (context, processState) {
+      builder: (context, state) {
         return InkWell(
           borderRadius: BorderRadius.circular(25),
           hoverColor: Colors.transparent,
           onTap: () {
-            context
-                .read<UpdaterBloc>()
-                .add(CheckForUpdates(processState.version!));
+            context.read<UpdaterBloc>().add(CheckForUpdates(state.version!));
           },
           child: Container(
             margin: const EdgeInsets.all(10),
