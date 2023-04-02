@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:ccxgui/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +16,7 @@ import 'package:ccxgui/screens/settings/hardsubx_settings.dart';
 import 'package:ccxgui/screens/settings/input_settings.dart';
 import 'package:ccxgui/screens/settings/obscure_settings.dart';
 import 'package:ccxgui/screens/settings/output_settings.dart';
+import 'package:ccxgui/utils/constants.dart';
 
 class Home extends StatefulWidget {
   @override
