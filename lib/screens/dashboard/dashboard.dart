@@ -340,6 +340,7 @@ class LogsContainer extends StatelessWidget {
               height: MediaQuery.of(context).size.height / 4,
               child: state.log.isNotEmpty
                   ? Scrollbar(
+                      controller: _scrollController,
                       child: ListView.builder(
                         shrinkWrap: true,
                         controller: _scrollController,
