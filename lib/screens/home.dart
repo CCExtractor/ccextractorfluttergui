@@ -16,6 +16,7 @@ import 'package:ccxgui/screens/settings/hardsubx_settings.dart';
 import 'package:ccxgui/screens/settings/input_settings.dart';
 import 'package:ccxgui/screens/settings/obscure_settings.dart';
 import 'package:ccxgui/screens/settings/output_settings.dart';
+import 'package:ccxgui/utils/constants.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -79,6 +80,7 @@ class _HomeState extends State<Home> {
         hideTitleBar: true,
         drawerHeaderBuilder: (context) {
           return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               DrawerHeader(
                 child: SvgPicture.asset(
@@ -86,55 +88,9 @@ class _HomeState extends State<Home> {
                   semanticsLabel: 'CCExtractor Logo',
                 ),
               ),
-              BlocBuilder<ProcessBloc, ProcessState>(
-                builder: (context, state) {
-                  return Text(
-                    'Version: ' + state.version!.trim(),
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context)
-                            .bottomNavigationBarTheme
-                            .backgroundColor),
-                  );
-                },
-              ),
+              _CheckForUpdatesButton()
             ],
           );
-        },
-        drawerFooterBuilder: (context) {
-          return Platform.isWindows
-              ? Padding(
-                  padding: const EdgeInsets.only(left: 20.0, bottom: 16),
-                  child: BlocBuilder<ProcessBloc, ProcessState>(
-                    builder: (context, processState) {
-                      return MaterialButton(
-                        hoverColor: Colors.transparent,
-                        onPressed: () {
-                          context
-                              .read<UpdaterBloc>()
-                              .add(CheckForUpdates(processState.version!));
-                        },
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.update,
-                              color: Colors.white54,
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              'Check for updates',
-                              style: TextStyle(
-                                  color: Colors.white60, fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                )
-              : Container();
         },
         currentIndex: _currentIndex,
         onTap: (val) {
@@ -182,6 +138,69 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _CheckForUpdatesButton extends StatelessWidget {
+  const _CheckForUpdatesButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (!Platform.isWindows) return Container();
+
+    return BlocBuilder<ProcessBloc, ProcessState>(
+      builder: (context, state) {
+        return InkWell(
+          borderRadius: BorderRadius.circular(25),
+          hoverColor: Colors.transparent,
+          onTap: () {
+            context.read<UpdaterBloc>().add(CheckForUpdates(state.version!));
+          },
+          child: Container(
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+              color: kBgLightColor,
+            ),
+            child: Material(
+              type: MaterialType.transparency,
+              child: IntrinsicHeight(
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.update,
+                      color: Colors.white54,
+                    ),
+                    VerticalDivider(),
+                    Expanded(
+                      child: FittedBox(
+                        child: Text(
+                          'Check for updates',
+                          style: TextStyle(color: Colors.white, fontSize: 15),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    VerticalDivider(),
+                    Text(
+                      'V${state.version!.trim()}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white60,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
