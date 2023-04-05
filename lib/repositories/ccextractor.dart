@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+
 import 'package:file_selector/file_selector.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/repositories/settings_repository.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 class CCExtractor {
   late Process process;
@@ -22,7 +23,7 @@ class CCExtractor {
   SettingsModel settings = SettingsModel();
   Future<String> ccextractor() async {
     // In release mode due to sandbox environment we can't run binaraies outside
-    // our application so on macos we unpack the binary from assets folder to 
+    // our application so on macos we unpack the binary from assets folder to
     // applications support directory and use it.
     if (Platform.isMacOS) {
       // In debug mode on macos we can directly use the binary availabe in
