@@ -61,3 +61,43 @@ jobs:
       with:
         files: './linux.zip'
         repo-token: ${{ secrets.GITHUB_TOKEN }}      
+
+  build_macos:
+    runs-on: macos-latest
+    env:
+      MACOS_APP_RELEASE_PATH: build/macos/Build/Products/Release
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2.3.4
+    - name: Install Flutter
+      uses: subosito/flutter-action@v1.5.3
+      with:
+        channel: 'stable'
+    - name: Enable desktop support
+      run: flutter config --enable-macos-desktop
+    - name: Build MacOS app
+      run: flutter build macos
+    - name: Create a dmg
+      run: |
+        echo "Install create-dmg"
+        brew install create-dmg
+        cd $MACOS_APP_RELEASE_PATH
+        create-dmg \
+          --volname "CCExtractor" \
+          --window-pos 200 120 \
+          --window-size 800 800 \
+          --icon-size 130 \
+          --text-size 14 \
+          --icon "CCExtractor.app" 260 250 \
+          --hide-extension "CCExtractor.app" \
+          --app-drop-link 540 250 \
+          --hdiutil-quiet \
+          "macos.dmg" \
+          "CCExtractor.app"
+    - name: Upload as asset
+      uses: AButler/upload-release-assets@v2.0
+      with:
+        files: './macos.dmg'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}      
+
+

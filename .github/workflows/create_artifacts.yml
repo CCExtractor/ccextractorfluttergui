@@ -79,3 +79,24 @@ jobs:
         with:
           name: CCExtractor Flutter GUI Linux
           path: ./build/linux/x64/release/bundle/
+
+  build_macos:
+      needs: flutter_test
+      runs-on: macos-latest
+      steps:
+      - name: Check out repository
+        uses: actions/checkout@v2.3.4
+      - name: Install Flutter
+        uses: subosito/flutter-action@v1.5.3
+        with:
+          channel: 'stable'
+      - name: Enable desktop support
+        run: |
+          flutter config --enable-macos-desktop
+      - name: Build MacOS app
+        run: flutter build macos
+      - name: Create artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: CCExtractor Flutter GUI MacOS
+          path: ./build/macos/Build/Products/Release/
