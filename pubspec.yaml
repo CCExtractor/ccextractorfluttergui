@@ -1,5 +1,5 @@
 name: ccxgui
-description: A new Flutter project.
+description: A cross platform GUI for CCExtractor.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 0.6.0+1
@@ -41,6 +41,7 @@ dependencies:
   desktop_drop: ^0.4.0
   file: ^6.1.4
   pedantic: ^1.11.1
+  path: ^1.8.2
 
 dev_dependencies:
   flutter_test:

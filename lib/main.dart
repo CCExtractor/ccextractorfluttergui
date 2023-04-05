@@ -54,6 +54,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        title: 'CCExtractor',
         theme: theme.copyWith(
           colorScheme: theme.colorScheme.copyWith(
             secondary: Color(0xff01bcd6),
