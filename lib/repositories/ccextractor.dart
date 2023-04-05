@@ -5,6 +5,10 @@ import 'package:file_selector/file_selector.dart';
 
 import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/repositories/settings_repository.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 class CCExtractor {
   late Process process;
@@ -16,8 +20,29 @@ class CCExtractor {
 
   SettingsRepository settingsRepository = SettingsRepository();
   SettingsModel settings = SettingsModel();
-  String get ccextractor {
-    return Platform.isWindows ? './ccextractorwinfull.exe' : 'ccextractor';
+  Future<String> ccextractor() async {
+    // In release mode due to sandbox environment we can't run binaraies outside
+    // our application so on macos we unpack the binary from assets folder to 
+    // applications support directory and use it.
+    if (Platform.isMacOS) {
+      // In debug mode on macos we can directly use the binary availabe in
+      // project root folder.
+      if (kDebugMode) return './ccextractor';
+
+      // In release mode we can unpack the binary and use.
+      final supportDirectory = await getApplicationSupportDirectory();
+      final bytes = await rootBundle.load('assets/ccextractor');
+      final path = join(supportDirectory.path, 'ccextractor');
+      File ccx = File(path);
+      if (!ccx.existsSync()) {
+        await ccx.writeAsBytes(bytes.buffer.asUint8List());
+      }
+      await Process.run('chmod', ['+x', path]);
+      print(path);
+      return path;
+    }
+    if (Platform.isWindows) return './ccextractorwinfull.exe';
+    return 'ccextractor';
   }
 
   Future<int> extractFile(
@@ -30,7 +55,7 @@ class CCExtractor {
     List<String> paramsList =
         settingsRepository.getParamsList(settings, filePath: file.path);
     process = await Process.start(
-      ccextractor,
+      await ccextractor(),
       [
         file.path,
         '--gui_mode_reports',
@@ -83,7 +108,7 @@ class CCExtractor {
     settings = await settingsRepository.getSettings();
     List<String> paramsList = settingsRepository.getParamsList(settings);
     process = await Process.start(
-      ccextractor,
+      await ccextractor(),
       [
         '-' + type,
         location,
@@ -138,7 +163,7 @@ class CCExtractor {
     settings = await settingsRepository.getSettings();
     List<String> paramsList = settingsRepository.getParamsList(settings);
     process = await Process.start(
-      ccextractor,
+      await ccextractor(),
       [
         ...files.map((e) => e.path).toList(),
         '--gui_mode_reports',
@@ -186,7 +211,7 @@ class CCExtractor {
 
   Future<String> get getCCExtractorVersion async {
     String ccxStdOut = '0';
-    await Process.run(ccextractor, ['--version']).then((value) {
+    await Process.run(await ccextractor(), ['--version']).then((value) {
       ccxStdOut = value.stdout
           .toString()
           .substring(value.stdout.toString().indexOf('Version:') + 8,
