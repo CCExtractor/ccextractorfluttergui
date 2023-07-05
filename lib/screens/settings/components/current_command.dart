@@ -58,7 +58,7 @@ class CurrentCommandContainer extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(height: 12),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.005),
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Container(
@@ -66,9 +66,9 @@ class CurrentCommandContainer extends StatelessWidget {
                       ? MediaQuery.of(context).size.width - 270
                       : MediaQuery.of(context).size.width - 56,
                   height: Responsive.isDesktop(context)
-                      ? MediaQuery.of(context).size.height / 21
+                      ? MediaQuery.of(context).size.height / 20
                       : MediaQuery.of(context).size.height /
-                          21, // remove drawer width
+                          20, // remove drawer width
                   decoration: BoxDecoration(
                     color: kBgLightColor,
                   ),
