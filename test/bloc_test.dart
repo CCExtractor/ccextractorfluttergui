@@ -41,7 +41,7 @@ void main() {
           expect(
               _settingsRepository
                   .getParamsList(settingsModel)
-                  .contains('-autoprogram'),
+                  .contains('--autoprogram'),
               false);
           expect(
               _settingsRepository
