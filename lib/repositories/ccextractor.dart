@@ -85,7 +85,7 @@ class CCExtractor {
     process = await Process.start(
       ccextractor,
       [
-        '-' + type,
+        '--' + type,
         location,
         tcppasswrd.isNotEmpty ? '--tcp-password ' + tcppasswrd : '',
         tcpdesc.isNotEmpty ? '--tcp-description ' + tcpdesc : '',
