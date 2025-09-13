@@ -58,7 +58,7 @@ class CurrentCommandContainer extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(height: 12),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.005),
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Container(
