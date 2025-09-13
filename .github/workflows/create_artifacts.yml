@@ -21,7 +21,7 @@ jobs:
         channel: 'stable'
     - name: Flutter format
       run: |
-        flutter format . --set-exit-if-changed
+        dart format . --set-exit-if-changed
         flutter pub get
         flutter pub run import_sorter:main --no-comments --exit-if-changed
     - name: Flutter analyze 
