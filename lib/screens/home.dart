@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:navigation_rail/navigation_rail.dart';
 
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
 import 'package:ccxgui/bloc/updater_bloc/updater_bloc.dart';
@@ -75,66 +74,71 @@ class _HomeState extends State<Home> {
               context, 'You are already on the latest version');
         }
       },
-      child: NavRail(
-        desktopBreakpoint: 1150,
-        hideTitleBar: true,
-        drawerHeaderBuilder: (context) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              DrawerHeader(
-                child: SvgPicture.asset(
+      child: Row(
+        children: <Widget>[
+          NavigationRail(
+            extended: true,
+            selectedIndex: _currentIndex,
+            onDestinationSelected: (int index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            selectedLabelTextStyle: TextStyle(
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            unselectedIconTheme: IconThemeData(color: Colors.white54),
+            unselectedLabelTextStyle: TextStyle(color: Colors.white54),
+            leading: Column(
+              children: [
+                SizedBox(height: 20),
+                SvgPicture.asset(
                   logo,
                   semanticsLabel: 'CCExtractor Logo',
+                  height: 120,
                 ),
+                _CheckForUpdatesButton(),
+              ],
+            ),
+            destinations: const <NavigationRailDestination>[
+              NavigationRailDestination(
+                icon: Icon(Icons.dashboard),
+                label: Text('Dashboard'),
               ),
-              _CheckForUpdatesButton()
+              NavigationRailDestination(
+                icon: Icon(Icons.settings),
+                label: Text('Basic Settings'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.input),
+                label: Text('Input Settings'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.dvr_outlined),
+                label: Text('Output Settings'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.search),
+                label: Text('HardSubx Settings'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.extension),
+                label: Text('Obscure Settings'),
+              ),
             ],
-          );
-        },
-        currentIndex: _currentIndex,
-        onTap: (val) {
-          if (mounted && _currentIndex != val) {
-            setState(() {
-              _currentIndex = val;
-            });
-          }
-        },
-        body: IndexedStack(
-          index: _currentIndex,
-          children: <Widget>[
-            Dashboard(),
-            BasicSettingsScreen(),
-            InputSettingsScreen(),
-            OutputSettingsScreen(),
-            HardSubxSettingsScreen(),
-            ObscureSettingsScreen(),
-          ],
-        ),
-        tabs: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            label: 'Dashboard',
-            icon: Icon(Icons.dashboard),
           ),
-          BottomNavigationBarItem(
-            label: 'Basic Settings',
-            icon: Icon(Icons.settings),
-          ),
-          BottomNavigationBarItem(
-            label: 'Input Settings',
-            icon: Icon(Icons.input),
-          ),
-          BottomNavigationBarItem(
-            label: 'Output Settings',
-            icon: Icon(Icons.dvr_outlined),
-          ),
-          BottomNavigationBarItem(
-            label: 'HardSubx Settings',
-            icon: Icon(Icons.search),
-          ),
-          BottomNavigationBarItem(
-            label: 'Obscure Settings',
-            icon: Icon(Icons.do_disturb_alt_rounded),
+          Expanded(
+            child: IndexedStack(
+              index: _currentIndex,
+              children: <Widget>[
+                Dashboard(),
+                BasicSettingsScreen(),
+                InputSettingsScreen(),
+                OutputSettingsScreen(),
+                HardSubxSettingsScreen(),
+                ObscureSettingsScreen(),
+              ],
+            ),
           ),
         ],
       ),

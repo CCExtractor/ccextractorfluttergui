@@ -520,16 +520,7 @@ packages:
       sha256: ac49ddf0aff89cde42f60cac9959a682e8a035de7c3fe4f2626c31d15b6c9809
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.4"
-  navigation_rail:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: b3a0b2372366b0dd99c61446b331200f0af90962
-      url: "https://git@github.com/Techno-Disaster/navigation_rail.git"
-    source: git
-    version: "1.6.0-dev.1"
+    version: "0.2.0"
   nested:
     dependency: transitive
     description:
