@@ -26,9 +26,6 @@ dependencies:
   localstorage:
     git:
       url: https://git@github.com/Techno-Disaster/flutter_localstorage.git
-  navigation_rail:
-    git:
-      url: https://git@github.com/Techno-Disaster/navigation_rail.git
   path_provider: ^2.0.2
   percent_indicator: ^3.0.1
   url_launcher: ^6.0.9
