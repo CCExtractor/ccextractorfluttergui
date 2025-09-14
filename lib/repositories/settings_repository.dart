@@ -61,15 +61,15 @@ class SettingsRepository {
 
     settings.enabledtextfields.forEach((param) {
       if (!{'encoder', 'rollUp', 'out', 'inp'}.contains(param.keys.first)) {
-        // no --encoder direct -latin1 or -utf8
-        // -out=format // no space
+        // no --encoder direct --latin1 or --utf8
+        // --out=format // no space
         paramsList.add(SettingsModel.paramsLookUpMap[param.keys.first]!);
       }
       if (param.keys.first == 'outputfilename' && filePath.isNotEmpty) {
         paramsList.add(
             '${filePath.substring(0, filePath.lastIndexOf(RegExp(r'(\\|\/)')))}/${param.values.first}');
       } else if ({'encoder', 'rollUp'}.contains(param.keys.first)) {
-        paramsList.add('-' + param.values.first);
+        paramsList.add('--' + param.values.first);
       } else if (param.keys.first == 'out' || param.keys.first == 'inp') {
         paramsList.add(SettingsModel.paramsLookUpMap[param.keys.first]! +
             param.values.first);
@@ -87,8 +87,6 @@ class SettingsRepository {
         paramsList.add(param.values.first);
       }
     });
-    //  print(paramsList);
-    //  [--append, -autoprogram, -out=webvtt, -utf8]
     return paramsList;
   }
 
