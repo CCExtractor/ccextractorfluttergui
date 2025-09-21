@@ -413,7 +413,7 @@ class OutputSettingsScreen extends StatelessWidget {
                   CustomSwitchListTile(
                     title: 'Autodash',
                     subtitle:
-                        'Based on position on screen, attempt to determine the different speakers and a dash (-) when each of them talks (.srt/.vtt only, -trim required).',
+                        'Based on position on screen, attempt to determine the different speakers and a dash (-) when each of them talks (.srt/.vtt only, --trim required).',
                     value: state.settingsModel.autodash,
                     onTap: (value) {
                       context.read<SettingsBloc>().add(

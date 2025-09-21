@@ -242,7 +242,7 @@ class InputSettingsScreen extends StatelessWidget {
                   CustomSwitchListTile(
                     title: 'No auto time ref',
                     subtitle:
-                        'Some streams come with broadcast date information. When such data is available, CCExtractor will set its time  reference to the received data. Use this parameter if  prefer your own reference. Note: Current this only affects Teletext in timed transcript with -datets.',
+                        'Some streams come with broadcast date information. When such data is available, CCExtractor will set its time  reference to the received data. Use this parameter if  prefer your own reference. Note: Current this only affects Teletext in timed transcript with --datets.',
                     value: state.settingsModel.noautotimeref,
                     onTap: (value) {
                       context.read<SettingsBloc>().add(
