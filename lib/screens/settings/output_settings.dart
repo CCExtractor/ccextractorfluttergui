@@ -72,9 +72,11 @@ class OutputSettingsScreen extends StatelessWidget {
             ),
             body: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ListView(
+              child: Scrollbar(
                 controller: controller,
-                children: [
+                child: ListView(
+                  controller: controller,
+                  children: [
                   CustomSwitchListTile(
                     title: 'BOM',
                     subtitle:

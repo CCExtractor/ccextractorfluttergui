@@ -231,7 +231,7 @@ class SelectedFilesContainer extends StatelessWidget {
                           ? Scrollbar(
                               child: ListView.builder(
                                 shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
+                                physics: AlwaysScrollableScrollPhysics(),
                                 itemCount:
                                     settingsState.settingsModel.splitMode &&
                                             state.files.length > 1
@@ -342,7 +342,7 @@ class LogsContainer extends StatelessWidget {
                   ? Scrollbar(
                       controller: _scrollController,
                       child: ListView.builder(
-                        shrinkWrap: true,
+                        shrinkWrap: false,
                         controller: _scrollController,
                         itemBuilder: (context, index) {
                           return Padding(

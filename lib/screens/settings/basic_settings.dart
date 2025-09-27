@@ -50,9 +50,11 @@ class BasicSettingsScreen extends StatelessWidget {
             ),
             body: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ListView(
+              child: Scrollbar(
                 controller: controller,
-                children: [
+                child: ListView(
+                  controller: controller,
+                  children: [
                   CustomTextField(
                     title: 'Output file name (press enter to save)',
                     subtitle:
