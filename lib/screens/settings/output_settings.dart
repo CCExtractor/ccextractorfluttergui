@@ -59,6 +59,12 @@ class OutputSettingsScreen extends StatelessWidget {
               text: state.settingsModel.endcreditsforatmost);
           TextEditingController service =
               TextEditingController(text: state.settingsModel.service);
+          TextEditingController screenfulController =
+              TextEditingController(text: state.settingsModel.screenfuls);
+          TextEditingController unixtsController =
+              TextEditingController(text: state.settingsModel.unixts);
+          TextEditingController customtxtController =
+              TextEditingController(text: state.settingsModel.customtxt);
           return Scaffold(
             appBar: AppBar(
               flexibleSpace: FlexibleSpaceBar(
@@ -562,6 +568,21 @@ class OutputSettingsScreen extends StatelessWidget {
                           );
                     },
                   ),
+                  CustomSwitchListTile(
+                    title: 'Force flush',
+                    subtitle:
+                        'Flush the file buffer whenever content is written.',
+                    value: state.settingsModel.forceflush,
+                    onTap: (value) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                forceflush: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
                   CustomDivider(title: '608 closed caption decoder'),
                   CustomSwitchListTile(
                     title: 'Direct roll-up',
@@ -843,6 +864,170 @@ class OutputSettingsScreen extends StatelessWidget {
                               context, 'Invalid time format');
                     },
                     controller: endcreditsforatmost,
+                  ),
+                  CustomDivider(title: 'SPUPNG font options'),
+                  CustomGetFilePathButton(
+                    title: 'SPUPNG Font',
+                    subtitle:
+                        'Specify the full path of the font to be used when generating SPUPNG files.',
+                    currentPath: state.settingsModel.spupngFont,
+                    clearField: () {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                spupngFont: '',
+                              ),
+                            ),
+                          );
+                    },
+                    saveToConfig: (String filePath) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                spupngFont: filePath,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  CustomGetFilePathButton(
+                    title: 'SPUPNG Italics Font',
+                    subtitle:
+                        'Specify the full path of the italics font to be used when generating SPUPNG files.',
+                    currentPath: state.settingsModel.spupngItalicsFont,
+                    clearField: () {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                spupngItalicsFont: '',
+                              ),
+                            ),
+                          );
+                    },
+                    saveToConfig: (String filePath) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                spupngItalicsFont: filePath,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  CustomSwitchListTile(
+                    title: 'No SPUPNG OCR',
+                    subtitle:
+                        'Disable OCR for SPUPNG output (no text in XML comments).',
+                    value: state.settingsModel.nospupngocr,
+                    onTap: (value) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                nospupngocr: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  CustomDivider(title: 'Additional options'),
+                  CustomDropDown(
+                    title: 'Output field',
+                    subtitle:
+                        'Select which caption field to output (1, 2, or both).',
+                    value: state.settingsModel.outputField,
+                    items: outputField,
+                    onChanged: (String newValue) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                outputField: newValue,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  CustomSwitchListTile(
+                    title: 'CC2 (Channel 2)',
+                    subtitle: 'Process channel 2 instead of channel 1.',
+                    value: state.settingsModel.cc2,
+                    onTap: (value) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                cc2: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  CustomSwitchListTile(
+                    title: 'List tracks',
+                    subtitle:
+                        'List all tracks in the input file without processing.',
+                    value: state.settingsModel.listTracks,
+                    onTap: (value) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                listTracks: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  CustomSwitchListTile(
+                    title: 'UCLA transcript format',
+                    subtitle: 'Use UCLA transcript format for output.',
+                    value: state.settingsModel.ucla,
+                    onTap: (value) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                ucla: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  CustomTextField(
+                    title: 'Screenfuls',
+                    subtitle: 'Stop processing after N screenfuls of captions.',
+                    intOnly: true,
+                    onEditingComplete: () => context.read<SettingsBloc>().add(
+                          SaveSettingsEvent(
+                            state.settingsModel.copyWith(
+                              screenfuls: screenfulController.text,
+                            ),
+                          ),
+                        ),
+                    controller: screenfulController,
+                  ),
+                  CustomTextField(
+                    title: 'Unix timestamp reference',
+                    subtitle:
+                        'Set Unix timestamp reference. Use 0 for current system time.',
+                    intOnly: true,
+                    onEditingComplete: () => context.read<SettingsBloc>().add(
+                          SaveSettingsEvent(
+                            state.settingsModel.copyWith(
+                              unixts: unixtsController.text,
+                            ),
+                          ),
+                        ),
+                    controller: unixtsController,
+                  ),
+                  CustomTextField(
+                    title: 'Custom transcript format',
+                    subtitle:
+                        'Customize transcript format using a 7-digit format string.',
+                    onEditingComplete: () => context.read<SettingsBloc>().add(
+                          SaveSettingsEvent(
+                            state.settingsModel.copyWith(
+                              customtxt: customtxtController.text,
+                            ),
+                          ),
+                        ),
+                    controller: customtxtController,
                   ),
                 ],
               ),

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:window_size/window_size.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'package:ccxgui/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:ccxgui/bloc/process_bloc/process_bloc.dart';
@@ -18,9 +18,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    setWindowTitle('CCExtractor');
-    setWindowMinSize(const Size(800, 800));
-    setWindowMaxSize(const Size(10000, 10000));
+    await windowManager.ensureInitialized();
+    await windowManager.setTitle('CCExtractor');
+    await windowManager.setMinimumSize(const Size(800, 800));
   }
   runApp(
     MyApp(),
@@ -29,7 +29,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final ThemeData theme = ThemeData(
-    colorScheme: ColorScheme.dark(background: kBgDarkColor),
+    colorScheme: ColorScheme.dark(surface: kBgDarkColor),
     canvasColor: kBgDarkColor,
     brightness: Brightness.dark,
     visualDensity: VisualDensity.adaptivePlatformDensity,

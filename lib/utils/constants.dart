@@ -11,6 +11,23 @@ Map<String, Map<String, int>> dropdownListMap = {
     'Live output': 2,
     'Both': 3,
   },
+  'psm': {
+    'auto/default': 69,
+    'OSD only (0)': 0,
+    'Auto + OSD (1)': 1,
+    'Auto, no OSD/OCR (2)': 2,
+    'Fully auto, no OSD (3)': 3,
+    'Single column (4)': 4,
+    'Vertical block (5)': 5,
+    'Uniform block (6)': 6,
+    'Single text line (7)': 7,
+    'Single word (8)': 8,
+    'Single word in circle (9)': 9,
+    'Single character (10)': 10,
+    'Sparse text (11)': 11,
+    'Sparse text + OSD (12)': 12,
+    'Raw line (13)': 13,
+  },
   'quant': {
     'auto/default': 69,
     'Don\'t quantize at all.': 0,
@@ -76,6 +93,14 @@ List<String> encoder = [
   'latin1',
 ];
 
+/// Output field options for --output-field
+List<String> outputField = [
+  'auto/default',
+  '1',
+  '2',
+  'both',
+];
+
 /// Input formats
 List<String> inputFormats = [
   'auto/default',
@@ -86,22 +111,33 @@ List<String> inputFormats = [
   'wtv',
   'bin',
   'raw',
-  'mp4'
+  'mp4',
+  'm2ts',
+  'mkv',
+  'mxf',
 ];
 
 /// Output formats
 List<String> outputFormats = [
   'auto/default',
   'srt',
+  'ass',
   'ssa',
+  'ccd',
+  'scc',
   'webvtt',
+  'webvtt-full',
   'sami',
   'bin',
   'raw',
   'dvdraw',
+  'mcc',
   'txt',
   'ttxt',
+  'g608',
   'smptett',
   'spupng',
   'null',
+  'report',
+  'simple-xml',
 ];

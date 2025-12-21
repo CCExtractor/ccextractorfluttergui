@@ -21,7 +21,7 @@ class CustomSwitchListTile extends StatelessWidget {
       subtitle: Text(subtitle),
       trailing: Container(
         child: Switch(
-          activeColor: Theme.of(context).colorScheme.secondary,
+          activeTrackColor: Theme.of(context).colorScheme.secondary,
           value: value,
           onChanged: (value) => onTap(value),
         ),
