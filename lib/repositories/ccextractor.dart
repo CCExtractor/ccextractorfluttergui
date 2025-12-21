@@ -17,8 +17,30 @@ class CCExtractor {
 
   SettingsRepository settingsRepository = SettingsRepository();
   SettingsModel settings = SettingsModel();
+
+  /// Get the CCExtractor executable path.
+  /// First checks for a bundled executable next to the app, then falls back
+  /// to the system PATH.
   String get ccextractor {
-    return Platform.isWindows ? './ccextractorwinfull.exe' : './ccextractor';
+    final executableName =
+        Platform.isWindows ? 'ccextractorwinfull.exe' : 'ccextractor';
+
+    // Try relative to the running executable (for packaged/bundled apps)
+    final execDir = File(Platform.resolvedExecutable).parent.path;
+    final execPath = '$execDir/$executableName';
+    final execFile = File(execPath);
+    if (execFile.existsSync()) {
+      // Verify it's actually a file (not a directory) and exists
+      final stat = execFile.statSync();
+      if (stat.type == FileSystemEntityType.file) {
+        logger.d('Found bundled CCExtractor at: $execPath');
+        return execPath;
+      }
+    }
+
+    // Fall back to system PATH (most common case for installed ccextractor)
+    logger.d('Using CCExtractor from system PATH: $executableName');
+    return executableName;
   }
 
   Future<int> extractFile(
@@ -30,24 +52,31 @@ class CCExtractor {
     settings = await settingsRepository.getSettings();
     List<String> paramsList =
         settingsRepository.getParamsList(settings, filePath: file.path);
-    process = await Process.start(
-      ccextractor,
-      [
-        file.path,
-        '--gui-mode-reports',
-        ...paramsList,
-      ],
-    );
+
+    final args = [
+      file.path,
+      '--gui-mode-reports',
+      ...paramsList,
+    ];
+    logger.i('Starting CCExtractor: $ccextractor');
+    logger.d('Arguments: $args');
+
+    try {
+      process = await Process.start(ccextractor, args);
+    } catch (e, stackTrace) {
+      logger.e('Failed to start CCExtractor process', error: e, stackTrace: stackTrace);
+      rethrow;
+    }
     // sometimes stdout and stderr have important logs like how much time
     // it took to process the file or some erros not captured by exitcodes,
     // so just print them to the logs box
     process.stdout.transform(latin1.decoder).listen((update) {
-      // print(update);
+      logger.d('CCExtractor stdout: $update');
       listenOutput(update);
     });
 
     process.stderr.transform(latin1.decoder).listen((update) {
-      // print(update);
+      logger.d('CCExtractor stderr: $update');
       if (progressRegx.hasMatch(update)) {
         for (RegExpMatch i in progressRegx.allMatches(update)) {
           listenProgress(i[1]!);

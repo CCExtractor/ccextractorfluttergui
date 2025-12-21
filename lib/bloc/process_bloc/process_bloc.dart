@@ -42,8 +42,11 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
   }
 
   void _extractNext(Emitter<ProcessState> emit) {
+    logger.d('_extractNext called - started: ${state.started}, current: ${state.current}, queue: ${state.queue.length}');
+
     if (!state.started || state.current != null || state.queue.isEmpty) {
       if (state.queue.isEmpty) {
+        logger.d('Queue is empty, resetting state');
         emit(state.copyWith(
           queue: state.originalList,
           processed: state.processed,
@@ -55,6 +58,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       return;
     }
     final file = state.queue.first;
+    logger.i('Starting extraction for: ${file.path}');
     emit(state.copyWith(
       current: file,
       queue: state.queue.skip(1).toList(),
@@ -70,12 +74,15 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     )
         .then(
       (value) {
+        logger.i('Extraction completed with exit code: $value');
         if (value != 0) {
           add(ProcessError(value));
         }
         add(ProcessFileComplete(file));
       },
-    );
+    ).catchError((e, stackTrace) {
+      logger.e('Extraction failed', error: e, stackTrace: stackTrace);
+    });
   }
 
   void _extractOnNetwork(String type, String location, String tcppassword,
