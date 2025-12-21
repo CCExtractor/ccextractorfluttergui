@@ -6,6 +6,8 @@ import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/repositories/settings_repository.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('CounterBloc', () {
     SettingsRepository _settingsRepository = SettingsRepository();
     SettingsModel settingsModel = SettingsModel();
