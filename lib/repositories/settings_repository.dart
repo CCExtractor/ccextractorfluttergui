@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/utils/constants.dart';
+import 'package:ccxgui/utils/logger.dart';
 
 class SettingsRepository {
   Future<String> get _localPath async {
@@ -40,7 +41,7 @@ class SettingsRepository {
       }
       return true;
     } catch (e) {
-      print('Rewriting config.json file. Error $e');
+      logger.w('Rewriting config.json file', error: e);
       await file.writeAsString(jsonEncode(SettingsModel().toJson()));
       return false;
     }
@@ -94,7 +95,7 @@ class SettingsRepository {
         settings = SettingsModel.fromJson(jsonDecode(contents));
       }
     } catch (e) {
-      print('GetSettings Error $e');
+      logger.e('Failed to get settings', error: e);
     }
     return settings;
   }
@@ -109,7 +110,7 @@ class SettingsRepository {
       final file = await _localFile;
       await file.writeAsString(jsonEncode(settingsModel.toJson()));
     } catch (e) {
-      print('Error saving settings $e');
+      logger.e('Failed to save settings', error: e);
     }
   }
 }

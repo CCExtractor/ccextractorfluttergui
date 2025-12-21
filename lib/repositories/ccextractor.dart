@@ -5,6 +5,7 @@ import 'package:file_selector/file_selector.dart';
 
 import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/repositories/settings_repository.dart';
+import 'package:ccxgui/utils/logger.dart';
 
 class CCExtractor {
   late Process process;
@@ -194,7 +195,7 @@ class CCExtractor {
         ccxStdOut = versionMatch.group(1) ?? '0';
       }
     } catch (e) {
-      print('Error getting CCExtractor version: $e');
+      logger.e('Failed to get CCExtractor version', error: e);
     }
     return ccxStdOut;
   }

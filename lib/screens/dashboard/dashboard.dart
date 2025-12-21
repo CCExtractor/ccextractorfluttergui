@@ -49,7 +49,6 @@ class _DashboardState extends State<Dashboard> {
               List<XFile> validFiles = [];
               RegExp validExtensions = RegExp(
                   r'(\.dvr-ms|\.m2v|\.mpg|\.ts|\.wtv|\.mp4|\.mpg2|\.vob|\.mkv|\.mxf)$');
-              print(validExtensions.hasMatch(fileData[0].path));
               for (XFile file in fileData) {
                 if (validExtensions.hasMatch(file.path)) {
                   validFiles.add(file);

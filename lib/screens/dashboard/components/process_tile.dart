@@ -87,9 +87,8 @@ class _ProcessTileState extends State<ProcessTile> {
                                   context.read<ProcessBloc>().add(
                                         ProcessKill(widget.file),
                                       );
-                                } catch (e) {
-                                  print(
-                                      'processing for this file never started');
+                                } catch (_) {
+                                  // Processing for this file may not have started
                                 }
                               },
                               icon: Icon(
@@ -111,8 +110,8 @@ class _ProcessTileState extends State<ProcessTile> {
                               context.read<ProcessBloc>().add(
                                     ProcessFileRemoved(widget.file),
                                   );
-                            } catch (e) {
-                              print('processing for this file never started');
+                            } catch (_) {
+                              // Processing for this file may not have started
                             }
                           },
                           icon: Icon(

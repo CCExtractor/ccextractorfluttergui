@@ -1,7 +1,7 @@
 part of 'process_bloc.dart';
 
 class ProcessState extends Equatable {
-  final List<XFile> orignalList;
+  final List<XFile> originalList;
   final List<XFile> processed;
   final List<XFile> queue;
   final List<String> log;
@@ -12,7 +12,7 @@ class ProcessState extends Equatable {
   final String? version;
   final int? exitCode;
   const ProcessState({
-    required this.orignalList,
+    required this.originalList,
     required this.queue,
     required this.processed,
     required this.videoDetails,
@@ -25,7 +25,7 @@ class ProcessState extends Equatable {
   });
 
   ProcessState copyWith({
-    List<XFile>? orignalList,
+    List<XFile>? originalList,
     List<XFile>? processed,
     List<XFile>? queue,
     List<String>? log,
@@ -37,7 +37,7 @@ class ProcessState extends Equatable {
     int? exitCode,
   }) =>
       ProcessState(
-          orignalList: orignalList ?? this.orignalList,
+          originalList: originalList ?? this.originalList,
           queue: queue ?? this.queue,
           processed: processed ?? this.processed,
           log: log ?? this.log,
@@ -57,7 +57,7 @@ class ProcessState extends Equatable {
         started,
         progress,
         videoDetails,
-        orignalList,
+        originalList,
         version,
         exitCode,
       ];

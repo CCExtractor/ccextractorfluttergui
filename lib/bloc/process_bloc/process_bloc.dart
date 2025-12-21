@@ -3,6 +3,7 @@ import 'package:file_selector/file_selector.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:ccxgui/repositories/ccextractor.dart';
+import 'package:ccxgui/utils/logger.dart';
 
 part 'process_event.dart';
 part 'process_state.dart';
@@ -12,7 +13,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
 
   ProcessBloc()
       : super(ProcessState(
-          orignalList: [],
+          originalList: [],
           queue: [],
           processed: [],
           log: [],
@@ -44,7 +45,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     if (!state.started || state.current != null || state.queue.isEmpty) {
       if (state.queue.isEmpty) {
         emit(state.copyWith(
-          queue: state.orignalList,
+          queue: state.originalList,
           processed: state.processed,
           started: false,
           progress: '0',
@@ -102,7 +103,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
   void _extractFilesInSplitMode(Emitter<ProcessState> emit) {
     _extractor
         .extractFilesInSplitMode(
-      state.orignalList,
+      state.originalList,
       listenProgress: (progress) => add(ProcessFileExtractorProgress(progress)),
       listenOutput: (line) => add(ProcessFileExtractorOutput(line)),
       listenVideoDetails: (videoDetails) =>
@@ -121,7 +122,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
   void _onStartAllProcess(StartAllProcess event, Emitter<ProcessState> emit) {
     emit(state.copyWith(
       current: state.current,
-      processed: state.queue == state.orignalList ? [] : state.processed,
+      processed: state.queue == state.originalList ? [] : state.processed,
       started: true,
     ));
     _extractNext(emit);
@@ -136,10 +137,12 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
   void _onStopAllProcess(StopAllProcess event, Emitter<ProcessState> emit) {
     try {
       _extractor.cancelRun();
-    } catch (_) {}
+    } catch (e) {
+      logger.w('Failed to cancel extractor run on stop all', error: e);
+    }
     emit(state.copyWith(
       current: null,
-      queue: state.orignalList,
+      queue: state.originalList,
       processed: [],
       progress: '0',
       started: false,
@@ -149,11 +152,13 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
   void _onProcessKill(ProcessKill event, Emitter<ProcessState> emit) {
     try {
       _extractor.cancelRun();
-    } catch (_) {}
+    } catch (e) {
+      logger.w('Failed to cancel extractor run on process kill', error: e);
+    }
     emit(state.copyWith(
       current: state.current,
-      orignalList:
-          state.orignalList.where((element) => element != event.file).toList(),
+      originalList:
+          state.originalList.where((element) => element != event.file).toList(),
       queue: state.queue.where((element) => element != event.file).toList(),
     ));
   }
@@ -161,13 +166,15 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
   void _onProcessRemoveAll(ProcessRemoveAll event, Emitter<ProcessState> emit) {
     try {
       _extractor.cancelRun();
-    } catch (_) {}
+    } catch (e) {
+      logger.w('Failed to cancel extractor run on remove all', error: e);
+    }
     emit(state.copyWith(
       current: null,
       progress: '0',
       processed: [],
       queue: [],
-      orignalList: [],
+      originalList: [],
       started: false,
       exitCode: null,
       log: [],
@@ -221,7 +228,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       ProcessFilesSubmitted event, Emitter<ProcessState> emit) {
     emit(state.copyWith(
       current: state.current,
-      orignalList: List.from(state.orignalList)..addAll(event.files),
+      originalList: List.from(state.originalList)..addAll(event.files),
       processed: state.processed,
       queue: state.started || state.processed.isEmpty
           ? state.queue.followedBy(event.files).toList()
@@ -233,8 +240,8 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       ProcessFileRemoved event, Emitter<ProcessState> emit) {
     emit(state.copyWith(
       current: state.current,
-      orignalList:
-          state.orignalList.where((element) => element != event.file).toList(),
+      originalList:
+          state.originalList.where((element) => element != event.file).toList(),
       queue: state.queue.where((element) => element != event.file).toList(),
     ));
   }
