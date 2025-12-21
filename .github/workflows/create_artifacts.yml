@@ -48,15 +48,15 @@ jobs:
         Copy-Item (vswhere -latest -find 'VC\Redist\MSVC\*\x64\*\msvcp140.dll') .
         Copy-Item (vswhere -latest -find 'VC\Redist\MSVC\*\x64\*\vcruntime140.dll') .
         Copy-Item (vswhere -latest -find 'VC\Redist\MSVC\*\x64\*\vcruntime140_1.dll') .
-      working-directory: ./build/windows/runner/Release
+      working-directory: ./build/windows/x64/runner/Release
     - name: Create artifact
       uses: actions/upload-artifact@v4
       with:
         name: CCExtractor Flutter GUI Windows
         path: |
-          ./build/windows/runner/Release/*.exe
-          ./build/windows/runner/Release/*.dll
-          ./build/windows/runner/Release/data
+          ./build/windows/x64/runner/Release/*.exe
+          ./build/windows/x64/runner/Release/*.dll
+          ./build/windows/x64/runner/Release/data
 
   build_linux:
       needs: flutter_test
