@@ -120,7 +120,8 @@ void main() {
     blocTest<DashboardBloc, DashboardState>(
       'emits empty state when RemoveAllFiles is added',
       build: () => DashboardBloc(),
-      seed: () => DashboardState(files: [testFile1, testFile2], alreadyPresent: false),
+      seed: () =>
+          DashboardState(files: [testFile1, testFile2], alreadyPresent: false),
       act: (bloc) => bloc.add(RemoveAllFiles()),
       expect: () => [
         DashboardState(files: [], alreadyPresent: false),
@@ -130,7 +131,8 @@ void main() {
     blocTest<DashboardBloc, DashboardState>(
       'emits state without removed file when FileRemoved is added',
       build: () => DashboardBloc(),
-      seed: () => DashboardState(files: [testFile1, testFile2], alreadyPresent: false),
+      seed: () =>
+          DashboardState(files: [testFile1, testFile2], alreadyPresent: false),
       act: (bloc) => bloc.add(FileRemoved(testFile1)),
       expect: () => [
         DashboardState(files: [testFile2], alreadyPresent: false),
@@ -165,8 +167,8 @@ void main() {
       act: (bloc) => bloc.add(ProcessFilesSubmitted([testFile])),
       expect: () => [
         isA<ProcessState>()
-            .having((s) => s.originalList, 'originalList', [testFile])
-            .having((s) => s.queue, 'queue', [testFile]),
+            .having((s) => s.originalList, 'originalList', [testFile]).having(
+                (s) => s.queue, 'queue', [testFile]),
       ],
     );
 
