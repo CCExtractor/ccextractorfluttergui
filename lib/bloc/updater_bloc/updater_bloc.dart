@@ -25,8 +25,7 @@ class UpdaterBloc extends Bloc<UpdaterEvent, UpdaterState> {
     http.Response response = await http.get(url);
     var data = jsonDecode(response.body);
     for (var i = 0; i < data.length; i++) {
-      if (event.currentVersion ==
-          data[i]['tag_name'].toString().substring(1)) {
+      if (event.currentVersion == data[i]['tag_name'].toString().substring(1)) {
         currentVersionIndex = i;
       }
     }

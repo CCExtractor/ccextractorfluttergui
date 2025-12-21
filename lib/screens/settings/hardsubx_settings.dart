@@ -89,6 +89,21 @@ class HardSubxSettingsScreen extends StatelessWidget {
                           );
                     },
                   ),
+                  CustomSwitchListTile(
+                    title: 'HCC (Hybrid Closed Captions)',
+                    subtitle:
+                        'Use when file has both closed captions and burned-in subtitles',
+                    value: state.settingsModel.hcc,
+                    onTap: (value) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                hcc: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
                   CustomDropDown(
                     title: 'OCR mode',
                     subtitle:
@@ -223,6 +238,22 @@ class HardSubxSettingsScreen extends StatelessWidget {
                             SettingsUpdatedEvent(
                               state.settingsModel.copyWith(
                                 oem: newValue,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  CustomDropDown(
+                    title: 'PSM (Page Segmentation Mode)',
+                    subtitle:
+                        'Select the page segmentation mode for Tesseract.',
+                    value: state.settingsModel.psm,
+                    items: dropdownListMap['psm']!.keys.toList(),
+                    onChanged: (String newValue) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                psm: newValue,
                               ),
                             ),
                           );

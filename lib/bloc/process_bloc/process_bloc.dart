@@ -62,8 +62,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     _extractor
         .extractFile(
       file,
-      listenProgress: (progress) =>
-          add(ProcessFileExtractorProgress(progress)),
+      listenProgress: (progress) => add(ProcessFileExtractorProgress(progress)),
       listenOutput: (line) => add(ProcessFileExtractorOutput(line)),
       listenVideoDetails: (videoDetails) =>
           add(ProcessFileVideoDetails(videoDetails)),
@@ -86,8 +85,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
       location: location,
       tcpdesc: tcpdesc,
       tcppasswrd: tcppassword,
-      listenProgress: (progress) =>
-          add(ProcessFileExtractorProgress(progress)),
+      listenProgress: (progress) => add(ProcessFileExtractorProgress(progress)),
       listenOutput: (line) => add(ProcessFileExtractorOutput(line)),
       listenVideoDetails: (videoDetails) =>
           add(ProcessFileVideoDetails(videoDetails)),
@@ -105,8 +103,7 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
     _extractor
         .extractFilesInSplitMode(
       state.orignalList,
-      listenProgress: (progress) =>
-          add(ProcessFileExtractorProgress(progress)),
+      listenProgress: (progress) => add(ProcessFileExtractorProgress(progress)),
       listenOutput: (line) => add(ProcessFileExtractorOutput(line)),
       listenVideoDetails: (videoDetails) =>
           add(ProcessFileVideoDetails(videoDetails)),

@@ -378,6 +378,35 @@ class InputSettingsScreen extends StatelessWidget {
                               );
                     },
                   ),
+                  CustomSwitchListTile(
+                    title: 'Force Latin charset',
+                    subtitle:
+                        'Force Latin G0 charset for Teletext, ignoring any Cyrillic designation in the stream.',
+                    value: state.settingsModel.ttxtforcelatin,
+                    onTap: (value) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                ttxtforcelatin: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
+                  CustomSwitchListTile(
+                    title: 'Teletext verbose',
+                    subtitle: 'Enable teletext verbose mode for debugging.',
+                    value: state.settingsModel.tverbose,
+                    onTap: (value) {
+                      context.read<SettingsBloc>().add(
+                            SettingsUpdatedEvent(
+                              state.settingsModel.copyWith(
+                                tverbose: value,
+                              ),
+                            ),
+                          );
+                    },
+                  ),
                 ],
               ),
             ),

@@ -122,6 +122,27 @@ class SettingsModel {
   String confThresh;
   String whiteThresh;
   bool splitMode;
+  bool hcc;
+  String psm;
+
+  // SPUPNG font options
+  String spupngFont;
+  String spupngItalicsFont;
+
+  // Buffering
+  bool forceflush;
+
+  // Additional options
+  String screenfuls;
+  String unixts;
+  bool ucla;
+  bool nospupngocr;
+  bool listTracks;
+  String outputField;
+  bool cc2;
+  bool tverbose;
+  String customtxt;
+  bool ttxtforcelatin;
   SettingsModel({
     this.out = 'auto/default',
     this.inp = 'auto/default',
@@ -219,6 +240,21 @@ class SettingsModel {
     this.confThresh = '',
     this.whiteThresh = '',
     this.splitMode = false,
+    this.hcc = false,
+    this.psm = 'auto/default',
+    this.spupngFont = '',
+    this.spupngItalicsFont = '',
+    this.forceflush = false,
+    this.screenfuls = '',
+    this.unixts = '',
+    this.ucla = false,
+    this.nospupngocr = false,
+    this.listTracks = false,
+    this.outputField = 'auto/default',
+    this.cc2 = false,
+    this.tverbose = false,
+    this.customtxt = '',
+    this.ttxtforcelatin = false,
   });
 
   static Map<String, String> get paramsLookUpMap {
@@ -317,6 +353,21 @@ class SettingsModel {
       'confThresh': '--conf-thresh',
       'whiteThresh': '--whiteness-thresh',
       'splitMode': '', // splitMode is not a ccx setting
+      'hcc': '--hcc',
+      'psm': '--psm',
+      'spupngFont': '--font',
+      'spupngItalicsFont': '--italics',
+      'forceflush': '--forceflush',
+      'screenfuls': '--screenfuls',
+      'unixts': '--unixts',
+      'ucla': '--ucla',
+      'nospupngocr': '--no-spupngocr',
+      'listTracks': '-L',
+      'outputField': '--output-field',
+      'cc2': '--cc2',
+      'tverbose': '--tverbose',
+      'customtxt': '--customtxt',
+      'ttxtforcelatin': '--ttxtforcelatin',
     };
   }
 
@@ -443,6 +494,21 @@ class SettingsModel {
     String? confThresh,
     String? whiteThresh,
     bool? splitMode,
+    bool? hcc,
+    String? psm,
+    String? spupngFont,
+    String? spupngItalicsFont,
+    bool? forceflush,
+    String? screenfuls,
+    String? unixts,
+    bool? ucla,
+    bool? nospupngocr,
+    bool? listTracks,
+    String? outputField,
+    bool? cc2,
+    bool? tverbose,
+    String? customtxt,
+    bool? ttxtforcelatin,
   }) {
     return SettingsModel(
       out: out ?? this.out,
@@ -544,6 +610,21 @@ class SettingsModel {
       confThresh: confThresh ?? this.confThresh,
       whiteThresh: whiteThresh ?? this.whiteThresh,
       splitMode: splitMode ?? this.splitMode,
+      hcc: hcc ?? this.hcc,
+      psm: psm ?? this.psm,
+      spupngFont: spupngFont ?? this.spupngFont,
+      spupngItalicsFont: spupngItalicsFont ?? this.spupngItalicsFont,
+      forceflush: forceflush ?? this.forceflush,
+      screenfuls: screenfuls ?? this.screenfuls,
+      unixts: unixts ?? this.unixts,
+      ucla: ucla ?? this.ucla,
+      nospupngocr: nospupngocr ?? this.nospupngocr,
+      listTracks: listTracks ?? this.listTracks,
+      outputField: outputField ?? this.outputField,
+      cc2: cc2 ?? this.cc2,
+      tverbose: tverbose ?? this.tverbose,
+      customtxt: customtxt ?? this.customtxt,
+      ttxtforcelatin: ttxtforcelatin ?? this.ttxtforcelatin,
     );
   }
 
@@ -645,6 +726,21 @@ class SettingsModel {
       'confThresh': confThresh,
       'whiteThresh': whiteThresh,
       'splitMode': splitMode,
+      'hcc': hcc,
+      'psm': psm,
+      'spupngFont': spupngFont,
+      'spupngItalicsFont': spupngItalicsFont,
+      'forceflush': forceflush,
+      'screenfuls': screenfuls,
+      'unixts': unixts,
+      'ucla': ucla,
+      'nospupngocr': nospupngocr,
+      'listTracks': listTracks,
+      'outputField': outputField,
+      'cc2': cc2,
+      'tverbose': tverbose,
+      'customtxt': customtxt,
+      'ttxtforcelatin': ttxtforcelatin,
     };
   }
 
@@ -746,12 +842,27 @@ class SettingsModel {
       confThresh: map['confThresh'],
       whiteThresh: map['whiteThresh'],
       splitMode: map['splitMode'],
+      hcc: map['hcc'] ?? false,
+      psm: map['psm'] ?? 'auto/default',
+      spupngFont: map['spupngFont'] ?? '',
+      spupngItalicsFont: map['spupngItalicsFont'] ?? '',
+      forceflush: map['forceflush'] ?? false,
+      screenfuls: map['screenfuls'] ?? '',
+      unixts: map['unixts'] ?? '',
+      ucla: map['ucla'] ?? false,
+      nospupngocr: map['nospupngocr'] ?? false,
+      listTracks: map['listTracks'] ?? false,
+      outputField: map['outputField'] ?? 'auto/default',
+      cc2: map['cc2'] ?? false,
+      tverbose: map['tverbose'] ?? false,
+      customtxt: map['customtxt'] ?? '',
+      ttxtforcelatin: map['ttxtforcelatin'] ?? false,
     );
   }
 
   @override
   String toString() {
-    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, service: $service, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, streamtype: $streamtype, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, timestampMap: $timestampMap, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, capFile: $capFile, kf: $kf, profanityFile: $profanityFile, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, dvblang: $dvblang, mkvlang: $mkvlang, ocrlang: $ocrlang, quant: $quant, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, rollUp: $rollUp, delay: $delay, startat: $startat, endat: $endat, codec: $codec, nocodec: $nocodec, startcreditstext: $startcreditstext, startcreditsnotbefore: $startcreditsnotbefore, startcreditsnotafter: $startcreditsnotafter, startcreditsforatleast: $startcreditsforatleast, startcreditsforatmost: $startcreditsforatmost, endcreditstext: $endcreditstext, endcreditsforatleast: $endcreditsforatleast, endcreditsforatmost: $endcreditsforatmost, tpage: $tpage, teletext: $teletext, noteletext: $noteletext, hardsubx: $hardsubx, tickertext: $tickertext, ocrMode: $ocrMode, subcolor: $subcolor, minSubDuration: $minSubDuration, detectItalics: $detectItalics, confThresh: $confThresh, whiteThresh: $whiteThresh, splitMode: $splitMode)';
+    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, service: $service, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, streamtype: $streamtype, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, timestampMap: $timestampMap, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, capFile: $capFile, kf: $kf, profanityFile: $profanityFile, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, dvblang: $dvblang, mkvlang: $mkvlang, ocrlang: $ocrlang, quant: $quant, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, rollUp: $rollUp, delay: $delay, startat: $startat, endat: $endat, codec: $codec, nocodec: $nocodec, startcreditstext: $startcreditstext, startcreditsnotbefore: $startcreditsnotbefore, startcreditsnotafter: $startcreditsnotafter, startcreditsforatleast: $startcreditsforatleast, startcreditsforatmost: $startcreditsforatmost, endcreditstext: $endcreditstext, endcreditsforatleast: $endcreditsforatleast, endcreditsforatmost: $endcreditsforatmost, tpage: $tpage, teletext: $teletext, noteletext: $noteletext, hardsubx: $hardsubx, tickertext: $tickertext, ocrMode: $ocrMode, subcolor: $subcolor, minSubDuration: $minSubDuration, detectItalics: $detectItalics, confThresh: $confThresh, whiteThresh: $whiteThresh, splitMode: $splitMode, hcc: $hcc, psm: $psm, spupngFont: $spupngFont, spupngItalicsFont: $spupngItalicsFont, forceflush: $forceflush, screenfuls: $screenfuls, unixts: $unixts, ucla: $ucla, nospupngocr: $nospupngocr, listTracks: $listTracks, outputField: $outputField, cc2: $cc2, tverbose: $tverbose, customtxt: $customtxt, ttxtforcelatin: $ttxtforcelatin)';
   }
 
   @override
@@ -854,7 +965,22 @@ class SettingsModel {
         other.detectItalics == detectItalics &&
         other.confThresh == confThresh &&
         other.whiteThresh == whiteThresh &&
-        other.splitMode == splitMode;
+        other.splitMode == splitMode &&
+        other.hcc == hcc &&
+        other.psm == psm &&
+        other.spupngFont == spupngFont &&
+        other.spupngItalicsFont == spupngItalicsFont &&
+        other.forceflush == forceflush &&
+        other.screenfuls == screenfuls &&
+        other.unixts == unixts &&
+        other.ucla == ucla &&
+        other.nospupngocr == nospupngocr &&
+        other.listTracks == listTracks &&
+        other.outputField == outputField &&
+        other.cc2 == cc2 &&
+        other.tverbose == tverbose &&
+        other.customtxt == customtxt &&
+        other.ttxtforcelatin == ttxtforcelatin;
   }
 
   @override
@@ -954,6 +1080,21 @@ class SettingsModel {
         detectItalics.hashCode ^
         confThresh.hashCode ^
         whiteThresh.hashCode ^
-        splitMode.hashCode;
+        splitMode.hashCode ^
+        hcc.hashCode ^
+        psm.hashCode ^
+        spupngFont.hashCode ^
+        spupngItalicsFont.hashCode ^
+        forceflush.hashCode ^
+        screenfuls.hashCode ^
+        unixts.hashCode ^
+        ucla.hashCode ^
+        nospupngocr.hashCode ^
+        listTracks.hashCode ^
+        outputField.hashCode ^
+        cc2.hashCode ^
+        tverbose.hashCode ^
+        customtxt.hashCode ^
+        ttxtforcelatin.hashCode;
   }
 }
