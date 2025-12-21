@@ -64,7 +64,8 @@ class CCExtractor {
     try {
       process = await Process.start(ccextractor, args);
     } catch (e, stackTrace) {
-      logger.e('Failed to start CCExtractor process', error: e, stackTrace: stackTrace);
+      logger.e('Failed to start CCExtractor process',
+          error: e, stackTrace: stackTrace);
       rethrow;
     }
     // sometimes stdout and stderr have important logs like how much time

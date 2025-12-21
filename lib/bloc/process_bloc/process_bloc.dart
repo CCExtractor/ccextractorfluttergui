@@ -42,7 +42,8 @@ class ProcessBloc extends Bloc<ProcessEvent, ProcessState> {
   }
 
   void _extractNext(Emitter<ProcessState> emit) {
-    logger.d('_extractNext called - started: ${state.started}, current: ${state.current}, queue: ${state.queue.length}');
+    logger.d(
+        '_extractNext called - started: ${state.started}, current: ${state.current}, queue: ${state.queue.length}');
 
     if (!state.started || state.current != null || state.queue.isEmpty) {
       if (state.queue.isEmpty) {
