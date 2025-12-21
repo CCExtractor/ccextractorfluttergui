@@ -186,13 +186,16 @@ class CCExtractor {
 
   Future<String> get getCCExtractorVersion async {
     String ccxStdOut = '0';
-    await Process.run(ccextractor, ['--version']).then((value) {
-      ccxStdOut = value.stdout
-          .toString()
-          .substring(value.stdout.toString().indexOf('Version:') + 8,
-              value.stdout.toString().indexOf('Version:') + 15)
-          .trim();
-    });
+    try {
+      final result = await Process.run(ccextractor, ['--version']);
+      final output = result.stdout.toString();
+      final versionMatch = RegExp(r'Version:\s*(\S+)').firstMatch(output);
+      if (versionMatch != null) {
+        ccxStdOut = versionMatch.group(1) ?? '0';
+      }
+    } catch (e) {
+      print('Error getting CCExtractor version: $e');
+    }
     return ccxStdOut;
   }
 

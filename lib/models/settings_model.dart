@@ -38,7 +38,7 @@ class SettingsModel {
   bool noscte20;
   bool webvttcss;
   bool analyzevideo;
-  bool notimestamp;
+  bool timestampMap;
 
   // Levenshtein distance:
   bool nolevdist;
@@ -152,7 +152,7 @@ class SettingsModel {
     this.noscte20 = false,
     this.webvttcss = false,
     this.analyzevideo = false,
-    this.notimestamp = false,
+    this.timestampMap = false,
     this.nolevdist = false,
     this.minlevdist = '',
     this.maxlevdist = '',
@@ -252,7 +252,7 @@ class SettingsModel {
       'noscte20': '--no-scte20',
       'webvttcss': '--webvtt-create-css',
       'analyzevideo': '--analyzevideo',
-      'notimestamp': '--no-timestamp-map',
+      'timestampMap': '--timestamp-map',
       'nolevdist': '--no-levdist',
       'minlevdist': '--levdistmincnt',
       'maxlevdist': '--levdistmaxpct',
@@ -376,7 +376,7 @@ class SettingsModel {
     bool? noscte20,
     bool? webvttcss,
     bool? analyzevideo,
-    bool? notimestamp,
+    bool? timestampMap,
     bool? nolevdist,
     String? minlevdist,
     String? maxlevdist,
@@ -474,7 +474,7 @@ class SettingsModel {
       noscte20: noscte20 ?? this.noscte20,
       webvttcss: webvttcss ?? this.webvttcss,
       analyzevideo: analyzevideo ?? this.analyzevideo,
-      notimestamp: notimestamp ?? this.notimestamp,
+      timestampMap: timestampMap ?? this.timestampMap,
       nolevdist: nolevdist ?? this.nolevdist,
       minlevdist: minlevdist ?? this.minlevdist,
       maxlevdist: maxlevdist ?? this.maxlevdist,
@@ -578,7 +578,7 @@ class SettingsModel {
       'noscte20': noscte20,
       'webvttcss': webvttcss,
       'analyzevideo': analyzevideo,
-      'notimestamp': notimestamp,
+      'timestampMap': timestampMap,
       'nolevdist': nolevdist,
       'minlevdist': minlevdist,
       'maxlevdist': maxlevdist,
@@ -679,7 +679,7 @@ class SettingsModel {
       noscte20: map['noscte20'],
       webvttcss: map['webvttcss'],
       analyzevideo: map['analyzevideo'],
-      notimestamp: map['notimestamp'],
+      timestampMap: map['timestampMap'],
       nolevdist: map['nolevdist'],
       minlevdist: map['minlevdist'],
       maxlevdist: map['maxlevdist'],
@@ -751,7 +751,7 @@ class SettingsModel {
 
   @override
   String toString() {
-    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, service: $service, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, streamtype: $streamtype, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, notimestamp: $notimestamp, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, capFile: $capFile, kf: $kf, profanityFile: $profanityFile, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, dvblang: $dvblang, mkvlang: $mkvlang, ocrlang: $ocrlang, quant: $quant, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, rollUp: $rollUp, delay: $delay, startat: $startat, endat: $endat, codec: $codec, nocodec: $nocodec, startcreditstext: $startcreditstext, startcreditsnotbefore: $startcreditsnotbefore, startcreditsnotafter: $startcreditsnotafter, startcreditsforatleast: $startcreditsforatleast, startcreditsforatmost: $startcreditsforatmost, endcreditstext: $endcreditstext, endcreditsforatleast: $endcreditsforatleast, endcreditsforatmost: $endcreditsforatmost, tpage: $tpage, teletext: $teletext, noteletext: $noteletext, hardsubx: $hardsubx, tickertext: $tickertext, ocrMode: $ocrMode, subcolor: $subcolor, minSubDuration: $minSubDuration, detectItalics: $detectItalics, confThresh: $confThresh, whiteThresh: $whiteThresh, splitMode: $splitMode)';
+    return 'SettingsModel(out: $out, inp: $inp, outputfilename: $outputfilename, fixptsjumps: $fixptsjumps, append: $append, service: $service, outInterval: $outInterval, segmentonkeyonly: $segmentonkeyonly, goptime: $goptime, nogoptime: $nogoptime, fixpadding: $fixpadding, freqEs15: $freqEs15, stream: $stream, videoedited: $videoedited, usepicorder: $usepicorder, myth: $myth, nomyth: $nomyth, wtvconvertfix: $wtvconvertfix, wtvmpeg2: $wtvmpeg2, program_number: $program_number, autoprogram: $autoprogram, multiprogram: $multiprogram, streamtype: $streamtype, hauppauge: $hauppauge, mp4vidtrack: $mp4vidtrack, noautotimeref: $noautotimeref, noscte20: $noscte20, webvttcss: $webvttcss, analyzevideo: $analyzevideo, timestampMap: $timestampMap, nolevdist: $nolevdist, minlevdist: $minlevdist, maxlevdist: $maxlevdist, chapters: $chapters, bom: $bom, nobom: $nobom, encoder: $encoder, nofontcolor: $nofontcolor, nohtmlescape: $nohtmlescape, notypesetting: $notypesetting, trim: $trim, defaultcolor: $defaultcolor, sentencecap: $sentencecap, capFile: $capFile, kf: $kf, profanityFile: $profanityFile, splitbysentence: $splitbysentence, datets: $datets, sects: $sects, latrusmap: $latrusmap, xds: $xds, lf: $lf, df: $df, autodash: $autodash, xmltv: $xmltv, xmltvliveinterval: $xmltvliveinterval, xmltvoutputinterval: $xmltvoutputinterval, xmltvonlycurrent: $xmltvonlycurrent, sem: $sem, dvblang: $dvblang, mkvlang: $mkvlang, ocrlang: $ocrlang, quant: $quant, oem: $oem, bufferinput: $bufferinput, nobufferinput: $nobufferinput, buffersize: $buffersize, koc: $koc, dru: $dru, norollup: $norollup, rollUp: $rollUp, delay: $delay, startat: $startat, endat: $endat, codec: $codec, nocodec: $nocodec, startcreditstext: $startcreditstext, startcreditsnotbefore: $startcreditsnotbefore, startcreditsnotafter: $startcreditsnotafter, startcreditsforatleast: $startcreditsforatleast, startcreditsforatmost: $startcreditsforatmost, endcreditstext: $endcreditstext, endcreditsforatleast: $endcreditsforatleast, endcreditsforatmost: $endcreditsforatmost, tpage: $tpage, teletext: $teletext, noteletext: $noteletext, hardsubx: $hardsubx, tickertext: $tickertext, ocrMode: $ocrMode, subcolor: $subcolor, minSubDuration: $minSubDuration, detectItalics: $detectItalics, confThresh: $confThresh, whiteThresh: $whiteThresh, splitMode: $splitMode)';
   }
 
   @override
@@ -788,7 +788,7 @@ class SettingsModel {
         other.noscte20 == noscte20 &&
         other.webvttcss == webvttcss &&
         other.analyzevideo == analyzevideo &&
-        other.notimestamp == notimestamp &&
+        other.timestampMap == timestampMap &&
         other.nolevdist == nolevdist &&
         other.minlevdist == minlevdist &&
         other.maxlevdist == maxlevdist &&
@@ -888,7 +888,7 @@ class SettingsModel {
         noscte20.hashCode ^
         webvttcss.hashCode ^
         analyzevideo.hashCode ^
-        notimestamp.hashCode ^
+        timestampMap.hashCode ^
         nolevdist.hashCode ^
         minlevdist.hashCode ^
         maxlevdist.hashCode ^

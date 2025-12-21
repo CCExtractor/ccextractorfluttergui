@@ -1,17 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:localstorage/localstorage.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:ccxgui/models/settings_model.dart';
 import 'package:ccxgui/utils/constants.dart';
 
 class SettingsRepository {
-  // final SettingsModel settingsModel;
-
-  // SettingsRepository(this.settingsModel);
-
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
@@ -39,14 +34,14 @@ class SettingsRepository {
       // This checks if all the values are of the intended datatype, by setting the current data to a settingsModel object
       try {
         // ignore: unused_local_variable
-        final _settingsModel = SettingsModel.fromJson(data);
+        final settingsModel = SettingsModel.fromJson(data);
       } catch (e) {
         throw Exception('Settings value has mismatched datatype. Error $e');
       }
       return true;
     } catch (e) {
       print('Rewriting config.json file. Error $e');
-      await file.writeAsString(jsonEncode(SettingsModel()));
+      await file.writeAsString(jsonEncode(SettingsModel().toJson()));
       return false;
     }
   }
@@ -91,30 +86,28 @@ class SettingsRepository {
   }
 
   Future<SettingsModel> getSettings() async {
-    SettingsModel _settings = SettingsModel();
+    SettingsModel settings = SettingsModel();
     try {
-      LocalStorage storage = LocalStorage('config.json');
-      await storage.ready;
-      _settings = SettingsModel.fromJson(storage.getData());
+      final file = await _localFile;
+      if (await file.exists()) {
+        final String contents = await file.readAsString();
+        settings = SettingsModel.fromJson(jsonDecode(contents));
+      }
     } catch (e) {
       print('GetSettings Error $e');
     }
-    return _settings;
+    return settings;
   }
 
   Future resetSettings() async {
     final file = await _localFile;
-    LocalStorage storage = LocalStorage('config.json');
-    await storage.ready;
-    await storage.clear(); // just works
-    await file.writeAsString(jsonEncode(SettingsModel()));
+    await file.writeAsString(jsonEncode(SettingsModel().toJson()));
   }
 
   Future saveSettings(SettingsModel settingsModel) async {
     try {
-      LocalStorage storage = LocalStorage('config.json');
-      await storage.ready;
-      await storage.setData(settingsModel.toJson());
+      final file = await _localFile;
+      await file.writeAsString(jsonEncode(settingsModel.toJson()));
     } catch (e) {
       print('Error saving settings $e');
     }

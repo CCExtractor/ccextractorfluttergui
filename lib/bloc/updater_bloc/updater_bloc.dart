@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
@@ -10,44 +9,47 @@ part 'updater_event.dart';
 part 'updater_state.dart';
 
 class UpdaterBloc extends Bloc<UpdaterEvent, UpdaterState> {
-  UpdaterBloc() : super(UpdaterState('0.0', '0.0', false, '', ''));
-  static const URL =
-      'https://api.github.com/repos/CCExtractor/ccextractor/releases';
-  @override
-  Stream<UpdaterState> mapEventToState(
-    UpdaterEvent event,
-  ) async* {
-    if (event is CheckForUpdates) {
-      var url = Uri.parse(URL);
-      String changelog = '';
-      int currentVersionIndex = 0;
-      http.Response response = await http.get(url);
-      var data = jsonDecode(response.body);
-      for (var i = 0; i < data.length; i++) {
-        if (event.currentVersion ==
-            data[i]['tag_name'].toString().substring(1)) {
-          currentVersionIndex = i;
-        }
-      }
-      for (var i = 0; i < currentVersionIndex; i++) {
-        changelog += '\n' + data[i]['body'].toString();
-      }
-      String latestVersion = data[0]['tag_name'].toString().substring(1);
-      String downloadURL =
-          data[0]['assets'][0]['browser_download_url'].toString();
+  UpdaterBloc() : super(UpdaterState('0.0', '0.0', false, '', '')) {
+    on<CheckForUpdates>(_onCheckForUpdates);
+    on<DownloadUpdate>(_onDownloadUpdate);
+  }
 
-      bool updateAvailable =
-          double.parse(latestVersion) > double.parse(event.currentVersion);
-      yield state.copyWith(
-        currentVersion: event.currentVersion,
-        latestVersion: latestVersion,
-        updateAvailable: updateAvailable,
-        downloadURL: downloadURL,
-        changelog: changelog,
-      );
+  static const apiUrl =
+      'https://api.github.com/repos/CCExtractor/ccextractor/releases';
+
+  Future<void> _onCheckForUpdates(
+      CheckForUpdates event, Emitter<UpdaterState> emit) async {
+    var url = Uri.parse(apiUrl);
+    String changelog = '';
+    int currentVersionIndex = 0;
+    http.Response response = await http.get(url);
+    var data = jsonDecode(response.body);
+    for (var i = 0; i < data.length; i++) {
+      if (event.currentVersion ==
+          data[i]['tag_name'].toString().substring(1)) {
+        currentVersionIndex = i;
+      }
     }
-    if (event is DownloadUpdate) {
-      await launch(event.downloadURl);
+    for (var i = 0; i < currentVersionIndex; i++) {
+      changelog += '\n${data[i]['body']}';
     }
+    String latestVersion = data[0]['tag_name'].toString().substring(1);
+    String downloadURL =
+        data[0]['assets'][0]['browser_download_url'].toString();
+
+    bool updateAvailable =
+        double.parse(latestVersion) > double.parse(event.currentVersion);
+    emit(state.copyWith(
+      currentVersion: event.currentVersion,
+      latestVersion: latestVersion,
+      updateAvailable: updateAvailable,
+      downloadURL: downloadURL,
+      changelog: changelog,
+    ));
+  }
+
+  Future<void> _onDownloadUpdate(
+      DownloadUpdate event, Emitter<UpdaterState> emit) async {
+    await launchUrl(Uri.parse(event.downloadURl));
   }
 }

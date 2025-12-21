@@ -86,22 +86,33 @@ List<String> inputFormats = [
   'wtv',
   'bin',
   'raw',
-  'mp4'
+  'mp4',
+  'm2ts',
+  'mkv',
+  'mxf',
 ];
 
 /// Output formats
 List<String> outputFormats = [
   'auto/default',
   'srt',
+  'ass',
   'ssa',
+  'ccd',
+  'scc',
   'webvtt',
+  'webvtt-full',
   'sami',
   'bin',
   'raw',
   'dvdraw',
+  'mcc',
   'txt',
   'ttxt',
+  'g608',
   'smptett',
   'spupng',
   'null',
+  'report',
+  'simple-xml',
 ];

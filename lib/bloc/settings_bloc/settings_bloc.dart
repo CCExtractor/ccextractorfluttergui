@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -11,50 +9,61 @@ part 'settings_state.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final SettingsRepository _settingsRepository;
-  SettingsBloc(this._settingsRepository) : super(SettingsInitial());
+  SettingsBloc(this._settingsRepository) : super(SettingsInitial()) {
+    on<CheckSettingsEvent>(_onCheckSettings);
+    on<GetSettingsEvent>(_onGetSettings);
+    on<ResetSettingsEvent>(_onResetSettings);
+    on<SettingsUpdatedEvent>(_onSettingsUpdated);
+    on<SaveSettingsEvent>(_onSaveSettings);
+  }
 
-  @override
-  Stream<SettingsState> mapEventToState(
-    SettingsEvent event,
-  ) async* {
-    if (event is CheckSettingsEvent) {
-      bool settingsStatus = await _settingsRepository.checkValidJSON();
-      if (settingsStatus) {
-        add(GetSettingsEvent());
-      } else {
-        yield SettingsErrorState("Couldn't parse json file");
-      }
-    } else if (event is GetSettingsEvent) {
+  Future<void> _onCheckSettings(
+      CheckSettingsEvent event, Emitter<SettingsState> emit) async {
+    bool settingsStatus = await _settingsRepository.checkValidJSON();
+    if (settingsStatus) {
+      add(GetSettingsEvent());
+    } else {
+      emit(SettingsErrorState("Couldn't parse json file"));
+    }
+  }
+
+  Future<void> _onGetSettings(
+      GetSettingsEvent event, Emitter<SettingsState> emit) async {
+    try {
+      final settings = await _settingsRepository.getSettings();
+      emit(CurrentSettingsState(settings));
+    } catch (e) {
+      emit(SettingsErrorState('Error getting settings.'));
+    }
+  }
+
+  Future<void> _onResetSettings(
+      ResetSettingsEvent event, Emitter<SettingsState> emit) async {
+    await _settingsRepository.resetSettings();
+    final settings = await _settingsRepository.getSettings();
+    emit(CurrentSettingsState(settings));
+  }
+
+  Future<void> _onSettingsUpdated(
+      SettingsUpdatedEvent event, Emitter<SettingsState> emit) async {
+    emit(CurrentSettingsState(event.settingsModel));
+    add(SaveSettingsEvent(event.settingsModel));
+  }
+
+  Future<void> _onSaveSettings(
+      SaveSettingsEvent event, Emitter<SettingsState> emit) async {
+    if (await _settingsRepository.checkValidJSON()) {
       try {
-        final _settings = await _settingsRepository.getSettings();
-        yield CurrentSettingsState(_settings);
+        await _settingsRepository.saveSettings(event.settingsModel);
+        final settings = await _settingsRepository.getSettings();
+        emit(CurrentSettingsState(settings));
       } catch (e) {
-        yield SettingsErrorState('Error getting settings.');
+        emit(SettingsErrorState('Error saving settings.'));
       }
-    } else if (event is ResetSettingsEvent) {
-      await _settingsRepository.resetSettings();
-      final _settings = await _settingsRepository.getSettings();
-
-      yield CurrentSettingsState(_settings);
-    } else if (event is SettingsUpdatedEvent) {
-      yield CurrentSettingsState(event.settingsModel);
-      add(SaveSettingsEvent(event.settingsModel));
-      // improve
-    } else if (event is SaveSettingsEvent) {
-      if (await _settingsRepository.checkValidJSON()) {
-        try {
-          await _settingsRepository.saveSettings(event.settingsModel);
-          final _settings = await _settingsRepository.getSettings();
-          yield CurrentSettingsState(_settings);
-        } catch (e) {
-          yield SettingsErrorState('Error saving settings.');
-        }
-      } else {
-        // only possible when app is open and use manually messes up config.json.
-        yield SettingsErrorState('Corrupted config.json detected, rewriting.');
-        final _settings = await _settingsRepository.getSettings();
-        yield CurrentSettingsState(_settings);
-      }
+    } else {
+      emit(SettingsErrorState('Corrupted config.json detected, rewriting.'));
+      final settings = await _settingsRepository.getSettings();
+      emit(CurrentSettingsState(settings));
     }
   }
 }

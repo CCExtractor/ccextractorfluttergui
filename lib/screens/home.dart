@@ -90,12 +90,13 @@ class _HomeState extends State<Home> {
             unselectedIconTheme: IconThemeData(color: Colors.white54),
             unselectedLabelTextStyle: TextStyle(color: Colors.white54),
             leading: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(height: 20),
+                SizedBox(height: 8),
                 SvgPicture.asset(
                   logo,
                   semanticsLabel: 'CCExtractor Logo',
-                  height: 120,
+                  height: 80,
                 ),
                 _CheckForUpdatesButton(),
               ],
