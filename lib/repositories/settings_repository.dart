@@ -9,12 +9,24 @@ import 'package:ccxgui/utils/logger.dart';
 
 class SettingsRepository {
   Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
+    // Use application support directory instead of documents directory.
+    // On Windows this is AppData\Roaming, on macOS ~/Library/Application Support,
+    // on Linux ~/.local/share. This is the proper location for app config files
+    // and avoids issues with OneDrive sync, permissions, etc.
+    final directory = await getApplicationSupportDirectory()
+        .timeout(const Duration(seconds: 10), onTimeout: () {
+      throw Exception('Timeout getting application support directory');
+    });
     return directory.path;
   }
 
   Future<File> get _localFile async {
     final path = await _localPath;
+    // Ensure directory exists before returning file reference
+    final dir = Directory(path);
+    if (!await dir.exists()) {
+      await dir.create(recursive: true);
+    }
     return File('$path/config.json');
   }
 
