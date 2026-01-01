@@ -19,11 +19,16 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   Future<void> _onCheckSettings(
       CheckSettingsEvent event, Emitter<SettingsState> emit) async {
-    bool settingsStatus = await _settingsRepository.checkValidJSON();
-    if (settingsStatus) {
-      add(GetSettingsEvent());
-    } else {
-      emit(SettingsErrorState("Couldn't parse json file"));
+    try {
+      bool settingsStatus = await _settingsRepository.checkValidJSON();
+      if (settingsStatus) {
+        add(GetSettingsEvent());
+      } else {
+        // Config was invalid but has been rewritten with defaults, load it
+        add(GetSettingsEvent());
+      }
+    } catch (e) {
+      emit(SettingsErrorState('Failed to initialize settings: $e'));
     }
   }
 
